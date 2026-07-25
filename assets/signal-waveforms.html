@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vibrotactile Signal Set — Waveform Timing</title>
+<style>
+  /* ---------- Branch Compass v0.7 ---------- */
+  :root{
+    --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+    --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+    --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+    --path-history:#596579; --path-terminal:#98a2b3;
+    --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+    --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+    --danger:#c63c32;
+    --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+    --action-dark:#171a1f;
+    --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+    --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+    --radius:12px; --radius-small:8px;
+    --shadow:0 22px 64px rgba(16,24,40,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--canvas);}
+  body{
+    width:1400px; height:900px;
+    padding:18px;
+    font-family:var(--body-font);
+    color:var(--text);
+    display:flex;
+  }
+  .sheet{
+    flex:1 1 auto; min-height:0;
+    display:flex; flex-direction:column;
+    background:var(--surface);
+    border:1px solid var(--rule);
+    border-radius:var(--radius);
+    padding:22px 32px 0 32px;
+  }
+
+  /* ---------- header ---------- */
+  header{display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:11px;}
+  h1{
+    font-family:var(--body-font);
+    font-size:31px; font-weight:700; line-height:1.06;
+    letter-spacing:-0.021em; color:var(--text);
+  }
+  h1 em{font-style:normal; font-weight:700; color:var(--text-secondary);}
+  .sub{
+    font-family:var(--mono);
+    font-size:10.5px; letter-spacing:1.4px; text-transform:uppercase;
+    color:var(--text-muted); margin-top:10px;
+  }
+  .meta{
+    text-align:right;
+    font-family:var(--mono);
+    font-size:10.5px; line-height:1.8; letter-spacing:0.3px; color:var(--text-muted);
+  }
+  .meta b{color:var(--text); font-weight:600;}
+
+  /* ---------- table ---------- */
+  header,.grid,footer{flex:0 0 auto;}   /* never let flexbox shrink rows during the fit pass */
+  .grid{display:grid; grid-template-columns:222px 720px 1fr; column-gap:32px;}
+  .colhead > div{
+    font-family:var(--mono);
+    font-size:9.5px; letter-spacing:1.7px; text-transform:uppercase; color:var(--text-muted);
+    padding:8px 0 7px 0;
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule-strong);
+  }
+  .cell{padding:14px 0 14px 0; border-bottom:1px solid var(--lane-rule);}
+
+  .code{
+    font-family:var(--body-font);
+    font-size:26px; font-weight:700; line-height:1; letter-spacing:-0.022em;
+    color:var(--text);
+  }
+  .name{
+    font-size:13px; font-weight:400; color:var(--text-secondary);
+    margin-top:8px; letter-spacing:-0.004em;
+  }
+  .params{
+    font-family:var(--mono);
+    font-size:11px; line-height:1.8; color:var(--text-secondary); margin-top:12px;
+  }
+
+  .sem{font-size:13.5px; line-height:1.54; color:var(--text-secondary); letter-spacing:-0.003em;}
+  .sem .tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:9px; font-weight:500; letter-spacing:1.6px; text-transform:uppercase;
+    padding:4px 8px 3px 8px; border-radius:var(--radius-small);
+    border:1px solid var(--rule); background:var(--surface-subtle); color:var(--text-secondary);
+    margin-bottom:9px;
+  }
+  .sem .tag.t-current{background:var(--current-soft); border-color:var(--current); color:var(--current-hover);}
+  .sem .tag.t-waiting{background:var(--waiting-soft); border-color:var(--waiting-border); color:var(--waiting-dark);}
+  .sem .tag.t-success{background:var(--success-soft); border-color:var(--success-border); color:var(--success-dark);}
+
+  .plot{position:relative;}
+  svg{display:block; overflow:visible;}
+
+  footer{
+    margin-top:auto;
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:11px 0 15px 0; border-top:1px solid var(--rule);
+    font-family:var(--mono);
+    font-size:10.5px; letter-spacing:0.4px; color:var(--text-muted);
+  }
+  footer .legend b{color:var(--text); font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+<header>
+  <div>
+    <h1>Vibrotactile signal set: <em>waveform timing</em></h1>
+    <div class="sub">Aim 2 &nbsp;·&nbsp; four tactile envelopes &nbsp;·&nbsp; plotted from firmware constants</div>
+  </div>
+  <div class="meta">
+    <b>4</b> PWM motors &nbsp;·&nbsp; FRONT / BACK / LEFT / RIGHT<br>
+    Max signal duration <b>3000 ms</b>, or experimenter STOP<br>
+    Onset timestamp <b>T1</b> = SIG_START, NTP-aligned
+  </div>
+</header>
+
+<div class="grid" id="grid">
+  <div class="colhead" style="display:contents">
+    <div>Signal</div>
+    <div>Drive envelope over trial time</div>
+    <div>What the signal is meant to say</div>
+  </div>
+</div>
+
+<footer>
+  <div class="legend">
+    Bar height = PWM duty cycle &nbsp;·&nbsp; <b>dashed rule</b> = 100&#37; drive (255/255) &nbsp;·&nbsp; horizontal axis = seconds from signal onset
+  </div>
+  <div>Xiang Yang &nbsp;·&nbsp; Virginia Tech &nbsp;·&nbsp; vibrotactile warning system</div>
+</footer>
+
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Every pulse below is produced by replaying the Arduino state machine
+   in arduino/motor_ble_controller/motor_ble_controller.ino, so these
+   are the firmware's real output shapes, not hand-drawn approximations.
+------------------------------------------------------------------ */
+const T_MAX = 3000;                 // SIGNAL_TIMEOUT_MS
+const W = 720;                      // plot width
+let H, TOP, BASE;                   // plot box, sized by the fit pass below
+function setPlotHeight(h) {
+  H = h;
+  TOP = 26;                         // y at 100% duty (headroom for callouts)
+  BASE = H - 34;                    // y at 0% duty (room for the span captions)
+}
+const x = t => (t / T_MAX) * W;
+const yTop = pwm => BASE - (pwm / 255) * (BASE - TOP);
+
+/* --- pulse-train generators (firmware-faithful) --- */
+function evenTrain(onMs, offMs, pwm, tEnd = T_MAX) {
+  const out = []; let t = 0;
+  while (t < tEnd) { out.push({ t0: t, t1: Math.min(t + onMs, tEnd), pwm }); t += onMs + offMs; }
+  return out;
+}
+function reTrain() {
+  // RE_RAMP_MS 2000 | RE_ON_MS 100 | gap 250 -> 50 | PWM 127 -> 255
+  const RAMP = 2000, ON = 100, G0 = 250, G1 = 50, P0 = 127, P1 = 255;
+  const out = []; let t = 0;
+  while (t < RAMP) {
+    const f = t / RAMP;
+    out.push({ t0: t, t1: Math.min(t + ON, RAMP), pwm: Math.round(P0 + f * (P1 - P0)) });
+    t += ON;
+    if (t >= RAMP) break;
+    t += G0 - (t / RAMP) * (G0 - G1);
+  }
+  out.push({ t0: RAMP, t1: T_MAX, pwm: 255 });   // continuous phase
+  return out;
+}
+const PW_EXAMPLE = 2000;            // one draw from random(1000, 3000)
+const PW_GAP     = 100;             // delay(100) before startSignal()
+
+/* --- SVG helpers --- */
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+const txt = (a, s) => { const e = el("text", a); e.textContent = s; return e; };
+const MONO = '"SFMono-Regular","Roboto Mono",Consolas,monospace';
+
+/* Branch Compass tokens, mirrored for SVG presentation attributes */
+const C = {
+  current:      "#0095ff",
+  currentHover: "#007de8",
+  currentSoft:  "#eef4ff",
+  rule:         "#e4e7ec",
+  ruleStrong:   "#cfd5de",
+  laneRule:     "#eef1f5",
+  text:         "#111827",
+  textSecondary:"#475467",
+  textMuted:    "#667085",
+  pathHistory:  "#596579"
+};
+
+function drawPlot(pulses, opts = {}) {
+  const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` });
+
+  for (let t = 500; t < T_MAX; t += 500)
+    svg.appendChild(el("line", { x1: x(t), x2: x(t), y1: TOP - 2, y2: BASE, stroke: C.rule, "stroke-width": 1 }));
+
+  svg.appendChild(el("line", { x1: 0, x2: W, y1: TOP, y2: TOP, stroke: C.ruleStrong, "stroke-width": 1, "stroke-dasharray": "2 5" }));
+  svg.appendChild(el("line", { x1: 0, x2: W, y1: BASE, y2: BASE, stroke: C.ruleStrong, "stroke-width": 1 }));
+
+  // intensity ticks
+  svg.appendChild(txt({ x: -9, y: TOP + 3.5, fill: C.textMuted, "font-family": MONO, "font-size": 9, "text-anchor": "end" }, "100%"));
+  svg.appendChild(txt({ x: -9, y: BASE + 3.5, fill: C.textMuted, "font-family": MONO, "font-size": 9, "text-anchor": "end" }, "0"));
+
+  /* mode: "solid" = driven pulse, "soft" = low-intensity pulse (hollow, reads light),
+           "ghost" = the neighbouring signal shown for context.
+     Geometry is identical in all three modes; only the paint changes. */
+  const paint = (list, mode) => list.forEach(p => {
+    const w = Math.max(x(p.t1) - x(p.t0), 1.2), yt = yTop(p.pwm), h = BASE - yt;
+    if (mode === "soft") {
+      svg.appendChild(el("rect", {
+        x: x(p.t0) + 0.5, y: yt + 0.5,
+        width: Math.max(w - 1, 0.6), height: Math.max(h - 1, 0.6),
+        fill: C.currentSoft, stroke: C.current, "stroke-width": 1, "stroke-opacity": 0.55
+      }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current, "fill-opacity": 0.9 }));
+    } else if (mode === "ghost") {
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: h, fill: C.current, "fill-opacity": 0.13 }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current, "fill-opacity": 0.32 }));
+    } else {
+      const a = 0.5 + 0.5 * (p.pwm / 255);
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: h, fill: C.current, "fill-opacity": a.toFixed(3) }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.currentHover }));
+    }
+  });
+
+  if (opts.ghost) paint(opts.ghost, "ghost");
+  paint(pulses, opts.soft ? "soft" : "solid");
+
+  // vertical callouts, label sits above the 100% rule
+  (opts.marks || []).forEach(m => {
+    svg.appendChild(el("line", { x1: x(m.t), x2: x(m.t), y1: TOP - 12, y2: BASE + 4, stroke: C.pathHistory, "stroke-width": 1, "stroke-dasharray": "3 3", "stroke-opacity": 0.7 }));
+    svg.appendChild(txt({
+      x: x(m.t) + (m.flip ? -6 : 6), y: TOP - 12, fill: C.textSecondary,
+      "font-family": MONO, "font-size": 10, "letter-spacing": 0.3,
+      "text-anchor": m.flip ? "end" : "start"
+    }, m.label));
+  });
+
+  // measured spans under the baseline
+  (opts.spans || []).forEach(s => {
+    const xa = x(s.t0), xb = x(s.t1), y = BASE + 13;
+    svg.appendChild(el("line", { x1: xa, x2: xb, y1: y, y2: y, stroke: C.ruleStrong, "stroke-width": 1 }));
+    [xa, xb].forEach(px => svg.appendChild(el("line", { x1: px, x2: px, y1: y - 3.5, y2: y + 3.5, stroke: C.ruleStrong, "stroke-width": 1 })));
+    // keep short spans anchored at their left edge so the caption never runs off-plot
+    const narrow = (xb - xa) < 150;
+    svg.appendChild(txt({
+      x: narrow ? xa : (xa + xb) / 2, y: y + 15, fill: C.textMuted, "font-family": MONO,
+      "font-size": 9.5, "letter-spacing": 1, "text-anchor": narrow ? "start" : "middle"
+    }, s.label));
+  });
+
+  return svg;
+}
+
+function drawAxis() {
+  const h = 30, svg = el("svg", { width: W, height: h, viewBox: `0 0 ${W} ${h}` });
+  svg.appendChild(el("line", { x1: 0, x2: W, y1: 1, y2: 1, stroke: C.ruleStrong, "stroke-width": 1 }));
+  for (let t = 0; t <= T_MAX; t += 500) {
+    const major = t % 1000 === 0;
+    svg.appendChild(el("line", { x1: x(t), x2: x(t), y1: 1, y2: major ? 8 : 5, stroke: major ? C.ruleStrong : C.rule, "stroke-width": 1 }));
+    svg.appendChild(txt({
+      x: x(t), y: 21, fill: major ? C.text : C.textMuted, "font-family": MONO,
+      "font-size": major ? 11 : 10,
+      "text-anchor": t === 0 ? "start" : (t === T_MAX ? "end" : "middle")
+    }, (t / 1000).toFixed(1)));
+  }
+  svg.appendChild(txt({ x: -9, y: 21, fill: C.textMuted, "font-family": MONO, "font-size": 9, "text-anchor": "end", "letter-spacing": 1 }, "SEC"));
+  return svg;
+}
+
+/* --- row data --- */
+const ROWS = [
+  {
+    code: "CES", name: "Continuous Even Slow",
+    params: ["250 ms on / 250 ms off", "100&#37; PWM (255/255)", "period 500 ms &nbsp;·&nbsp; 2 Hz"],
+    tag: "Baseline urgency", tone: "",
+    sem: "A flat, metronomic pulse. Nothing about it changes, so it carries direction and nothing else. This is the control envelope the escalating patterns are measured against.",
+    plot: () => drawPlot(evenTrain(250, 250, 255), { spans: [{ t0: 0, t1: 500, label: "500 ms PERIOD" }] })
+  },
+  {
+    code: "CEF", name: "Continuous Even Fast",
+    params: ["125 ms on / 125 ms off", "100&#37; PWM (255/255)", "period 250 ms &nbsp;·&nbsp; 4 Hz"],
+    tag: "Rate as urgency", tone: "t-current",
+    sem: "Identical drive level, twice the repetition rate. Pulse frequency becomes the only variable, testing whether tempo on its own shifts perceived urgency.",
+    plot: () => drawPlot(evenTrain(125, 125, 255), { spans: [{ t0: 0, t1: 250, label: "250 ms PERIOD" }] })
+  },
+  {
+    code: "RE", name: "Ramping Escalation",
+    params: ["100 ms pulses, gap 250 &rarr; 50 ms", "intensity 50&#37; &rarr; 100&#37; PWM", "solid 100&#37; after 2 s"],
+    tag: "Closing hazard", tone: "t-waiting",
+    sem: "Intensity and rate climb together for two seconds, then lock into continuous drive. The envelope itself carries time pressure: the hazard is closing.",
+    plot: () => drawPlot(reTrain(), {
+      marks: [{ t: 2000, label: "ramp ends" }],
+      spans: [{ t0: 0, t1: 2000, label: "RAMP PHASE, 0 TO 2 s" }, { t0: 2000, t1: 3000, label: "CONTINUOUS 100%" }]
+    })
+  },
+  {
+    code: "PW", name: "Pre-Warning",
+    params: ["500 ms on / 500 ms off", "40&#37; PWM (102/255)", "random 1&ndash;3 s, then 100 ms gap"],
+    tag: "Attention primer", tone: "t-success",
+    sem: "A deliberately gentle cue ahead of the warning itself. It buys orienting time without asserting a direction, and its random length prevents anticipating onset.",
+    plot: () => drawPlot(evenTrain(500, 500, 102, PW_EXAMPLE), {
+      soft: true,
+      ghost: evenTrain(250, 250, 255)
+        .map(p => ({ t0: p.t0 + PW_EXAMPLE + PW_GAP, t1: p.t1 + PW_EXAMPLE + PW_GAP, pwm: p.pwm }))
+        .filter(p => p.t0 < T_MAX)
+        .map(p => ({ ...p, t1: Math.min(p.t1, T_MAX) })),
+      marks: [{ t: PW_EXAMPLE + PW_GAP, label: "T1 · warning begins" }],
+      spans: [
+        { t0: 0, t1: PW_EXAMPLE, label: "EXAMPLE DRAW 2.0 s (RANDOM 1 TO 3 s)" },
+        { t0: PW_EXAMPLE + PW_GAP, t1: T_MAX, label: "WARNING SIGNAL (CES SHOWN)" }
+      ]
+    })
+  }
+];
+
+/* --- render --- */
+const grid = document.getElementById("grid");
+const foot = document.querySelector("footer");
+
+function build() {
+  // keep only the column head (one node, display:contents), drop everything from the last pass
+  while (grid.lastElementChild && !grid.lastElementChild.classList.contains("colhead"))
+    grid.removeChild(grid.lastElementChild);
+  ROWS.forEach(r => {
+    const left = document.createElement("div");
+    left.innerHTML = `<div class="code">${r.code}</div><div class="name">${r.name}</div>` +
+                     `<div class="params">${r.params.join("<br>")}</div>`;
+    const mid = document.createElement("div");
+    mid.className = "plot";
+    mid.appendChild(r.plot());
+    const right = document.createElement("div");
+    right.className = "sem";
+    right.innerHTML = `<div class="tag ${r.tone}">${r.tag}</div><div>${r.sem}</div>`;
+    [left, mid, right].forEach(n => { n.classList.add("cell"); grid.appendChild(n); });
+  });
+  const a1 = document.createElement("div");
+  const a2 = document.createElement("div"); a2.style.paddingTop = "6px"; a2.appendChild(drawAxis());
+  const a3 = document.createElement("div");
+  [a1, a2, a3].forEach(n => grid.appendChild(n));
+}
+
+/* Fit pass: grow the plots until the figure exactly fills the 900 px canvas.
+   Rows are text-bound at small plot heights, so the first increments are free. */
+function slackAt(h) {
+  setPlotHeight(h);
+  build();
+  // The sheet is a fixed-height flex column, so overflow — not the gap between
+  // grid and footer — is what tells us the plots have outgrown the canvas.
+  const sheet = document.querySelector(".sheet");
+  return sheet.clientHeight - (sheet.scrollHeight);
+}
+
+function fit() {
+  // Row height is max(text, plot), so grid height is monotonic in the plot
+  // height: a binary search lands exactly on the largest legal value.
+  let lo = 60, hi = 340, best = 60;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (slackAt(mid) >= 0) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  setPlotHeight(best);
+  build();
+  const root = document.documentElement;
+  root.dataset.plotHeight = String(best);
+  root.dataset.slack = String(Math.round(foot.getBoundingClientRect().top - grid.getBoundingClientRect().bottom));
+  root.dataset.ready = "1";
+}
+
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+else fit();
+</script>
+</body>
+</html>

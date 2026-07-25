@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Digital Me — Agent Avatars</title>
+<style>
+  :root{
+    --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+    --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+    --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+    --path-history:#596579; --path-terminal:#98a2b3;
+    --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+    --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+    --danger:#c63c32;
+    --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+    --action-dark:#171a1f;
+    --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+    --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+    --radius:12px; --radius-small:8px;
+    --shadow:0 22px 64px rgba(16,24,40,.18);
+    --card-shadow:0 1px 3px rgba(16,24,40,.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--canvas); }
+  body {
+    width: 1200px; height: 800px;
+    font-family: var(--body-font);
+    color: var(--text);
+    display: flex; flex-direction: column;
+    padding: 44px 60px 44px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header { flex: 0 0 auto; }
+  .head-row {
+    display: flex; align-items: baseline;
+    justify-content: space-between; gap: 24px;
+  }
+  h1 {
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 31px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0;
+  }
+  .sub {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .lede {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 9px 0 0;
+    max-width: 640px;
+  }
+  .rule { height: 1px; background: var(--rule); margin: 22px 0 0; }
+
+  .grid {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 24px;
+  }
+  .card {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 18px;
+    padding: 22px 20px 24px;
+  }
+  .slot { display: flex; align-items: center; justify-content: center; }
+  .slot svg { width: 108px; height: 108px; display: block; }
+
+  figcaption { text-align: center; }
+  .agent {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .animal {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 7px;
+  }
+  .note {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="head-row">
+      <h1>Six agents, six animals</h1>
+      <div class="sub">Digital Me · avatar system</div>
+    </div>
+    <p class="lede">Hand-authored SVG, shipped straight from the production renderer. One animal per agent, so identity is legible before a single label is read.</p>
+    <div class="rule"></div>
+  </header>
+
+  <section class="grid">
+      <figure class="card" data-animal="elephant">
+        <div class="slot" id="slot-elephant"></div>
+        <figcaption>
+          <div class="agent">Memory Agent</div>
+          <div class="animal">Elephant</div>
+          <div class="note">never forgets</div>
+        </figcaption>
+      </figure>
+      <figure class="card" data-animal="spider">
+        <div class="slot" id="slot-spider"></div>
+        <figcaption>
+          <div class="agent">Connection Mapper</div>
+          <div class="animal">Spider</div>
+          <div class="note">weaves connections</div>
+        </figcaption>
+      </figure>
+      <figure class="card" data-animal="owl">
+        <div class="slot" id="slot-owl"></div>
+        <figcaption>
+          <div class="agent">Information Agent</div>
+          <div class="animal">Owl</div>
+          <div class="note">watches the world</div>
+        </figcaption>
+      </figure>
+      <figure class="card" data-animal="chameleon">
+        <div class="slot" id="slot-chameleon"></div>
+        <figcaption>
+          <div class="agent">Interface Agent</div>
+          <div class="animal">Chameleon</div>
+          <div class="note">adapts to content</div>
+        </figcaption>
+      </figure>
+      <figure class="card" data-animal="fox">
+        <div class="slot" id="slot-fox"></div>
+        <figcaption>
+          <div class="agent">Strategist</div>
+          <div class="animal">Fox</div>
+          <div class="note">reads the landscape</div>
+        </figcaption>
+      </figure>
+      <figure class="card" data-animal="dove">
+        <div class="slot" id="slot-dove"></div>
+        <figcaption>
+          <div class="agent">Communication Agent</div>
+          <div class="animal">Dove</div>
+          <div class="note">carries the message</div>
+        </figcaption>
+      </figure>
+  </section>
+
+<script>
+// --- verbatim from agents/interface-agent/code/renderer.py (f-string braces unescaped) ---
+const AVATARS = {
+  'elephant': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <ellipse cx="24" cy="22" rx="10" ry="11" fill="#CLASS_BODY#"/>
+    <ellipse cx="13" cy="19" rx="5" ry="7" fill="#CLASS_BODY2#"/>
+    <ellipse cx="35" cy="19" rx="5" ry="7" fill="#CLASS_BODY2#"/>
+    <ellipse cx="13" cy="19" rx="3" ry="4.5" fill="#CLASS_BODY#"/>
+    <ellipse cx="35" cy="19" rx="3" ry="4.5" fill="#CLASS_BODY#"/>
+    <circle cx="20" cy="20" r="2" fill="#1C1916"/><circle cx="28" cy="20" r="2" fill="#1C1916"/>
+    <circle cx="20.6" cy="19.4" r="0.7" fill="#FFF"/><circle cx="28.6" cy="19.4" r="0.7" fill="#FFF"/>
+    <path d="M24,27 Q24,32 22,36 Q21,38 23,38 Q25,38 25,36 Q27,32 24,27Z" fill="#CLASS_BODY2#"/>
+    <path d="M20,26 Q18,30 19,32" stroke="#E8DDD0" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <path d="M28,26 Q30,30 29,32" stroke="#E8DDD0" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>`,
+  'spider': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <line x1="24" y1="6" x2="24" y2="42" stroke="#CLASS_WEB#" stroke-width="0.7"/>
+    <line x1="6" y1="24" x2="42" y2="24" stroke="#CLASS_WEB#" stroke-width="0.7"/>
+    <line x1="10" y1="10" x2="38" y2="38" stroke="#CLASS_WEB#" stroke-width="0.7"/>
+    <line x1="38" y1="10" x2="10" y2="38" stroke="#CLASS_WEB#" stroke-width="0.7"/>
+    <circle cx="24" cy="24" r="8" stroke="#CLASS_WEB#" stroke-width="0.7" fill="none"/>
+    <circle cx="24" cy="24" r="15" stroke="#CLASS_WEB#" stroke-width="0.5" fill="none"/>
+    <ellipse cx="24" cy="23" rx="4" ry="5" fill="#CLASS_BODY#"/>
+    <circle cx="24" cy="19" r="3.5" fill="#CLASS_BODY#"/>
+    <line x1="21" y1="23" x2="16" y2="17" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="21" y1="23" x2="15" y2="23" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="21" y1="23" x2="16" y2="29" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="21" y1="23" x2="18" y2="33" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="27" y1="23" x2="32" y2="17" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="27" y1="23" x2="33" y2="23" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="27" y1="23" x2="32" y2="29" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="27" y1="23" x2="30" y2="33" stroke="#CLASS_BODY#" stroke-width="1.2" stroke-linecap="round"/>
+    <circle cx="22.5" cy="18" r="1.3" fill="#1C1916"/><circle cx="25.5" cy="18" r="1.3" fill="#1C1916"/>
+    <circle cx="22.8" cy="17.6" r="0.5" fill="#FFF"/><circle cx="25.8" cy="17.6" r="0.5" fill="#FFF"/>
+  </svg>`,
+  'owl': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <ellipse cx="24" cy="28" rx="10" ry="12" fill="#CLASS_BODY#"/>
+    <ellipse cx="24" cy="31" rx="6" ry="8" fill="#CLASS_BODY2#"/>
+    <circle cx="19" cy="20" r="5.5" fill="#CLASS_EYE_RING#"/>
+    <circle cx="29" cy="20" r="5.5" fill="#CLASS_EYE_RING#"/>
+    <circle cx="19" cy="20" r="3.5" fill="#1C1916"/>
+    <circle cx="29" cy="20" r="3.5" fill="#1C1916"/>
+    <circle cx="19" cy="20" r="2" fill="#CLASS_IRIS#"/>
+    <circle cx="29" cy="20" r="2" fill="#CLASS_IRIS#"/>
+    <circle cx="19" cy="20" r="0.9" fill="#1C1916"/>
+    <circle cx="29" cy="20" r="0.9" fill="#1C1916"/>
+    <circle cx="19.5" cy="19.3" r="0.6" fill="#FFF"/>
+    <circle cx="29.5" cy="19.3" r="0.6" fill="#FFF"/>
+    <path d="M22,23 L24,26 L26,23Z" fill="#CLASS_IRIS#"/>
+    <path d="M14,14 Q16,10 18,14" fill="#CLASS_BODY#"/>
+    <path d="M30,14 Q32,10 34,14" fill="#CLASS_BODY#"/>
+  </svg>`,
+  'chameleon': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <ellipse cx="24" cy="26" rx="12" ry="9" fill="#CLASS_BODY#"/>
+    <ellipse cx="24" cy="26" rx="10" ry="7" fill="#CLASS_BODY2#"/>
+    <circle cx="18" cy="21" r="5" fill="#CLASS_BODY#"/>
+    <circle cx="18" cy="21" r="3.5" fill="#CLASS_FILL#"/>
+    <circle cx="18" cy="21" r="2" fill="#CLASS_IRIS#"/>
+    <circle cx="18" cy="21" r="0.8" fill="#1C1916"/>
+    <circle cx="18.4" cy="20.4" r="0.5" fill="#FFF"/>
+    <path d="M30,26 Q36,24 38,20 Q39,18 37,18 Q35,18 36,20 Q34,24 30,26Z" fill="#CLASS_BODY#"/>
+    <path d="M14,30 Q10,34 8,36 Q7,37 8,37.5 Q9,38 10,36 Q12,33 16,30" fill="#CLASS_BODY#" stroke="#CLASS_BODY2#" stroke-width="0.5"/>
+    <path d="M20,33 Q20,38 18,40 Q17,41 18.5,41 Q20,41 20.5,38 Q21,35 21,33" fill="#CLASS_BODY#"/>
+    <path d="M27,33 Q27,37 26,39 Q25.5,40 26.5,40 Q27.5,40 28,37 Q28,35 28,33" fill="#CLASS_BODY#"/>
+    <path d="M30,24 Q32,22 34,22" stroke="#CLASS_BODY2#" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+    <ellipse cx="26" cy="24" rx="3" ry="2" fill="#CLASS_BODY2#" opacity="0.4"/>
+    <ellipse cx="21" cy="28" rx="2.5" ry="1.5" fill="#CLASS_BODY2#" opacity="0.4"/>
+  </svg>`,
+  'fox': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <polygon points="12,24 16,6 22,18" fill="#CLASS_BODY#"/>
+    <polygon points="36,24 32,6 26,18" fill="#CLASS_BODY#"/>
+    <polygon points="14,22 16,10 20,18" fill="#CLASS_BODY2#"/>
+    <polygon points="34,22 32,10 28,18" fill="#CLASS_BODY2#"/>
+    <ellipse cx="24" cy="28" rx="13" ry="11" fill="#CLASS_BODY#"/>
+    <ellipse cx="24" cy="30" rx="9" ry="7" fill="#CLASS_BODY2#"/>
+    <path d="M24,24 L20,28 Q17,30 18,32 L24,30 L30,32 Q31,30 28,28 Z" fill="#CLASS_BODY2#"/>
+    <ellipse cx="19" cy="23" rx="2.5" ry="3" fill="#1C1916"/>
+    <ellipse cx="29" cy="23" rx="2.5" ry="3" fill="#1C1916"/>
+    <ellipse cx="19.5" cy="22.3" rx="0.9" ry="1" fill="#FFF"/>
+    <ellipse cx="29.5" cy="22.3" rx="0.9" ry="1" fill="#FFF"/>
+    <ellipse cx="24" cy="28" rx="2" ry="1.3" fill="#1C1916"/>
+    <line x1="24" y1="29.3" x2="24" y2="30.5" stroke="#1C1916" stroke-width="0.6"/>
+    <line x1="14" y1="27" x2="6" y2="25" stroke="#CLASS_BODY2#" stroke-width="0.8" stroke-linecap="round"/>
+    <line x1="14" y1="29" x2="7" y2="29" stroke="#CLASS_BODY2#" stroke-width="0.8" stroke-linecap="round"/>
+    <line x1="34" y1="27" x2="42" y2="25" stroke="#CLASS_BODY2#" stroke-width="0.8" stroke-linecap="round"/>
+    <line x1="34" y1="29" x2="41" y2="29" stroke="#CLASS_BODY2#" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M11,34 Q7,38 5,40 Q4,41 5.5,41 Q8,40 10,37 Q11,36 13,35" fill="#CLASS_BODY#"/>
+  </svg>`,
+  'dove': `<svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="22" fill="#CLASS_FILL#" stroke="#CLASS_STROKE#" stroke-width="1.5"/>
+    <ellipse cx="26" cy="29" rx="12" ry="9" fill="#CLASS_BODY#"/>
+    <ellipse cx="27" cy="31" rx="8" ry="6" fill="#CLASS_BODY2#"/>
+    <circle cx="17" cy="18" r="7" fill="#CLASS_BODY#"/>
+    <circle cx="17" cy="18" r="5.5" fill="#CLASS_BODY2#"/>
+    <circle cx="15" cy="17" r="1.8" fill="#1C1916"/>
+    <circle cx="15.4" cy="16.5" r="0.6" fill="#FFF"/>
+    <polygon points="9,18 13,16.5 13,19.5" fill="#CLASS_IRIS#"/>
+    <path d="M26,24 Q34,18 40,12 Q42,10 41,13 Q38,18 32,24" fill="#CLASS_BODY#" stroke="#CLASS_BODY2#" stroke-width="0.5"/>
+    <path d="M28,26 Q33,21 37,16" stroke="#CLASS_BODY2#" stroke-width="0.7" fill="none"/>
+    <path d="M25,26 Q31,20 35,15" stroke="#CLASS_BODY2#" stroke-width="0.5" fill="none" opacity="0.5"/>
+    <path d="M36,30 Q40,28 42,26 Q43,25 42,27 Q40,30 37,32" fill="#CLASS_BODY#"/>
+    <path d="M37,31 Q39,30 41,28" stroke="#CLASS_BODY2#" stroke-width="0.6" fill="none"/>
+    <path d="M22,37 L21,41 M22,41 L20,41" stroke="#CLASS_BODY2#" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+    <path d="M28,37 L27,41 M28,41 L26,41" stroke="#CLASS_BODY2#" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+  </svg>`
+};
+
+const AVATAR_COLORS = {
+  elephant: {
+    glow:   { FILL:'#2A2218', STROKE:'#D4A46C', BODY:'#C49A6C', BODY2:'#B08858' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#8A7A66', BODY2:'#7A6A56' }
+  },
+  spider: {
+    glow:   { FILL:'#1E2420', STROKE:'#7EBF8A', BODY:'#7EBF8A', BODY2:'', WEB:'#4A7A52' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#5A8A62', BODY2:'', WEB:'#2E3A30' }
+  },
+  owl: {
+    glow:   { FILL:'#22202A', STROKE:'#9A8ABF', BODY:'#8A7AAF', BODY2:'#7A6A9F', EYE_RING:'#C4B8DF', IRIS:'#EAC44C' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#5E5475', BODY2:'#4E4465', EYE_RING:'#8A7AAF', IRIS:'#BFA030' }
+  },
+  chameleon: {
+    glow:   { FILL:'#1E2622', STROKE:'#6EC4A0', BODY:'#5AB88E', BODY2:'#48A67C', IRIS:'#E0C44C' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#4A8A6A', BODY2:'#3A7A5A', IRIS:'#BFA030' }
+  },
+  fox: {
+    glow:   { FILL:'#2A2418', STROKE:'#D4944C', BODY:'#CC8844', BODY2:'#BB7733' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#8A6A44', BODY2:'#7A5A34' }
+  },
+  dove: {
+    glow:   { FILL:'#1E2228', STROKE:'#8AACCC', BODY:'#7A9CBB', BODY2:'#6A8CAA', IRIS:'#AA8030' },
+    normal: { FILL:'#1C1916', STROKE:'#3D3530', BODY:'#5A7A8A', BODY2:'#4A6A7A', IRIS:'#AA8030' }
+  }
+};
+
+function getAvatar(animal, highlight) {
+  const a = (animal||'').toLowerCase();
+  const svg = AVATARS[a] || '';
+  const colors = (AVATAR_COLORS[a] || {})[highlight ? 'glow' : 'normal'] || {};
+  return svg
+    .replace(/#CLASS_FILL#/g, colors.FILL || '#1C1916')
+    .replace(/#CLASS_STROKE#/g, colors.STROKE || '#3D3530')
+    .replace(/#CLASS_BODY#/g, colors.BODY || '#888')
+    .replace(/#CLASS_BODY2#/g, colors.BODY2 || '#666')
+    .replace(/#CLASS_WEB#/g, colors.WEB || '#333')
+    .replace(/#CLASS_EYE_RING#/g, colors.EYE_RING || '#888')
+    .replace(/#CLASS_IRIS#/g, colors.IRIS || '#AA8030');
+}
+
+// render every avatar in its "glow" (active) state
+['elephant','spider','owl','chameleon','fox','dove'].forEach(function (a) {
+  document.getElementById('slot-' + a).innerHTML = getAvatar(a, true);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Agent State Machine — memory-agent-bot</title>
+<style>
+:root{
+  --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+  --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+  --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+  --path-history:#596579; --path-terminal:#98a2b3;
+  --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+  --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+  --danger:#c63c32;
+  --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+  --action-dark:#171a1f;
+  --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+  --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+  --radius:12px; --radius-small:8px;
+  --shadow:0 22px 64px rgba(16,24,40,.18);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--canvas);}
+body{
+  width:1400px;
+  font-family:var(--body-font);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  padding:52px 56px 44px;
+}
+
+/* ---------- header ---------- */
+.title{font-size:40px;font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0 0 12px;}
+.sub{font-size:12.5px;color:var(--text-muted);letter-spacing:-.002em;line-height:1.55;}
+.sub.mono{font-family:var(--mono);font-size:11.5px;color:var(--text-muted);letter-spacing:0;margin-top:3px;}
+.rule{height:1px;background:var(--rule);margin:20px 0 0;}
+
+/* ---------- section labels ---------- */
+.lbl{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.18em;color:var(--text-muted);text-transform:uppercase;
+}
+.lbl-cn{
+  font-family:var(--body-font);font-size:11.5px;font-weight:600;
+  letter-spacing:.16em;color:var(--text-muted);
+}
+
+/* ---------- generic card ---------- */
+.card{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:var(--radius);
+  padding:16px 20px;
+}
+.ct{font-size:13.5px;font-weight:600;letter-spacing:-.01em;color:var(--text);line-height:1.35;}
+.dim{font-size:11.5px;color:var(--text-muted);line-height:1.5;letter-spacing:-.002em;}
+.m{font-family:var(--mono);font-size:.94em;letter-spacing:0;}
+.code{
+  font-family:var(--mono);font-size:11.5px;color:var(--text-secondary);
+  line-height:1.5;letter-spacing:0;
+}
+.code-ok{color:var(--success-dark);}
+.quote{
+  font-family:var(--mono);font-size:12px;color:var(--text);
+  line-height:1.5;letter-spacing:0;
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:var(--radius-small);
+  padding:8px 11px;
+}
+.quote + .quote{margin-top:6px;}
+
+/* ---------- principles ---------- */
+.principles{margin-top:22px;display:flex;gap:22px;align-items:flex-start;}
+.principles .lbl-cn{flex:0 0 88px;padding-top:2px;}
+.pcols{flex:1;display:flex;gap:40px;}
+.pcol{flex:1;display:flex;flex-direction:column;gap:9px;}
+
+/* ---------- layout ---------- */
+.cols{display:flex;gap:40px;align-items:stretch;margin-top:14px;}
+.col-left{width:500px;flex:0 0 500px;display:flex;flex-direction:column;}
+.col-right{width:748px;flex:0 0 748px;}
+.colhead{margin:26px 0 14px;}
+
+/* ---------- spine ---------- */
+.node{position:relative;flex:0 0 auto;}
+.col-left .colhead{flex:0 0 auto;}
+.node .ct{margin-bottom:7px;}
+.node .ct:last-child{margin-bottom:0;}
+.node .dim + .dim{margin-top:4px;}
+
+.conn{position:relative;flex:1 1 auto;min-height:26px;max-height:56px;}
+.conn i{
+  position:absolute;left:250px;top:0;bottom:7px;width:1.5px;
+  background:var(--current);transform:translateX(-.75px);
+}
+.conn u{
+  position:absolute;left:250px;bottom:0;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:8px solid var(--current);transform:translateX(-5px);
+}
+.conn.muted i{background:var(--path-history);}
+.conn.muted u{border-top-color:var(--path-history);}
+.conn span{
+  position:absolute;left:262px;top:5px;
+  font-size:11px;color:var(--text-muted);font-family:var(--mono);
+}
+
+/* right-pointing branch stub into the outcomes gutter */
+.stub{position:absolute;right:-40px;top:50%;width:40px;height:10px;margin-top:-5px;}
+.stub i{position:absolute;left:0;right:8px;top:4px;height:1.5px;background:var(--path-history);}
+.stub u{
+  position:absolute;right:0;top:0;
+  border-top:5px solid transparent;border-bottom:5px solid transparent;
+  border-left:8px solid var(--path-history);
+}
+.stub.on i{background:var(--current);}
+.stub.on u{border-left-color:var(--current);}
+
+/* anchor node */
+.anchor{background:var(--current-soft);border:1.5px solid var(--current);}
+.pill{
+  display:inline-block;font-family:var(--body-font);font-size:10.5px;font-weight:600;
+  letter-spacing:.03em;color:var(--current-hover);
+  background:var(--surface);border:1px solid var(--current);
+  border-radius:var(--radius-small);padding:3px 9px;margin-bottom:10px;
+}
+.anchor .quote{border-color:#bfdcff;color:var(--current-hover);}
+.anchor .dim{margin-top:7px;}
+
+/* ---------- outcome cards ---------- */
+.out{position:relative;}
+.out + .out{margin-top:14px;}
+.ohead{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
+.letter{
+  flex:0 0 24px;width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11.5px;font-weight:600;color:#fff;
+}
+.ohead .ct{flex:1;font-size:13px;}
+.badge{
+  font-family:var(--body-font);font-size:10.5px;font-weight:600;letter-spacing:.02em;
+  border-radius:var(--radius-small);padding:4px 10px;white-space:nowrap;
+}
+.out .dim{margin-top:7px;}
+.out .code{margin-bottom:2px;}
+
+.o-neutral{background:var(--surface-subtle);border-color:var(--rule);}
+.o-neutral .letter{background:var(--path-terminal);}
+.o-neutral .badge{background:var(--surface);border:1px solid var(--rule-strong);color:var(--text-secondary);}
+
+.o-wait{background:var(--waiting-soft);border-color:var(--waiting-border);}
+.o-wait .letter{background:var(--waiting);}
+.o-wait .badge{background:var(--surface);border:1px solid var(--waiting-border);color:var(--waiting-dark);}
+.o-wait .quote{border-color:var(--waiting-border);}
+
+.o-succ{background:var(--success-soft);border-color:var(--success-border);}
+.o-succ .letter{background:var(--success);}
+.o-succ .badge{background:var(--surface);border:1px solid var(--success-border);color:var(--success-dark);}
+.o-succ .quote{border-color:var(--success-border);}
+
+.o-cur{background:var(--current-soft);border-color:var(--current);}
+.o-cur .letter{background:var(--current);}
+.o-cur .badge{background:var(--surface);border:1px solid var(--current);color:var(--current-hover);}
+.o-cur .quote{border-color:#bfdcff;}
+
+.o-main{border-width:2px;}
+
+.btn{
+  display:inline-block;margin-top:9px;
+  font-family:var(--mono);font-size:11.5px;color:var(--current-hover);
+  background:var(--surface);border:1px solid var(--current);
+  border-radius:var(--radius-small);padding:6px 14px;
+}
+.btnrow{display:flex;align-items:center;gap:14px;}
+.btnrow .dim{margin-top:9px;}
+
+/* ---------- catch-all ---------- */
+.lane{height:1px;background:var(--lane-rule);margin:30px 0 0;}
+.catch{display:flex;gap:32px;margin-top:14px;}
+.catch .card{flex:1;background:var(--surface-subtle);}
+.catch .ct{font-size:13px;margin-bottom:10px;}
+
+.foot{
+  font-family:var(--mono);font-size:10.5px;color:var(--text-muted);
+  line-height:1.5;margin-top:26px;letter-spacing:0;
+}
+</style>
+</head>
+<body>
+
+<!-- header -->
+<div class="title">Agent State Machine</div>
+<div class="sub">memory-agent-bot&nbsp; ·&nbsp; Telegram 收到一个 GitHub 链接之后 —— 七个状态、六种失败、一条永远在动的消息</div>
+<div class="sub mono">bot.py&nbsp; L511 handle_repo_command&nbsp; ·&nbsp; L523 handle_repo_auto&nbsp; ·&nbsp; L535 _do_repo_analysis&nbsp; ·&nbsp; L682 handle_repo_callback</div>
+<div class="rule"></div>
+
+<!-- principles -->
+<div class="card principles">
+  <div class="lbl-cn">反馈策略</div>
+  <div class="pcols">
+    <div class="pcol">
+      <div class="dim">① 先给锚点：长任务立刻回 ⏳ 占位消息，之后所有反馈都 <span class="m">edit_text</span> 同一条 —— 不刷屏</div>
+      <div class="dim">② 失败分级：可重试 / 不可重试 / 降级成功 —— 三类的文案责任完全不同</div>
+    </div>
+    <div class="pcol">
+      <div class="dim">③ 降级不丢数据：Claude 挂了照样落盘，并回给用户可复原的命令</div>
+      <div class="dim">④ 归因不确定时并列两种可能，不替用户猜</div>
+    </div>
+  </div>
+</div>
+
+<div class="cols">
+
+  <!-- ============ SPINE ============ -->
+  <div class="col-left">
+    <div class="colhead lbl-cn">主干 · HAPPY PATH</div>
+
+    <div class="card node">
+      <div class="ct">入口</div>
+      <div class="dim"><span class="m">/repo &lt;url&gt;</span>&nbsp; 或&nbsp; 普通消息命中 <span class="m">is_repo_analysis_request()</span></div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">闸门&nbsp; GITHUB_REPO_PATTERN 匹配？</div>
+      <div class="code">re.search(r'github\.com/([\w.-]+)/([\w.-]+)')</div>
+      <div class="stub"><i></i><u></u></div>
+    </div>
+
+    <div class="conn"><i></i><u></u><span>match</span></div>
+
+    <div class="card node anchor">
+      <div class="pill">唯一的锚点消息</div>
+      <div class="quote">⏳ Analyzing owner/repo...</div>
+      <div class="dim">之后每一个结局都是 <span class="m">loading_msg.edit_text(...)</span> 改写这一条</div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">① <span class="m">fetch_repo_context()</span>&nbsp; →&nbsp; GitHub API</div>
+      <div class="dim">metadata + README + tree</div>
+      <div class="stub"><i></i><u></u></div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">② <span class="m">load_personal_context()</span></div>
+      <div class="dim"><span class="m">direction.yaml</span> + 历史高分记忆 —— 相关性判断的参照系</div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">③ <span class="m">analyze_repo()</span>&nbsp; →&nbsp; Claude</div>
+      <div class="dim">输出 <span class="m">relevance_score / connections / suggestion</span></div>
+      <div class="stub"><i></i><u></u></div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">④⑤⑥ 落盘</div>
+      <div class="dim"><span class="m">save_repo_memory</span> → my-memories&nbsp; ·&nbsp; <span class="m">append_reference_catalog</span> → digital-me</div>
+      <div class="dim"><span class="m">_repo_analysis_cache[callback_key] = analysis</span>（进程内存，会过期）</div>
+    </div>
+
+    <div class="conn"><i></i><u></u></div>
+
+    <div class="card node">
+      <div class="ct">⑦ 按 relevance_score 分叉</div>
+      <div class="code">if relevance_score &lt;= 2 → 短卡&nbsp;&nbsp;&nbsp; else → 完整卡</div>
+      <div class="stub on"><i></i><u></u></div>
+    </div>
+  </div>
+
+  <!-- ============ OUTCOMES ============ -->
+  <div class="col-right">
+    <div class="colhead lbl-cn">结局 · 每个分支给用户什么话</div>
+
+    <!-- O1 -->
+    <div class="card out o-neutral">
+      <div class="ohead">
+        <div class="letter">A</div>
+        <div class="ct">URL 格式不对 · 正则不匹配</div>
+        <div class="badge">不可重试 · 教格式</div>
+      </div>
+      <div class="quote">“That doesn't look like a GitHub repo URL. Send a link like github.com/owner/repo”</div>
+      <div class="dim">直接 <span class="m">reply_text</span> —— 这一步还没建占位消息，不留一条空转的 ⏳ 挂在会话里</div>
+    </div>
+
+    <!-- O2 -->
+    <div class="card out o-wait">
+      <div class="ohead">
+        <div class="letter">B</div>
+        <div class="ct">GitHub 403 → error: "rate_limit"</div>
+        <div class="badge">可重试 · 给时长</div>
+      </div>
+      <div class="quote">“GitHub API rate limited. Try again in a minute.”</div>
+      <div class="dim">明确「多久之后」再试 —— 不说“稍后重试”这种没有信息量的话</div>
+    </div>
+
+    <!-- O3 -->
+    <div class="card out o-wait">
+      <div class="ohead">
+        <div class="letter">C</div>
+        <div class="ct">404 / 非 200 → "not_found" | "api_error"，或 fetch 返回 None</div>
+        <div class="badge">归因不确定</div>
+      </div>
+      <div class="quote">“Couldn't access that repo. It might be private or the URL might be wrong.”</div>
+      <div class="dim">私有仓和拼错 URL 在 API 层看不出区别 —— 就并列两种可能，让用户自己判断</div>
+      <div class="dim">fetch 返回 None 时复用 A 的那句文案（同一种「你给的链接有问题」）</div>
+    </div>
+
+    <!-- O4 -->
+    <div class="card out o-succ">
+      <div class="ohead">
+        <div class="letter">D</div>
+        <div class="ct">Claude 分析抛异常 → 降级保存，不丢数据</div>
+        <div class="badge">降级成功 · 部分完成</div>
+      </div>
+      <div class="code code-ok">basic_content: relevance_score: 0&nbsp; ·&nbsp; "Analysis failed — raw metadata only."</div>
+      <div class="dim">先 <span class="m">clone_commit_and_push(basic_filename, ...)</span> 把 URL + 元数据存进 my-memories</div>
+      <div class="quote" style="margin-top:9px;">“Saved the link but analysis failed. You can try again with /repo &lt;url&gt;”</div>
+      <div class="dim">告诉用户「存住了什么」＋「怎么重来」，而不只是说失败了</div>
+    </div>
+
+    <!-- O5 -->
+    <div class="card out o-cur">
+      <div class="ohead">
+        <div class="letter">E</div>
+        <div class="ct">relevance_score ≤ 2 → 低相关短卡</div>
+        <div class="badge">成功但主动省略内容</div>
+      </div>
+      <div class="quote">📦 repo_name&nbsp; ·&nbsp; one_liner</div>
+      <div class="quote">💡 Low relevance to your current projects.&nbsp;&nbsp; ✅ Saved to memories + reference catalog</div>
+      <div class="dim">砍掉 connections / suggestion —— 低相关的东西不值得占用户的注意力，但仍然存档</div>
+    </div>
+
+    <!-- O6 -->
+    <div class="card out o-succ o-main">
+      <div class="ohead">
+        <div class="letter">F</div>
+        <div class="ct">relevance_score &gt; 2 → 完整卡</div>
+        <div class="badge">成功 · 主路径</div>
+      </div>
+      <div class="quote">📦 repo_name&nbsp; ·&nbsp; one_liner</div>
+      <div class="quote">💡 relevance&nbsp;&nbsp;&nbsp; 🔗 Connects to: connections[0].to&nbsp;&nbsp;&nbsp; 💬 suggestion</div>
+      <div class="quote">✅ Saved to memories + reference catalog</div>
+      <div class="btnrow">
+        <div class="btn">[ See full analysis ]</div>
+        <div class="dim">渐进式披露：卡片只放摘要，细节收在按钮后面</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CATCH-ALL ============ -->
+<div class="lane"></div>
+<div class="colhead lbl-cn">兜底 · 两条不属于主干的失败</div>
+
+<div class="catch">
+  <div class="card">
+    <div class="ct">最外层 except —— 谁都没接住的异常</div>
+    <div class="quote">“Something went wrong analyzing that repo. Try again.”</div>
+    <div class="dim">仍然 edit 同一条 ⏳ 消息 —— 占位符绝不会永远卡在「Analyzing…」</div>
+  </div>
+  <div class="card">
+    <div class="ct">回调缓存过期 —— 进程重启后 cache 空了</div>
+    <div class="quote">“Analysis expired. Send the URL again.”</div>
+    <div class="dim">用 <span class="m">answer(show_alert=True)</span> 弹窗告知，而不是让按钮静默失灵</div>
+  </div>
+</div>
+
+<div class="foot">图基于源码实测：memory-agent-bot @ bot.py L535–L679（_do_repo_analysis 全流程）· L682+（handle_repo_callback）· L159–L165（fetch_repo_context 的三个错误码）</div>
+
+</body>
+</html>

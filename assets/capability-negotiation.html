@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Capability Negotiation — workbench</title>
+<style>
+  :root{
+    --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+    --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+    --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+    --path-history:#596579; --path-terminal:#98a2b3;
+    --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+    --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+    --danger:#c63c32;
+    --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+    --action-dark:#171a1f;
+    --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+    --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+    --radius:12px; --radius-small:8px;
+    --shadow:0 22px 64px rgba(16,24,40,.18);
+  }
+  html,body{margin:0;padding:0;background:var(--canvas);}
+  svg{display:block;width:1400px;height:1070px;font-family:var(--body-font);}
+
+  .t-title{font-size:34px;font-weight:700;letter-spacing:-0.02em;fill:var(--text);}
+  .t-sub{font-size:13px;fill:var(--text-secondary);letter-spacing:-0.01em;}
+  .t-path{font-family:var(--mono);font-size:11.5px;fill:var(--text-muted);}
+  .sec{font-family:var(--mono);font-size:10.5px;fill:var(--text-muted);letter-spacing:.18em;font-weight:600;}
+  .nh{font-family:var(--mono);font-size:18px;font-weight:600;letter-spacing:-0.01em;fill:var(--text);}
+  .nhs{font-size:16px;font-weight:600;letter-spacing:-0.01em;fill:var(--text);}
+  .lbl{font-size:12.5px;fill:var(--text-secondary);}
+  .dim{font-family:var(--mono);font-size:11.5px;fill:var(--text-muted);}
+  .code{font-family:var(--mono);font-size:12.5px;fill:var(--current-hover);}
+  .codeg{font-family:var(--mono);font-size:12.5px;fill:var(--success-dark);}
+  .coded{font-family:var(--mono);font-size:12.5px;fill:var(--action-dark);}
+  .tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.03em;}
+  .num{font-size:13px;font-weight:700;fill:#ffffff;}
+  .chip{font-family:var(--mono);font-size:12.5px;font-weight:600;}
+  .legend{font-size:11.5px;fill:var(--text-secondary);}
+  .legend-k{font-family:var(--mono);font-size:11.5px;font-weight:600;}
+  .off{fill:var(--text-muted);}
+
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1;}
+  .card-blue{fill:var(--current-soft);stroke:var(--current);stroke-width:1.4;}
+  .card-green{fill:var(--success-soft);stroke:var(--success);stroke-width:1.4;}
+  .card-dark{fill:var(--surface);stroke:var(--action-dark);stroke-width:1.5;}
+  .hair{stroke:var(--rule);stroke-width:1;}
+  .lane{stroke:var(--lane-rule);stroke-width:1;}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1400 1070" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ar-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#171a1f"/></marker>
+  <marker id="ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0095ff"/></marker>
+  <marker id="ar-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#168a45"/></marker>
+  <clipPath id="cl-i1"><rect x="56" y="704" width="810" height="92" rx="12"/></clipPath>
+  <clipPath id="cl-i2"><rect x="56" y="808" width="810" height="92" rx="12"/></clipPath>
+  <clipPath id="cl-i3"><rect x="56" y="912" width="810" height="92" rx="12"/></clipPath>
+</defs>
+
+<rect width="1400" height="1070" fill="var(--canvas)"/>
+
+<!-- header -->
+<text class="t-title" x="56" y="68">Capability Negotiation</text>
+<text class="t-sub" x="56" y="96">workbench  ·  面板可见性 = 用户意图 ∧ 后端能力</text>
+<text class="t-path" x="56" y="120">lib/store/layout.ts  ·  views/registry.ts  ·  components/shell/Shell.tsx</text>
+
+<!-- legend -->
+<rect class="card" x="936" y="34" width="408" height="106" rx="12"/>
+<text class="sec" x="956" y="57">图例 · COLOR ROLES</text>
+<rect x="956" y="70" width="11" height="11" rx="3" fill="var(--current)"/>
+<text class="legend-k" x="976" y="80" fill="var(--current-hover)">desired</text>
+<text class="legend" x="1066" y="80">用户意图（持久化）</text>
+<rect x="956" y="93" width="11" height="11" rx="3" fill="var(--success)"/>
+<text class="legend-k" x="976" y="103" fill="var(--success-dark)">allowed</text>
+<text class="legend" x="1066" y="103">后端能力（运行时）</text>
+<rect x="956" y="116" width="11" height="11" rx="3" fill="var(--action-dark)"/>
+<text class="legend-k" x="976" y="126" fill="var(--action-dark)">visibility</text>
+<text class="legend" x="1066" y="126">派生结果（只读）</text>
+
+<line class="hair" x1="56" y1="160" x2="1344" y2="160"/>
+<line class="lane" x1="886" y1="182" x2="886" y2="1010"/>
+
+<!-- ==================== LEFT ==================== -->
+<text class="sec" x="56" y="200">① 两层输入</text>
+
+<!-- desired -->
+<rect class="card-blue" x="56" y="218" width="385" height="158" rx="12"/>
+<rect x="74" y="238" width="58" height="20" rx="8" fill="var(--surface)" stroke="var(--current)" stroke-width="1"/>
+<text class="tag" x="103" y="252" text-anchor="middle" fill="var(--current-hover)">持久化</text>
+<text class="nh" x="74" y="288" fill="var(--current-hover)">desired</text>
+<text class="lbl" x="74" y="314">用户意图 — togglePanel(id) 改的就是它</text>
+<text class="dim" x="74" y="336">localStorage &#183; key: workbench.layout</text>
+<text class="code" x="74" y="358">{ chat: T, artifacts: T, mission: T }</text>
+
+<!-- allowed -->
+<rect class="card-green" x="481" y="218" width="385" height="158" rx="12"/>
+<rect x="499" y="238" width="112" height="20" rx="8" fill="var(--surface)" stroke="var(--success)" stroke-width="1"/>
+<text class="tag" x="555" y="252" text-anchor="middle" fill="var(--success-dark)">运行时 &#183; 不持久化</text>
+<text class="nh" x="499" y="288" fill="var(--success-dark)">allowed</text>
+<text class="lbl" x="499" y="314">后端能力掩码 — reconcileCapabilities(caps)</text>
+<text class="dim" x="499" y="336">Shell.tsx: backend.capabilities() 变化时重算</text>
+<text class="codeg" x="499" y="358">{ chat: T, artifacts: ?, mission: ? }</text>
+
+<!-- converge -->
+<path d="M248,376 L248,404 L444,404 L444,428" fill="none" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-b)"/>
+<path d="M673,376 L673,404 L478,404 L478,428" fill="none" stroke="var(--success)" stroke-width="1.4" marker-end="url(#ar-g)"/>
+<circle cx="461" cy="462" r="28" fill="var(--surface)" stroke="var(--action-dark)" stroke-width="1.5"/>
+<text x="461" y="472" font-size="26" font-weight="600" fill="var(--action-dark)" text-anchor="middle">∧</text>
+<line x1="461" y1="492" x2="461" y2="516" stroke="var(--action-dark)" stroke-width="1.5" marker-end="url(#ar-d)"/>
+
+<!-- visibility -->
+<rect class="card-dark" x="171" y="522" width="580" height="118" rx="12"/>
+<text class="nh" x="195" y="562" fill="var(--action-dark)">visibility = <tspan fill="var(--current-hover)">desired</tspan> ∧ <tspan fill="var(--success-dark)">allowed</tspan></text>
+<text class="lbl" x="195" y="590">派生值 &#183; 不持久化 &#183; store 内 derive() 计算，UI 只读它</text>
+<text class="dim" x="195" y="614">selectVisiblePanels() → 按 PANEL_ORDER 过滤 → Workspace 渲染</text>
+
+<!-- invariants -->
+<text class="sec" x="56" y="684">② 三条不变量（都在 store 里强制，不靠组件自觉）</text>
+
+<rect class="card" x="56" y="704" width="810" height="92" rx="12"/>
+<rect x="56" y="704" width="6" height="92" fill="var(--current)" clip-path="url(#cl-i1)"/>
+<circle cx="94" cy="750" r="14" fill="var(--current)"/><text class="num" x="94" y="755" text-anchor="middle">1</text>
+<text class="nhs" x="124" y="736">至少一个面板常开</text>
+<text class="code" x="124" y="760">derive(): if (!PANEL_ORDER.some(p =&gt; vis[p])) vis.chat = true</text>
+<text class="dim" x="124" y="782">togglePanel 关掉最后一个可见面板时直接 return s — 工作区永远不会变成空白</text>
+
+<rect class="card" x="56" y="808" width="810" height="92" rx="12"/>
+<rect x="56" y="808" width="6" height="92" fill="var(--current)" clip-path="url(#cl-i2)"/>
+<circle cx="94" cy="854" r="14" fill="var(--current)"/><text class="num" x="94" y="859" text-anchor="middle">2</text>
+<text class="nhs" x="124" y="840">不支持的面板不许开 — 保持 desired 干净</text>
+<text class="code" x="124" y="864">togglePanel(): if (!s.desired[id] &amp;&amp; !s.allowed[id]) return s</text>
+<text class="dim" x="124" y="886">不把「点不动的那次点击」写进意图，免得换后端后突然弹出用户从没开过的面板</text>
+
+<rect class="card" x="56" y="912" width="810" height="92" rx="12"/>
+<rect x="56" y="912" width="6" height="92" fill="var(--current)" clip-path="url(#cl-i3)"/>
+<circle cx="94" cy="958" r="14" fill="var(--success)"/><text class="num" x="94" y="963" text-anchor="middle">3</text>
+<text class="nhs" x="124" y="944">换回有能力的后端，自动恢复</text>
+<text class="codeg" x="124" y="968">reconcileCapabilities(): 只重算 allowed，desired 原样保留</text>
+<text class="dim" x="124" y="990">能力回来 → visibility 自己重新点亮；用户不必记得「刚才关掉的那两个」再点一遍</text>
+
+<!-- ==================== RIGHT ==================== -->
+<text class="sec" x="912" y="200">③ 能力门槛 · views/registry.ts</text>
+
+<rect class="card" x="912" y="218" width="432" height="146" rx="12"/>
+<text class="coded" x="934" y="250">chat</text>
+<text class="dim" x="1056" y="250">无门槛 — isPanelAllowed 直接 return true</text>
+<line class="hair" x1="934" y1="268" x2="1322" y2="268"/>
+<text class="coded" x="934" y="296">artifacts</text>
+<text class="dim" x="1056" y="296">requiresAnyOf: fileWrite | artifacts</text>
+<line class="hair" x1="934" y1="314" x2="1322" y2="314"/>
+<text class="coded" x="934" y="342">mission</text>
+<text class="dim" x="1056" y="342">requiredCapabilities: subAgents</text>
+
+<text class="sec" x="912" y="410">④ 同一个 desired，两种后端</text>
+<text class="dim" x="912" y="434">前提：用户三个面板都开过 → desired = { chat ✓, artifacts ✓, mission ✓ }</text>
+
+<!-- mock card -->
+<rect class="card" x="912" y="452" width="432" height="222" rx="12"/>
+<circle cx="938" cy="484" r="5" fill="var(--success)"/>
+<text class="nhs" x="956" y="489" font-size="15">Mock backend</text>
+<text class="dim" x="934" y="516">subAgents ✓   artifacts ✓   fileWrite ✓</text>
+<text class="codeg" x="934" y="539" font-size="11.5">allowed = { chat ✓, artifacts ✓, mission ✓ }</text>
+<rect x="934" y="558" width="126" height="42" rx="8" fill="var(--current-soft)" stroke="var(--current)" stroke-width="1.3"/>
+<text class="chip" x="997" y="584" text-anchor="middle" fill="var(--current-hover)">Chat</text>
+<rect x="1071" y="558" width="126" height="42" rx="8" fill="var(--current-soft)" stroke="var(--current)" stroke-width="1.3"/>
+<text class="chip" x="1134" y="584" text-anchor="middle" fill="var(--current-hover)">Artifacts</text>
+<rect x="1208" y="558" width="126" height="42" rx="8" fill="var(--current-soft)" stroke="var(--current)" stroke-width="1.3"/>
+<text class="chip" x="1271" y="584" text-anchor="middle" fill="var(--current-hover)">Mission</text>
+<text class="dim" x="934" y="630">SMART_DEFAULTS['chat+artifacts+mission']</text>
+<text class="coded" x="934" y="652">= [32, 28, 40]  ← 三面板全开</text>
+
+<!-- direct-llm card -->
+<rect class="card" x="912" y="690" width="432" height="222" rx="12"/>
+<circle cx="938" cy="722" r="5" fill="var(--path-terminal)"/>
+<text class="nhs" x="956" y="727" font-size="15">DirectLLM（纯 LLM 后端）</text>
+<text class="dim" x="934" y="754">subAgents ✗   artifacts ✗   fileWrite ✗</text>
+<text class="codeg" x="934" y="777" font-size="11.5">allowed = { chat ✓, artifacts ✗, mission ✗ }</text>
+<rect x="934" y="796" width="126" height="42" rx="8" fill="var(--current-soft)" stroke="var(--current)" stroke-width="1.3"/>
+<text class="chip" x="997" y="822" text-anchor="middle" fill="var(--current-hover)">Chat</text>
+<rect x="1071" y="796" width="126" height="42" rx="8" fill="var(--surface-subtle)" stroke="var(--rule)" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text class="chip off" x="1134" y="822" text-anchor="middle">Artifacts</text>
+<rect x="1208" y="796" width="126" height="42" rx="8" fill="var(--surface-subtle)" stroke="var(--rule)" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text class="chip off" x="1271" y="822" text-anchor="middle">Mission</text>
+<text class="dim" x="934" y="868">SMART_DEFAULTS['chat']</text>
+<text class="coded" x="934" y="890">= [100]  ← 只剩 Chat 撑满</text>
+
+<text class="lbl" x="912" y="946">两张卡的 desired 完全相同 —— 变的只有 allowed。</text>
+<text class="lbl" x="912" y="970">切回 Mock，Artifacts / Mission 自己回来（不变量 3）。</text>
+
+<line class="lane" x1="56" y1="1024" x2="1344" y2="1024"/>
+<text class="dim" x="56" y="1048" font-size="11">图基于源码实测：workbench @ lib/store/layout.ts (derive / togglePanel / reconcileCapabilities) · views/registry.ts · lib/adapters/{mock,direct-llm,codewhale}.ts</text>
+</svg>
+</body>
+</html>

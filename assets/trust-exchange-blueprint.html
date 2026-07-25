@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Trust Exchange Blueprint — blacksburg-secondhand</title>
+<style>
+  :root{
+    --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+    --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+    --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+    --path-history:#596579; --path-terminal:#98a2b3;
+    --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+    --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+    --danger:#c63c32;
+    --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+    --action-dark:#171a1f;
+    --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+    --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+    --radius:12px; --radius-small:8px;
+    --shadow:0 22px 64px rgba(16,24,40,.18);
+  }
+  html,body{margin:0;padding:0;background:var(--canvas);}
+  svg{display:block;width:1400px;height:1420px;}
+
+  .h1{font-family:var(--body-font);font-size:42px;font-weight:700;letter-spacing:-0.022em;fill:var(--text);}
+  .sub{font-family:var(--body-font);font-size:13px;font-weight:500;letter-spacing:-0.006em;fill:var(--text-secondary);}
+  .refs{font-family:var(--mono);font-size:11px;fill:var(--text-muted);letter-spacing:0;}
+  .sec{font-family:var(--body-font);font-size:17px;font-weight:600;letter-spacing:-0.014em;fill:var(--text);}
+  .lane{font-family:var(--body-font);font-size:14px;font-weight:600;letter-spacing:-0.008em;}
+  .ct{font-family:var(--body-font);font-size:14px;font-weight:600;letter-spacing:-0.01em;fill:var(--text);}
+  .ct-mute{font-family:var(--body-font);font-size:13.5px;font-weight:600;letter-spacing:-0.01em;fill:var(--text-muted);}
+  .cb{font-family:var(--body-font);font-size:12px;font-weight:500;fill:var(--text-secondary);}
+  .cbs{font-family:var(--body-font);font-size:12px;font-weight:500;fill:var(--text);}
+  .dim{font-family:var(--body-font);font-size:11.5px;font-weight:400;fill:var(--text-muted);}
+  .term{font-family:var(--body-font);font-size:11.5px;font-weight:400;fill:var(--path-terminal);}
+  .code{font-family:var(--mono);font-size:11.5px;font-weight:500;fill:var(--current-hover);}
+  .codeg{font-family:var(--mono);font-size:11.5px;font-weight:500;fill:var(--success-dark);}
+  .codem{font-family:var(--mono);font-size:11px;fill:var(--text-muted);}
+  .codet{font-family:var(--mono);font-size:11.5px;font-weight:500;fill:var(--text);}
+  .badge{font-family:var(--body-font);font-size:12px;font-weight:700;fill:#ffffff;}
+  .st-w{font-family:var(--mono);font-size:14px;font-weight:600;fill:var(--waiting-dark);}
+  .st-s{font-family:var(--mono);font-size:14px;font-weight:600;fill:var(--success-dark);}
+  .st-d{font-family:var(--mono);font-size:14px;font-weight:600;fill:var(--danger);}
+  .st-t{font-family:var(--mono);font-size:14px;font-weight:600;fill:var(--path-terminal);}
+
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1;}
+  .card-step{fill:var(--surface);stroke:var(--rule-strong);stroke-width:1;}
+  .card-sub{fill:var(--surface-subtle);stroke:var(--rule);stroke-width:1;}
+  .hair{stroke:var(--rule);stroke-width:1;}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1400 1420" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ar-cur" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0095ff"/></marker>
+  <marker id="ar-suc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#168a45"/></marker>
+  <marker id="ar-his" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#596579"/></marker>
+  <marker id="ar-ter" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#98a2b3"/></marker>
+  <clipPath id="lanes"><rect x="56" y="252" width="1288" height="796" rx="12"/></clipPath>
+</defs>
+<rect width="1400" height="1420" fill="var(--canvas)"/>
+
+<!-- header -->
+<text class="h1" x="56" y="76">Trust Exchange Blueprint</text>
+<text class="sub" x="56" y="106">blacksburg-secondhand  ·  非对称联系方式交换 — 响应者先单向送出，发布者决定是否回赠</text>
+<text class="refs" x="56" y="128">SPRINT_7_DONE.md §4 六步验收用例  ·  ROOMMATES_PLAN.md §五 Edge Case 一次锁定  ·  api/events/[id]/{contact-send, reveal-to-responder}  ·  prisma/schema.prisma</text>
+<line class="hair" x1="56" y1="150" x2="1344" y2="150"/>
+
+<!-- principle strip -->
+<rect class="card-sub" x="56" y="166" width="1288" height="66" rx="12"/>
+<text class="cbs" x="78" y="196">为什么非对称 — 找室友 ≠ 买二手：关系长度 6~12 个月，信息不对称代价极高。平台不做 match、不代传消息，只保证「双向同意之后才交换」。</text>
+<text class="dim" x="78" y="218">设计决策（已锁定）：Match 算法 = 不做（filter 优先）  ·  通知机制 = 不发邮件，红点 badge + 预期管理  ·  性别筛选 = 发帖人自表达 + 用户自过滤（FHA 合规）</text>
+
+<!-- ===== swimlane container ===== -->
+<g clip-path="url(#lanes)">
+  <rect x="56" y="252" width="412" height="796" fill="var(--surface)"/>
+  <rect x="468" y="252" width="456" height="796" fill="var(--surface-subtle)"/>
+  <rect x="924" y="252" width="420" height="796" fill="var(--surface)"/>
+  <rect x="56" y="252" width="1288" height="44" fill="var(--surface-subtle)"/>
+  <line x1="468" y1="252" x2="468" y2="1048" stroke="var(--lane-rule)" stroke-width="1"/>
+  <line x1="924" y1="252" x2="924" y2="1048" stroke="var(--lane-rule)" stroke-width="1"/>
+</g>
+<line x1="56" y1="296" x2="1344" y2="296" stroke="var(--rule)" stroke-width="1"/>
+<rect x="56" y="252" width="1288" height="796" rx="12" fill="none" stroke="var(--rule)" stroke-width="1"/>
+
+<!-- lane headers -->
+<text class="lane" x="262" y="280" text-anchor="middle" fill="var(--current-hover)">响应者  B</text>
+<text class="lane" x="696" y="280" text-anchor="middle" fill="var(--text)">系统  ·  API + DB</text>
+<text class="lane" x="1134" y="280" text-anchor="middle" fill="var(--action-dark)">发布者  A</text>
+
+<!-- ============ STEP 1 ============ -->
+<rect class="card-step" x="944" y="316" width="380" height="88" rx="12"/>
+<circle cx="972" cy="344" r="13" fill="var(--action-dark)"/><text class="badge" x="972" y="349" text-anchor="middle">1</text>
+<text class="ct" x="994" y="349">发活动</text>
+<text class="cb" x="966" y="375">「今晚 8 点麻将」· 想找 4 人</text>
+<text class="dim" x="966" y="394">类目 生活/娱乐  ·  /localnews 右下 ➕</text>
+
+<rect class="card" x="488" y="316" width="416" height="88" rx="12"/>
+<text class="code" x="510" y="345">POST /api/events</text>
+<text class="cb" x="510" y="368">Event { maxAttendees: 4 }</text>
+<text class="codeg" x="510" y="391">状态  Event.status = open</text>
+<path d="M942,360 L908,360" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+<text class="term" x="262" y="364" text-anchor="middle">（响应者尚未出现）</text>
+
+<!-- ============ STEP 2 ============ -->
+<rect class="card-step" x="76" y="428" width="372" height="116" rx="12"/>
+<circle cx="104" cy="456" r="13" fill="var(--current)"/><text class="badge" x="104" y="461" text-anchor="middle">2</text>
+<text class="ct" x="126" y="461">看到 → 展开 → 发送联系方式</text>
+<text class="cb" x="98" y="487">/localnews 顶部 LiveSection（24h 内）</text>
+<text class="cb" x="98" y="507">填：昵称 + 微信号 + 一行备注</text>
+<text class="dim" x="98" y="528">「我有车」「我能搬重物」— note 字段</text>
+
+<rect class="card" x="488" y="428" width="416" height="116" rx="12"/>
+<text class="code" x="510" y="456">POST /events/[id]/contact-send</text>
+<text class="cb" x="510" y="478">EventContactSend { from → to, status: active }</text>
+<rect class="card-sub" x="510" y="490" width="372" height="42" rx="8" stroke="var(--rule-strong)" stroke-dasharray="3 2.5"/>
+<text class="codet" x="524" y="507">🔒 一次锁定</text>
+<text class="codem" x="524" y="525">@@unique([eventId, fromVisitorId, toVisitorId])</text>
+<path d="M452,486 L484,486" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<rect class="card" x="944" y="428" width="380" height="116" rx="12"/>
+<text class="ct" x="966" y="456" font-size="13.5">红点 badge，不发邮件</text>
+<text class="cb" x="966" y="480">「我的」→ 黑堡 tab 出现 ●</text>
+<text class="codem" x="966" y="502">hb_last_my_visit 时间戳对比 createdAt</text>
+<text class="dim" x="966" y="524">卡片文案：想找 4 人 · 已 1 响应</text>
+<path d="M908,486 L940,486" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<!-- ============ STEP 3 ============ -->
+<rect class="card-step" x="944" y="568" width="380" height="124" rx="12"/>
+<circle cx="972" cy="596" r="13" fill="var(--action-dark)"/><text class="badge" x="972" y="601" text-anchor="middle">3</text>
+<text class="ct" x="994" y="601">公开我联系方式给 ta</text>
+<text class="cb" x="966" y="627">展开 event → 逐条决定回赠给谁</text>
+<text class="dim" x="966" y="649">A 看得到 B 的联系方式，B 看不到 A 的</text>
+<text class="dim" x="966" y="670">—— 直到 A 点这一下。这就是非对称点</text>
+
+<rect class="card" x="488" y="568" width="416" height="124" rx="12"/>
+<text class="code" x="510" y="596">POST /events/[id]/reveal-to-responder</text>
+<text class="cb" x="510" y="618">反向 EventContactSend { status: active }</text>
+<text class="dim" x="510" y="641">守卫  仅活动发起人可调用 → 403</text>
+<text class="dim" x="510" y="660">不能回赠给自己 / 记录与 event 不匹配 → 400</text>
+<text class="dim" x="510" y="679">对方已撤回（status: canceled）→ 400 不可回赠</text>
+<path d="M942,612 L908,612" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<!-- ============ STEP 4 ============ -->
+<rect class="card-step" x="76" y="708" width="372" height="96" rx="12"/>
+<circle cx="104" cy="736" r="13" fill="var(--current)"/><text class="badge" x="104" y="741" text-anchor="middle">4</text>
+<text class="ct" x="126" y="741">在「我的」里看到对方联系方式</text>
+<text class="cb" x="98" y="767">交换完成 —— 平台从此不参与</text>
+<text class="dim" x="98" y="788">后续沟通全在微信 / 电话，不做站内信</text>
+
+<rect class="card" x="488" y="708" width="416" height="96" rx="12"/>
+<text class="code" x="510" y="736">readAt = now()</text>
+<text class="cb" x="510" y="759">接收方第一次在「我的」展开时记录</text>
+<text class="dim" x="510" y="781">用于「对方已读」与 pending 存活时长监控</text>
+<path d="M484,756 L452,756" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<!-- ============ STEP 5 ============ -->
+<rect class="card-step" x="944" y="824" width="380" height="90" rx="12"/>
+<circle cx="972" cy="852" r="13" fill="var(--action-dark)"/><text class="badge" x="972" y="857" text-anchor="middle">5</text>
+<text class="ct" x="994" y="857">标记已结清</text>
+<text class="cb" x="966" y="883">人凑齐了，主动关掉入口</text>
+<text class="dim" x="966" y="902">不靠系统猜「够了没」，由发布者判定</text>
+
+<rect class="card" x="488" y="824" width="416" height="90" rx="12"/>
+<text class="codeg" x="510" y="852">Event.status = fulfilled</text>
+<text class="cb" x="510" y="875">卡片切到已结清态</text>
+<text class="dim" x="510" y="897">响应入口关闭，但已交换的联系方式保留</text>
+<path d="M942,868 L908,868" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<rect class="card" x="76" y="824" width="372" height="90" rx="12"/>
+<text class="ct-mute" x="98" y="852">响应按钮置灰</text>
+<text class="dim" x="98" y="875">再进来的人看得到活动，但送不了联系方式</text>
+<text class="dim" x="98" y="897">置灰而非隐藏 —— 让人知道「来晚了」而不是「没有」</text>
+<path d="M484,868 L452,868" stroke="var(--path-history)" stroke-width="1.3" marker-end="url(#ar-his)"/>
+
+<!-- ============ STEP 6 ============ -->
+<rect class="card-step" x="944" y="934" width="380" height="96" rx="12"/>
+<circle cx="972" cy="962" r="13" fill="var(--action-dark)"/><text class="badge" x="972" y="967" text-anchor="middle">6</text>
+<text class="ct" x="994" y="967">复制到微信群</text>
+<text class="dim" x="966" y="993">🍽️ 今晚 8 点麻将 · 想凑 4 人 · 已 1 响应</text>
+<text class="dim" x="966" y="1013">https://…  ← 一段可直接粘贴的完整文本</text>
+
+<rect class="card" x="488" y="934" width="416" height="96" rx="12"/>
+<text class="code" x="510" y="962">GET /api/events/[id]/og-data</text>
+<text class="cb" x="510" y="985">动态 OG 卡片 — 微信里带图预览</text>
+<text class="dim" x="510" y="1007">Cache-Control max-age=60（微信侧缓存更久）</text>
+<path d="M942,976 L908,976" stroke="var(--current)" stroke-width="1.4" marker-end="url(#ar-cur)"/>
+
+<rect class="card" x="76" y="934" width="372" height="96" rx="12"/>
+<text class="ct-mute" x="98" y="962">新人从微信点进来</text>
+<text class="dim" x="98" y="985">分发渠道是微信群，不是站内推荐</text>
+<text class="code" x="98" y="1009">↑ 回到步骤 2，闭环</text>
+<path d="M484,976 L452,976" stroke="var(--path-history)" stroke-width="1.3" marker-end="url(#ar-his)"/>
+
+<!-- ============ STATE MACHINE ============ -->
+<line class="hair" x1="56" y1="1080" x2="1344" y2="1080"/>
+<text class="sec" x="56" y="1114">室友 &amp; 转租 — 同一套非对称交换的强类型版  ·  Application 状态机</text>
+
+<!-- approved -->
+<rect x="412" y="1150" width="316" height="62" rx="12" fill="var(--success-soft)" stroke="var(--success-border)" stroke-width="1"/>
+<text class="st-s" x="434" y="1178">approved  ·  终态</text>
+<text class="dim" x="434" y="1199">A 同意 → 交换联系方式</text>
+
+<!-- pending -->
+<rect x="76" y="1212" width="268" height="62" rx="12" fill="var(--waiting-soft)" stroke="var(--waiting-border)" stroke-width="1"/>
+<text class="st-w" x="98" y="1240">pending</text>
+<text class="dim" x="98" y="1261">B 提交申请，默认态</text>
+
+<!-- rejected -->
+<rect x="412" y="1226" width="316" height="62" rx="12" fill="var(--surface-subtle)" stroke="var(--rule-strong)" stroke-width="1"/>
+<text class="st-d" x="434" y="1254">rejected  ·  终态</text>
+<text class="dim" x="434" y="1275">A 婉拒 + rejectReason（≤500 字，B 看得到）</text>
+
+<!-- cancelled -->
+<rect x="412" y="1302" width="316" height="62" rx="12" fill="var(--surface-subtle)" stroke="var(--rule)" stroke-width="1"/>
+<text class="st-t" x="434" y="1330">cancelled</text>
+<text class="dim" x="434" y="1351">B 主动撤回，或 A 下架 listing 时自动转入</text>
+
+<path d="M346,1231 L380,1231 L380,1181 L408,1181" fill="none" stroke="var(--success)" stroke-width="1.3" marker-end="url(#ar-suc)"/>
+<path d="M346,1243 L392,1243 L392,1257 L408,1257" fill="none" stroke="var(--path-history)" stroke-width="1.3" marker-end="url(#ar-his)"/>
+<path d="M346,1255 L366,1255 L366,1333 L408,1333" fill="none" stroke="var(--path-terminal)" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#ar-ter)"/>
+
+<!-- edge case card -->
+<rect class="card-sub" x="760" y="1142" width="584" height="226" rx="12"/>
+<text class="ct" x="784" y="1172" font-size="13.5">「一次锁定」的边界规则 —— 提前决定，不留 case-by-case</text>
+<text class="codem" x="784" y="1200">·  B 撤回 approved / rejected —— 不允许（终态不可逆）</text>
+<text class="codem" x="784" y="1224">·  A 婉拒后 B 重新申请 —— 不允许；A 可在 admin 里「重新邀请」</text>
+<text class="codem" x="784" y="1248">·  同一 listing 第二次申请 —— 按钮置灰 + 跳 /my 看状态</text>
+<text class="codem" x="784" y="1272">·  B 不符合 A 的性别要求 —— 置灰 + tooltip 软劝退，不强制拦截</text>
+<text class="codem" x="784" y="1296">·  Application spam —— 同 IP 1 小时最多 5 条</text>
+<text class="codem" x="784" y="1320">·  不显示申请人的其他申请历史 —— 隐私 &gt; 反 spam</text>
+<text class="codem" x="784" y="1348" fill="var(--path-terminal)">举报：A↔B 互相可举报 + 任何人可举报 listing；3 个不同 IP 触发 hidden</text>
+
+<text class="codem" x="56" y="1396" fill="var(--path-terminal)">图基于仓库实测：docs/archive/SPRINT_7_DONE.md §4 · ROOMMATES_PLAN.md §二/§三/§五 · api/events/[id]/{contact-send, reveal-to-responder}/route.ts · prisma/schema.prisma</text>
+</svg>
+</body>
+</html>

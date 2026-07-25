@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杨翔 · 人机交互体验设计作品集</title>
+<meta name="description" content="人因工程博士 · 把模糊的体验拆成可测量、可验收的设计">
+<style>
+:root{
+  --canvas:#fbfcfe; --surface:#ffffff; --surface-subtle:#f7f9fc;
+  --text:#111827; --text-secondary:#475467; --text-muted:#667085;
+  --rule:#e4e7ec; --rule-strong:#cfd5de; --lane-rule:#eef1f5;
+  --path-history:#596579; --path-terminal:#98a2b3;
+  --current:#0095ff; --current-hover:#007de8; --current-soft:#eef4ff;
+  --waiting:#e88700; --waiting-dark:#8a4700; --waiting-soft:#fff6e5; --waiting-border:#f2d19a;
+  --danger:#c63c32;
+  --success:#168a45; --success-dark:#116d37; --success-soft:#f1fbf4; --success-border:#b8dfc6;
+  --action-dark:#171a1f;
+  --body-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Noto Sans SC",sans-serif;
+  --mono:"SFMono-Regular","Roboto Mono",Consolas,monospace;
+  --radius:12px; --radius-small:8px;
+  --shadow:0 22px 64px rgba(16,24,40,.18);
+  --shadow-sm:0 1px 3px rgba(16,24,40,.08);
+  --shadow-md:0 4px 16px rgba(16,24,40,.08);
+  --maxw:960px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body-font);
+     font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img,video{max-width:100%;display:block;}
+button{font:inherit;border:0;background:none;color:inherit;cursor:pointer;}
+a{color:inherit;}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.18;margin:0;}
+::selection{background:var(--current-soft);}
+button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-offset:2px;border-radius:4px;}
+
+.label{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);}
+.label.gold{color:var(--current);}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+        padding:13px 24px;background:rgba(251,252,254,.86);backdrop-filter:blur(14px);
+        border-bottom:1px solid transparent;transition:border-color .3s ease,box-shadow .3s ease;}
+.topbar.scrolled{border-bottom-color:var(--rule);box-shadow:0 1px 0 rgba(16,24,40,.02);}
+.topbar .who{font-size:13.5px;color:var(--text-secondary);}
+.topbar .who b{color:var(--text);font-weight:600;}
+.langtoggle{display:flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);}
+.langtoggle button{font:500 11.5px/1 var(--mono);padding:6px 13px;border-radius:999px;
+                   color:var(--text-muted);transition:.18s ease;}
+.langtoggle button[aria-pressed="true"]{background:var(--current-soft);color:var(--current-hover);}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:120px 24px 80px;overflow:hidden;}
+.hero-field{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.hero-field span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--current);
+                 opacity:0;transform:translate(-50%,-50%);}
+.hero-inner{position:relative;z-index:2;max-width:800px;}
+.hero h1{margin:20px 0 0;font-size:clamp(32px,5.2vw,56px);}
+.hero h1 em{font-style:normal;color:var(--current);}
+.hero .lede{margin:24px auto 0;max-width:580px;color:var(--text-secondary);font-size:clamp(15px,1.6vw,17px);}
+.hero .stats{margin-top:44px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.stat{border:1px solid var(--rule);border-radius:var(--radius);padding:14px 20px;background:var(--surface);
+      min-width:146px;text-align:left;box-shadow:var(--shadow-sm);}
+.stat b{display:block;font-size:27px;font-weight:700;letter-spacing:-.02em;color:var(--current);line-height:1.1;}
+.stat span{font-size:12px;line-height:1.5;color:var(--text-muted);display:block;margin-top:6px;}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;
+             font:500 10.5px/1 var(--mono);letter-spacing:.18em;color:var(--text-muted);}
+.scroll-hint::after{content:"";display:block;width:1px;height:26px;margin:10px auto 0;
+                    background:linear-gradient(var(--rule-strong),transparent);}
+
+/* ---------- rail ---------- */
+.rail{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:40;display:none;flex-direction:column;gap:13px;}
+@media(min-width:1240px){.rail{display:flex;}}
+.rail a{display:flex;align-items:center;gap:10px;font:500 11.5px/1 var(--mono);
+        color:var(--text-muted);text-decoration:none;transition:.22s ease;}
+.rail a::before{content:"";width:14px;height:1.5px;border-radius:1px;background:var(--rule-strong);transition:.22s ease;}
+.rail a:hover{color:var(--text-secondary);}
+.rail a.on{color:var(--current);}
+.rail a.on::before{width:28px;background:var(--current);}
+
+/* ---------- section ---------- */
+section.case{padding:92px 0;border-top:1px solid var(--rule);}
+.case-head{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.case-head h2{font-size:clamp(25px,3.4vw,38px);}
+.case-head .sub{color:var(--text-secondary);max-width:640px;font-size:15.5px;}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.tag{font:500 11.5px/1 var(--mono);padding:6px 10px;border-radius:var(--radius-small);
+     background:var(--current-soft);color:var(--current-hover);border:1px solid rgba(0,149,255,.16);}
+.tag.alt{background:var(--surface-subtle);color:var(--text-secondary);border-color:var(--rule);}
+
+.figure{border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:var(--surface);
+        margin:26px 0;box-shadow:var(--shadow-sm);}
+.figure img,.figure video{width:100%;}
+.figure figcaption{padding:12px 16px;font-size:12.5px;line-height:1.6;color:var(--text-muted);
+                   border-top:1px solid var(--rule);background:var(--surface-subtle);}
+.figure.placeholder{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+                    background:var(--surface-subtle);border-style:dashed;border-color:var(--rule-strong);}
+.figure.placeholder p{margin:0;font:400 13px/1.8 var(--mono);color:var(--text-muted);text-align:center;padding:24px;}
+
+.grid2{display:grid;gap:20px;}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr;}}
+.note{border-left:3px solid var(--current);background:var(--current-soft);border-radius:0 var(--radius-small) var(--radius-small) 0;
+      padding:16px 20px;color:var(--text-secondary);font-size:15px;margin:26px 0;}
+.note b{color:var(--text);font-weight:600;}
+
+/* ---------- signal cards ---------- */
+.sigrow{display:flex;flex-direction:column;gap:9px;margin:24px 0;}
+.sig{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);overflow:hidden;
+     transition:border-color .2s ease,box-shadow .2s ease;}
+.sig:hover{border-color:var(--rule-strong);box-shadow:var(--shadow-sm);}
+.sig.open{border-color:var(--current);box-shadow:0 0 0 3px var(--current-soft);}
+.sig-btn{display:flex;align-items:center;gap:16px;width:100%;padding:14px 18px;text-align:left;}
+.sig-name{font:600 12.5px/1.35 var(--mono);color:var(--current-hover);min-width:104px;}
+.sig-name em{display:block;font:400 11.5px/1.4 var(--body-font);font-style:normal;color:var(--text-muted);margin-top:3px;}
+.sig-wave{flex:1;height:26px;display:flex;align-items:center;}
+.sig-wave i{display:block;background:var(--current);border-radius:1px;}
+.sig-param{font:400 11.5px/1 var(--mono);color:var(--text-muted);white-space:nowrap;}
+.sig-body{max-height:0;overflow:hidden;transition:max-height .32s ease;}
+.sig.open .sig-body{max-height:280px;}
+.sig-body div{padding:14px 18px 16px;color:var(--text-secondary);font-size:14.5px;
+              border-top:1px solid var(--rule);background:var(--surface-subtle);}
+.sig-body strong{color:var(--text);font-weight:600;}
+@media(max-width:700px){
+  .sig-btn{flex-wrap:wrap;gap:10px;}
+  .sig-wave{order:3;width:100%;flex:0 0 100%;}
+  .sig-param{margin-left:auto;}
+}
+
+/* ---------- before/after ---------- */
+.ba{border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:var(--surface);
+    margin:26px 0;box-shadow:var(--shadow-sm);}
+.ba-tabs{display:flex;border-bottom:1px solid var(--rule);background:var(--surface-subtle);}
+.ba-tabs button{flex:1;padding:13px;font:500 12px/1 var(--mono);letter-spacing:.08em;color:var(--text-muted);
+                transition:.2s ease;border-bottom:2px solid transparent;}
+.ba-tabs button[aria-pressed="true"]{color:var(--current-hover);background:var(--surface);border-bottom-color:var(--current);}
+.ba-pane{display:none;padding:24px;}
+.ba-pane.on{display:block;}
+.ba-pane ul{margin:0;padding-left:20px;color:var(--text-secondary);font-size:15px;}
+.ba-pane li{margin-bottom:10px;}
+.ba-pane li b{color:var(--text);font-weight:600;}
+.ba-verdict{margin-top:18px;padding:13px 16px;border-radius:var(--radius-small);font-size:14px;border:1px solid;}
+.ba-verdict.bad{background:var(--waiting-soft);color:var(--waiting-dark);border-color:var(--waiting-border);}
+.ba-verdict.good{background:var(--success-soft);color:var(--success-dark);border-color:var(--success-border);}
+
+/* ---------- avatars ---------- */
+.avatars{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:12px;margin:26px 0;}
+.av{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:20px 14px;
+    text-align:center;transition:.22s ease;box-shadow:var(--shadow-sm);}
+.av:hover{border-color:var(--current);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.av .glyph{font-size:30px;line-height:1;filter:grayscale(1) opacity(.55);transition:.22s ease;}
+.av:hover .glyph{filter:none;}
+.av .nm{margin-top:10px;font-size:13.5px;font-weight:600;color:var(--text);}
+.av .role{margin-top:4px;font:400 11.5px/1 var(--mono);color:var(--text-muted);}
+.av .persona{max-height:0;overflow:hidden;transition:max-height .28s ease;color:var(--text-secondary);
+             font-size:12.5px;line-height:1.6;}
+.av:hover .persona{max-height:90px;margin-top:10px;}
+
+.codecard{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface-subtle);
+          padding:18px 20px;margin:24px 0;overflow-x:auto;}
+.codecard pre{margin:0;font:400 12.5px/1.8 var(--mono);color:var(--text-secondary);white-space:pre;}
+.codecard .c{color:var(--text-muted);}
+.codecard .k{color:var(--current-hover);font-weight:500;}
+
+/* ---------- doc gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:26px 0;}
+.gal figure{margin:0;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:var(--surface);
+            cursor:zoom-in;transition:.22s ease;box-shadow:var(--shadow-sm);}
+.gal figure:hover{border-color:var(--current);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.gal figcaption{padding:12px 14px;font-size:12.5px;line-height:1.55;color:var(--text-muted);
+                border-top:1px solid var(--rule);background:var(--surface-subtle);}
+.lightbox{position:fixed;inset:0;z-index:90;background:rgba(17,24,39,.62);display:none;align-items:center;
+          justify-content:center;padding:36px;cursor:zoom-out;backdrop-filter:blur(6px);}
+.lightbox.on{display:flex;}
+.lightbox img{max-width:100%;max-height:86vh;border-radius:var(--radius);background:var(--surface);
+              box-shadow:var(--shadow);}
+.lightbox .cap{position:absolute;bottom:18px;left:0;right:0;text-align:center;padding:0 36px;
+               font-size:13px;line-height:1.6;color:#fff;}
+
+/* ---------- footer ---------- */
+footer{padding:80px 0 64px;border-top:1px solid var(--rule);background:var(--surface-subtle);}
+.contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+.contact a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);border-radius:var(--radius-small);
+           padding:11px 16px;font:400 13.5px/1 var(--mono);color:var(--text-secondary);text-decoration:none;
+           background:var(--surface);transition:.2s ease;}
+.contact a:hover{border-color:var(--current);color:var(--current-hover);box-shadow:var(--shadow-sm);}
+.foot-note{margin-top:32px;font-size:12.5px;line-height:1.8;color:var(--text-muted);max-width:620px;}
+
+html[lang="zh-CN"] [data-en]{display:none!important;}
+html[lang="en"] [data-zh]{display:none!important;}
+
+@media print{
+  .topbar,.rail,.scroll-hint,.lightbox,.hero-field{display:none!important;}
+  body{background:#fff;}
+  section.case{padding:24px 0;page-break-inside:avoid;}
+  .sig-body{max-height:none!important;}
+  .ba-pane{display:block!important;}
+  .av .persona{max-height:none!important;margin-top:10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="who"><b>杨翔</b> <span data-zh>· 人机交互体验设计</span><span data-en>· Human-Machine Interaction Design</span></div>
+  <div class="langtoggle">
+    <button id="btn-zh" aria-pressed="true">中文</button>
+    <button id="btn-en" aria-pressed="false">EN</button>
+  </div>
+</div>
+
+<nav class="rail" id="rail">
+  <a href="#c1"><span data-zh>触觉信号</span><span data-en>Haptics</span></a>
+  <a href="#c2"><span data-zh>信任设计</span><span data-en>Trust</span></a>
+  <a href="#c3"><span data-zh>角色感</span><span data-en>Character</span></a>
+  <a href="#c4"><span data-zh>接纳沙盘</span><span data-en>Sandbox</span></a>
+  <a href="#c5"><span data-zh>设计文档</span><span data-en>Documents</span></a>
+</nav>
+
+<header class="hero">
+  <div class="hero-field" id="field"></div>
+  <div class="hero-inner">
+    <div class="label gold" data-zh>人因工程博士 · 弗吉尼亚理工</div>
+    <div class="label gold" data-en>PhD, Human Factors Engineering · Virginia Tech</div>
+    <h1>
+      <span data-zh>把“说不清的体验”<br>拆成<em>可测量、可验收</em>的设计</span>
+      <span data-en>Turning “it just feels off”<br>into <em>measurable, verifiable</em> design</span>
+    </h1>
+    <p class="lede">
+      <span data-zh>我研究人怎么感知机器、怎么信任机器。算法和运控强的人不缺，我补的是“人”这一侧最难标定的那颗器件。</span>
+      <span data-en>I study how people perceive machines, and how they come to trust them. Teams rarely lack algorithms or control engineers. What I calibrate is the hardest component on the other side: the human.</span>
+    </p>
+    <div class="stats">
+      <div class="stat"><b>+15%</b><span data-zh>动态触觉信号<br>反应与准确率提升</span><span data-en>faster & more accurate<br>with dynamic haptics</span></div>
+      <div class="stat"><b>5</b><span data-zh>人团队 · 从 PRD<br>到 MVP 交付</span><span data-en>engineers led<br>PRD → MVP</span></div>
+      <div class="stat"><b>7</b><span data-zh>个 AI 智能体<br>生产环境运行</span><span data-en>AI agents live<br>in production</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint" data-zh>向下</div>
+  <div class="scroll-hint" data-en>SCROLL</div>
+</header>
+
+<main>
+
+<!-- ============ CASE 1 ============ -->
+<section class="case" id="c1">
+  <div class="wrap">
+    <div class="case-head">
+      <div class="label" data-zh>案例 01 · 博士研究 · 2021–2026</div>
+      <div class="label" data-en>CASE 01 · Doctoral research · 2021–2026</div>
+      <h2><span data-zh>给皮肤设计一套不用学的警示语言</span><span data-en>A warning language for the skin, with nothing to learn</span></h2>
+      <p class="sub">
+        <span data-zh>视觉被占满、环境嘈杂时，信息该走哪个通道？我在头部与躯干上搭了分布式触觉阵列，把“这个提醒够不够明显”变成个体化的感知阈值与反应延迟指标，并证明多部位协同的动态信号比传统静态信号在反应速度和警示准确率上提升 15%。</span>
+        <span data-en>When vision is saturated and the environment is loud, which channel should information take? I built a distributed haptic array across the head and torso, turned “is this alert noticeable enough” into per-person perception thresholds and response latencies, and showed that coordinated dynamic signals beat conventional static ones by 15% on response speed and accuracy.</span>
+      </p>
+      <div class="tags">
+        <span class="tag" data-zh>多模态交互</span><span class="tag" data-en>Multimodal</span>
+        <span class="tag" data-zh>信号设计</span><span class="tag" data-en>Signal design</span>
+        <span class="tag" data-zh>心理物理验证</span><span class="tag" data-en>Psychophysics</span>
+        <span class="tag alt" data-zh>软硬件全栈原型</span><span class="tag alt" data-en>Full-stack prototype</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <span data-zh><b>为什么这跟灯效、声音、表情是同一个问题：</b>它们都是给一个带宽有限的通道设计一套信号词汇表，要让用户不用学就懂，还不能用久了疲劳。触觉是其中最难的通道 —— 分辨率最低、个体差异最大。方法往灯效和声音上迁移，是降维。</span>
+      <span data-en><b>Why this is the same problem as light, sound, and facial expression:</b> each is a vocabulary designed for a bandwidth-limited channel, which users must grasp without instruction and must not tune out over time. Haptics is the hardest of them, with the lowest resolution and the widest individual variation. Porting the method to light and sound is a step down in difficulty, not up.</span>
+    </div>
+
+    <div class="label" data-zh>信号词汇表 — 点开任意一条看设计理由</div>
+    <div class="label" data-en>The signal vocabulary — tap any row for the design rationale</div>
+    <div class="sigrow" id="sigrow"></div>
+
+    <figure class="figure" id="fig-waveform">
+      <img src="assets/signal-waveforms.png" alt="signal waveform timing chart" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>四类信号的时序规范图 —— 参数直接来自实验平台的信号规格文档</span><span data-en>Timing specification for the four signal classes, drawn from the platform's signal spec</span></figcaption>
+    </figure>
+
+    <div class="grid2">
+      <figure class="figure">
+        <img src="assets/trial-flow.png" alt="trial flow diagram" onerror="this.closest('figure').classList.add('missing')">
+        <figcaption><span data-zh>单次试次流程图：预警分支、双时间戳、IMU 并行记录</span><span data-en>Per-trial flow: pre-warning branch, dual timestamps, parallel IMU capture</span></figcaption>
+      </figure>
+      <figure class="figure placeholder" data-slot="hardware">
+        <p><span data-zh>［硬件原型实拍 ——<br>头盔／背心触觉阵列、ESP32 台架］</span><span data-en>[Hardware prototype photo —<br>helmet / vest haptic array, ESP32 rig]</span></p>
+      </figure>
+    </div>
+
+    <div class="note">
+      <span data-zh><b>一刀切的阈值会伤害两端的人。</b>同一强度的振动，对一部分人根本感知不到，对另一部分人是持续骚扰。所以我的博士论文主题是适配：以“相对个体自身基线的偏差”定义指标，让信号适配人，而不是让人适应信号 —— 而且这个适配过程要可见、可控、可撤销。</span>
+      <span data-en><b>One threshold for everyone hurts both ends of the distribution.</b> The same vibration intensity is imperceptible to some people and a constant nuisance to others. My dissertation is therefore about adaptation: define the metric as deviation from each person's own baseline, so the signal fits the person rather than the reverse. And that adaptation must stay visible, controllable, and reversible.</span>
+    </div>
+
+    <figure class="figure">
+      <img src="assets/experiment-gui.png" alt="experiment control console" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>实验控制台：七态试次状态机、BLE 硬件连接、被试配平、实时数据记录 —— 我自己写的</span><span data-en>Experiment console: seven-state trial machine, BLE link, counterbalancing, live logging. Written by me.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ CASE 2 ============ -->
+<section class="case" id="c2">
+  <div class="wrap">
+    <div class="case-head">
+      <div class="label" data-zh>案例 02 · 产品经理与交互负责人 · 2023–</div>
+      <div class="label" data-en>CASE 02 · Product manager & interaction lead · 2023–</div>
+      <h2><span data-zh>警示系统最大的敌人不是感知不到，是狼来了</span><span data-en>The enemy of an alert system is not weak signal. It is crying wolf.</span></h2>
+      <p class="sub">
+        <span data-zh>智慧工地安全平台。工人对灯光与声音警示已经全面脱敏 —— 不是听不见，是不再相信。我们蹲现场做人因调研，重构了报警阈值与多模态通道分配逻辑，让“响 = 真有事”，接受度与留存跟着回来。项目获全美 Top 20 建筑商 Allan Myers 投资。</span>
+        <span data-en>A construction-site safety platform. Workers had gone fully numb to light and sound alerts. Not because they could not perceive them, but because they no longer believed them. We ran on-site human-factors research, rebuilt the alert thresholds and the multimodal channel allocation so that an alarm again meant something real, and acceptance and retention followed. The project was funded by Allan Myers, a top-20 US builder.</span>
+      </p>
+      <div class="tags">
+        <span class="tag" data-zh>用户洞察到落地</span><span class="tag" data-en>Insight → shipped</span>
+        <span class="tag" data-zh>人机信任</span><span class="tag" data-en>Human-machine trust</span>
+        <span class="tag" data-zh>0→1 产品定义</span><span class="tag" data-en>0→1 definition</span>
+        <span class="tag alt" data-zh>跨平台 5 人团队</span><span class="tag alt" data-en>Cross-platform team of 5</span>
+      </div>
+    </div>
+
+    <div class="label" data-zh>报警逻辑重构 — 切换看改了什么</div>
+    <div class="label" data-en>Rebuilding the alert logic — switch to compare</div>
+    <div class="ba" id="ba">
+      <div class="ba-tabs">
+        <button data-pane="before" aria-pressed="true"><span data-zh>改造前</span><span data-en>BEFORE</span></button>
+        <button data-pane="after" aria-pressed="false"><span data-zh>改造后</span><span data-en>AFTER</span></button>
+      </div>
+      <div class="ba-pane on" data-pane="before">
+        <ul>
+          <li><span data-zh><b>单一阈值全场通用</b> —— 距离一到就报，不分作业类型与噪声环境。</span><span data-en><b>One threshold everywhere.</b> Fire on proximity alone, regardless of task type or ambient noise.</span></li>
+          <li><span data-zh><b>所有等级用同一种表达</b> —— 灯光加蜂鸣，紧急和例行长得一模一样。</span><span data-en><b>Every severity looks identical.</b> Light plus buzzer, whether it is an emergency or a routine notice.</span></li>
+          <li><span data-zh><b>误报没有代价</b> —— 系统不知道自己错了，也没人反馈。</span><span data-en><b>False alarms cost nothing.</b> The system never learns it was wrong, and no one tells it.</span></li>
+        </ul>
+        <div class="ba-verdict bad"><span data-zh>结果：两周后工人默认忽略提示。系统仍然“在工作”，安全收益已经归零。</span><span data-en>Result: within two weeks workers ignore alerts by default. The system still "works" while its safety value has gone to zero.</span></div>
+      </div>
+      <div class="ba-pane" data-pane="after">
+        <ul>
+          <li><span data-zh><b>分级 + 场景化阈值</b> —— 按作业类型与环境噪声动态调整触发条件。</span><span data-en><b>Tiered, context-aware thresholds.</b> Trigger conditions adapt to task type and ambient noise.</span></li>
+          <li><span data-zh><b>通道按紧急度分配</b> —— 紧急：多模态齐上；次要：单通道；例行：静默入日志，不打断人。</span><span data-en><b>Channels allocated by urgency.</b> Critical: all modalities. Secondary: one channel. Routine: silent logging that never interrupts.</span></li>
+          <li><span data-zh><b>误报进入回路</b> —— 工人一键标记误报，阈值按真实反馈校准。</span><span data-en><b>False alarms enter the loop.</b> Workers flag them in one tap, and thresholds recalibrate on real feedback.</span></li>
+        </ul>
+        <div class="ba-verdict good"><span data-zh>结果：“响 = 真有事”重新成立。接受度与留存显著提升，安全收益回到系统里。</span><span data-en>Result: an alarm means something again. Acceptance and retention rose markedly, and the safety value came back.</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span data-zh><b>迁移到陪伴与看护产品：</b>同一个陷阱在家庭场景里更贵。如果一台看护机器人对家长的提醒经常是假警报，第三周就没人看了 —— 而那时它已经在家里，家长以为自己被保护着。所以我把“信任衰减率”当成一等公民指标：第 1 周与第 4 周的主动交互频次差，比任何满意度问卷都诚实。</span>
+      <span data-en><b>Porting this to companion and monitoring products:</b> the same trap is more expensive at home. If a caregiving robot's alerts to a parent are often false, nobody watches by week three, and by then it is already in the house while the parent believes they are covered. So I treat trust decay as a first-class metric: the drop in unprompted interaction between week one and week four is more honest than any satisfaction survey.</span>
+    </div>
+
+    <figure class="figure placeholder" data-slot="saas">
+      <p><span data-zh>［平台界面截图 —— 移动端感知 + Web 决策台］</span><span data-en>[Platform screens: mobile sensing + web decision dashboard]</span></p>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ CASE 3 ============ -->
+<section class="case" id="c3">
+  <div class="wrap">
+    <div class="case-head">
+      <div class="label" data-zh>案例 03 · 独立开发与系统架构 · 2026–</div>
+      <div class="label" data-en>CASE 03 · Solo build & system architecture · 2026–</div>
+      <h2><span data-zh>角色感不是起个名字，是每个状态下的行为都自洽</span><span data-en>Character is not a name. It is behaving consistently in every state.</span></h2>
+      <p class="sub">
+        <span data-zh>我独立搭建并部署了一套个人 AI 系统，七个智能体各有人格 —— 大象记忆、狐狸策略、猫头鹰情报、章鱼学习。人格不停在头像上，它落在可读可改的自然语言行为契约里：什么时候说话、什么时候闭嘴、失败了怎么表现。系统在生产环境跑了半年。</span>
+        <span data-en>I built and deployed a personal AI system on my own. Seven agents, each with a character: elephant for memory, fox for strategy, owl for intelligence, octopus for learning. The character does not stop at the avatar. It lives in readable, editable natural-language behavior contracts that say when to speak, when to stay quiet, and how to behave on failure. The system has run in production for six months.</span>
+      </p>
+      <div class="tags">
+        <span class="tag" data-zh>角色与人格设计</span><span class="tag" data-en>Character design</span>
+        <span class="tag" data-zh>行为逻辑文档</span><span class="tag" data-en>Behavior documentation</span>
+        <span class="tag" data-zh>AI 产品</span><span class="tag" data-en>AI product</span>
+        <span class="tag alt" data-zh>语音 · 多模态输入</span><span class="tag alt" data-en>Voice & multimodal input</span>
+      </div>
+    </div>
+
+    <div class="label" data-zh>七个智能体 — 悬停看它的行为边界</div>
+    <div class="label" data-en>Seven agents — hover for each one's behavioral boundary</div>
+    <div class="avatars" id="avatars"></div>
+
+    <div class="note">
+      <span data-zh><b>为什么行为规则要用自然语言写：</b>因为写下来的东西才能被审、被吵、被改。人格藏在代码里，讨论就只能发生在工程师之间；写成契约，产品、设计、算法可以指着同一句话吵架 —— 这正是交互设计文档该起的作用。</span>
+      <span data-en><b>Why behavior rules are written in natural language:</b> only what is written down can be reviewed, argued over, and changed. Character buried in code confines the discussion to engineers. As a contract, product, design, and algorithm can argue over the same sentence, which is exactly what an interaction design document is for.</span>
+    </div>
+
+    <div class="codecard" id="contract">
+      <pre><span class="c"># strategist / instruction.yaml — <span data-zh>行为边界节选</span><span data-en>behavioral boundary, excerpt</span></span>
+<span class="k">judgment:</span>
+  <span class="k">boundaries:</span>
+    - <span data-zh>建议，绝不代为决定</span><span data-en>suggests, never commands</span>
+    - <span data-zh>检测到沉默期时不主动发起对话</span><span data-en>stays silent during detected quiet periods</span>
+    - <span data-zh>不确定时说出不确定，而不是补一个像样的答案</span><span data-en>states uncertainty instead of manufacturing a plausible answer</span></pre>
+    </div>
+
+    <figure class="figure">
+      <img src="assets/dashboard-topology-crop.png" alt="agent topology dashboard" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>系统拓扑：智能体、共享总线与产出物的读写关系，由系统按真实状态自动渲染</span><span data-en>System topology: agents, shared bus, and outputs, rendered automatically from live system state</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ CASE 4 ============ -->
+<section class="case" id="c4">
+  <div class="wrap">
+    <div class="case-head">
+      <div class="label" data-zh>案例 04 · 概念探索 · 公开项目</div>
+      <div class="label" data-en>CASE 04 · Concept exploration · Open project</div>
+      <h2><span data-zh>一个新硬件进入生活时，会被怎么误解？</span><span data-en>When a new device enters someone's life, how will it be misread?</span></h2>
+      <p class="sub">
+        <span data-zh>把“新模块被用户接纳还是误解”做成可模拟、可观察的沙盘：八个虚拟个体各有自己的需要、解读方式和核心疑问；同一个模块注入后，他们把它重新分类成不同的东西。视角、个体、时相、事件四个维度联动 —— 比问卷便宜，比上线安全。</span>
+        <span data-en>A sandbox that makes "will this module be adopted or misunderstood" simulable and observable. Eight synthetic individuals, each with their own needs, interpretive frame, and central question. Inject the same module and they reclassify it into different things. Viewpoint, individual, time-of-day, and event interlock across four dimensions. Cheaper than a survey, safer than shipping.</span>
+      </p>
+      <div class="tags">
+        <span class="tag" data-zh>新型交互</span><span class="tag" data-en>Novel interaction</span>
+        <span class="tag" data-zh>用户旅程建模</span><span class="tag" data-en>Journey modeling</span>
+        <span class="tag" data-zh>四维状态联动</span><span class="tag" data-en>Four-dimensional state</span>
+      </div>
+    </div>
+
+    <figure class="figure">
+      <img src="assets/observatory-overview.png" alt="observatory overview" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>总览模式：左栏事件流与人物卡，中央沙盘，右栏语义重分类与扩散指标，底部为昼夜时间轴</span><span data-en>Overview: event stream and character cards at left, the sandbox at center, semantic reclassification and diffusion metrics at right, a day–night timeline below</span></figcaption>
+    </figure>
+
+    <div class="note">
+      <span data-zh><b>其中一个设计细节值得单说：</b>四个时相（黎明／白天／黄昏／夜晚）各自绑定一组灯光参数 —— 天空、雾、环境光、霓虹、窗光。这不是美术滤镜，是“每个状态一套完整的表达参数”这一原则的练习。同一个原则换个载体，就是机器人的灯效与表情状态设计。</span>
+      <span data-en><b>One detail is worth calling out:</b> each of the four phases (dawn, day, dusk, night) binds a full set of lighting parameters covering sky, fog, ambient, neon, and window light. This is not an art filter. It is an exercise in one principle: every state carries a complete set of expressive parameters. Change the medium and the same principle becomes a robot's light and expression state design.</span>
+    </div>
+
+    <div class="grid2">
+      <figure class="figure">
+        <img src="assets/observatory-linked-state.png" alt="linked state frame" onerror="this.closest('figure').classList.add('missing')">
+        <figcaption><span data-zh>状态联动：切换个体与时相后，全屏所有面板同步重写</span><span data-en>Interlocked state: switching individual and phase rewrites every panel at once</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="assets/observatory-concept.png" alt="concept frame" onerror="this.closest('figure').classList.add('missing')">
+        <figcaption><span data-zh>概念帧（预渲染）—— 与实跑交互层区分标注</span><span data-en>Concept frame (pre-rendered), labelled distinctly from the live interaction layer</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASE 5 ============ -->
+<section class="case" id="c5">
+  <div class="wrap">
+    <div class="case-head">
+      <div class="label" data-zh>选辑 · 结构化设计文档</div>
+      <div class="label" data-en>Selected works · Structured design documents</div>
+      <h2><span data-zh>状态机、服务蓝图、失败反馈策略</span><span data-en>State machines, service blueprints, failure-feedback strategy</span></h2>
+      <p class="sub">
+        <span data-zh>体验方案要能被研发、测试、市场读懂并执行，这一节是我日常产出的这类文档。点开看大图。</span>
+        <span data-en>An experience spec has to be legible and executable for engineering, QA, and marketing alike. These are the documents I produce for that. Click to enlarge.</span>
+      </p>
+    </div>
+
+    <div class="gal" id="gal">
+      <figure data-full="assets/agent-state-machine.png">
+        <img src="assets/agent-state-machine.png" alt="conversational state machine" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh>对话状态机 —— 含六条失败与降级分支，每条标注给用户的反馈文案</span><span data-en>Conversational state machine, with six failure and degradation branches, each annotated with its user-facing message</span></figcaption>
+      </figure>
+      <figure data-full="assets/trust-exchange-blueprint.png">
+        <img src="assets/trust-exchange-blueprint.png" alt="trust exchange blueprint" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh>服务蓝图 —— 非对称信息交换的三泳道流转与一次锁定规则</span><span data-en>Service blueprint: asymmetric information exchange across three lanes, with a one-time locking rule</span></figcaption>
+      </figure>
+      <figure data-full="assets/capability-negotiation.png">
+        <img src="assets/capability-negotiation.png" alt="capability negotiation model" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh>能力协商模型 —— 后端能力不足时界面如何优雅降级而不崩坏</span><span data-en>Capability negotiation: how the interface degrades gracefully when the backend cannot deliver</span></figcaption>
+      </figure>
+      <figure data-full="assets/trial-flow.png">
+        <img src="assets/trial-flow.png" alt="trial flow" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh>实验流程图 —— 分支、双时间戳与并行数据采集</span><span data-en>Trial flow: branching, dual timestamps, parallel capture</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="note">
+      <span data-zh><b>关于优雅降级 ——</b> 那张能力协商图讲的是软件面板，但规则可以原样搬到硬件上：户外机器人丢网络、丢定位、传感器脏了、电量见底时，交互不该崩掉，而该有序退档。用户想要什么（意图）和系统此刻能做什么（能力）是两个变量，界面呈现的是它们的交集 —— 并且能力恢复时，意图还在，体验自动回来。</span>
+      <span data-en><b>On graceful degradation:</b> that capability diagram describes software panels, but the rule transfers to hardware unchanged. When an outdoor robot loses network or localization, when sensors are dirty or the battery is nearly out, the interaction should not collapse. It should step down in an orderly way. What the user wants (intent) and what the system can currently do (capability) are two separate variables, and the interface presents their intersection. When capability returns, the intent is still there, and the experience comes back on its own.</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="label gold" data-zh>联系</div>
+    <div class="label gold" data-en>Contact</div>
+    <h2 style="margin:14px 0 0;font-size:clamp(22px,3vw,32px);">
+      <span data-zh>很乐意聊聊这些方法怎么落到你们的产品上。</span>
+      <span data-en>Happy to talk about how these methods land on your product.</span>
+    </h2>
+    <div class="contact">
+      <a href="mailto:xiangyang@vt.edu">xiangyang@vt.edu</a>
+      <a href="https://github.com/yangxiang5136" target="_blank" rel="noopener">github.com/yangxiang5136</a>
+      <a href="https://github.com/xiangyangvt" target="_blank" rel="noopener">github.com/xiangyangvt</a>
+      <a href="assets/resume.pdf" id="resume-link"><span data-zh>简历 PDF</span><span data-en>Résumé PDF</span></a>
+    </div>
+    <p class="foot-note">
+      <span data-zh>部分项目仓库为私有，页面中的界面与图表均由本人制作。涉及第三方与商业保密的内容已做抽象与脱敏处理。</span>
+      <span data-en>Some repositories are private. Every interface and diagram shown here was made by me. Third-party and commercially confidential material has been abstracted and redacted.</span>
+    </p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img id="lb-img" alt=""><div class="cap" id="lb-cap"></div></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- language ---------- */
+  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en');
+  function setLang(l){
+    document.documentElement.lang=l;
+    btnZh.setAttribute('aria-pressed',String(l==='zh-CN'));
+    btnEn.setAttribute('aria-pressed',String(l==='en'));
+    try{localStorage.setItem('pf-lang',l);}catch(e){}
+    render();
+  }
+  btnZh.addEventListener('click',function(){setLang('zh-CN');});
+  btnEn.addEventListener('click',function(){setLang('en');});
+
+  /* ---------- data ---------- */
+  var SIGNALS=[
+    {id:'CES',zhn:'均匀慢速',enn:'Continuous Even Slow',param:'250 / 250 ms · 100% · 2 Hz',
+     pattern:[1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0],
+     zh:'<strong>基准紧迫度。</strong>节拍器一样平的脉冲，没有任何一个参数在变，所以它只承载方向，不承载别的。整套词汇表里其它信号的“急”，都是相对它来度量的 —— 先有基准，才有升级。',
+     en:'<strong>Baseline urgency.</strong> A flat, metronomic pulse. Nothing about it changes, so it carries direction and nothing else. Every other signal’s urgency is measured against it: you need a baseline before escalation means anything.'},
+    {id:'CEF',zhn:'均匀快速',enn:'Continuous Even Fast',param:'125 / 125 ms · 100% · 4 Hz',
+     pattern:[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+     zh:'<strong>用速率表达紧迫。</strong>驱动强度与上一条完全相同，只有重复速率翻了一倍。这是词汇表的核心手法：一次只让一个维度变，用户不用背规则也能推断出含义。',
+     en:'<strong>Rate as urgency.</strong> Identical drive level, twice the repetition rate. This is the core move of a vocabulary: change one dimension at a time, and users infer the meaning instead of memorizing a rule.'},
+    {id:'RE',zhn:'渐强升级',enn:'Ramping Escalation',param:'50→100% · 间隔 250→50 ms',
+     pattern:[1,0,0,0,1,0,0,1,1,0,1,1,1,1,1,1],
+     zh:'<strong>危险正在逼近。</strong>强度与速率一起爬升两秒，然后锁定为持续驱动。它不是一个信号，是一条曲线：用户从“它正在变急”这件事本身读出事态在恶化，这比任何一个静态强度传递的都多。',
+     en:'<strong>A closing hazard.</strong> Intensity and rate climb together for two seconds, then lock into continuous drive. This is not a signal but a curve: users read deterioration from the fact that it is intensifying, which conveys more than any static intensity could.'},
+    {id:'PW',zhn:'轻量预告',enn:'Pre-Warning',param:'500 / 500 ms · 40% · 随机 1–3 s',
+     pattern:[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+     zh:'<strong>把注意力提前调过来。</strong>真正的警示之前，一段刻意温柔的 40% 提示，且不指向任何方向。它买的是定向时间，让下一个信号落在一个准备好的人身上；长度随机是为了防止用户预判起始时刻。',
+     en:'<strong>An attention primer.</strong> A deliberately gentle 40% cue ahead of the warning itself, asserting no direction. It buys orienting time so the real signal lands on someone already prepared, and its randomized length keeps users from anticipating onset.'}
+  ];
+
+  var AGENTS=[
+    {g:'🐘',nm:'Memory',zhr:'记忆',enr:'Memory',
+     zh:'捕获一切，从不评判；未被评分的记忆攒够 5 条才主动开口。',
+     en:'Captures everything, judges nothing. Speaks up only after five unscored memories accumulate.'},
+    {g:'🦊',nm:'Strategist',zhr:'策略',enr:'Strategy',
+     zh:'建议，绝不代为决定；检测到沉默期就不主动发起对话。',
+     en:'Suggests, never commands. Stays quiet during detected silent periods.'},
+    {g:'🦉',nm:'Information',zhr:'情报',enr:'Intelligence',
+     zh:'一天只送一次；宁可漏掉，也不制造需要处理的噪声。',
+     en:'Delivers once a day. Prefers a miss to noise that demands handling.'},
+    {g:'🕷️',nm:'Connection',zhr:'连接',enr:'Connections',
+     zh:'每周一次织网，只呈现关系，不解释关系该怎么用。',
+     en:'Weaves weekly. Presents relationships without prescribing what to do with them.'},
+    {g:'🦎',nm:'Interface',zhr:'界面',enr:'Interface',
+     zh:'随内容变形；系统没有新状态时，界面就不该变。',
+     en:'Adapts to content. When system state has not changed, the interface must not either.'},
+    {g:'🐙',nm:'Learning',zhr:'学习',enr:'Learning',
+     zh:'把散落的知识编译成结构；不确定的地方明确标出来。',
+     en:'Compiles scattered knowledge into structure, and marks the uncertain parts explicitly.'},
+    {g:'🕊️',nm:'Comms',zhr:'传讯',enr:'Comms',
+     zh:'构想阶段 —— 系统里也允许存在“还没想清楚”的位置。',
+     en:'Still a sketch. The system leaves room for things not yet figured out.'}
+  ];
+
+  /* ---------- render language-dependent widgets ---------- */
+  function isEn(){return document.documentElement.lang==='en';}
+
+  function render(){
+    var en=isEn();
+
+    var row=document.getElementById('sigrow');
+    row.innerHTML='';
+    SIGNALS.forEach(function(s){
+      var el=document.createElement('div'); el.className='sig';
+      var bars=s.pattern.map(function(v){
+        var h=v?18:4, o=v?'1':'.2';
+        return '<i style="width:6px;height:'+h+'px;margin-right:5px;opacity:'+o+'"></i>';
+      }).join('');
+      el.innerHTML='<button class="sig-btn"><span class="sig-name">'+s.id+
+                   '<em>'+(en?s.enn:s.zhn)+'</em></span>'+
+                   '<span class="sig-wave">'+bars+'</span>'+
+                   '<span class="sig-param">'+s.param+'</span></button>'+
+                   '<div class="sig-body"><div>'+(en?s.en:s.zh)+'</div></div>';
+      el.querySelector('.sig-btn').addEventListener('click',function(){
+        var wasOpen=el.classList.contains('open');
+        row.querySelectorAll('.sig').forEach(function(o){o.classList.remove('open');});
+        if(!wasOpen)el.classList.add('open');
+      });
+      row.appendChild(el);
+    });
+
+    var av=document.getElementById('avatars');
+    av.innerHTML='';
+    AGENTS.forEach(function(a){
+      var el=document.createElement('div'); el.className='av';
+      el.innerHTML='<div class="glyph">'+a.g+'</div><div class="nm">'+a.nm+'</div>'+
+                   '<div class="role">'+(en?a.enr:a.zhr)+'</div>'+
+                   '<div class="persona">'+(en?a.en:a.zh)+'</div>';
+      av.appendChild(el);
+    });
+  }
+
+  /* ---------- before/after ---------- */
+  var ba=document.getElementById('ba');
+  ba.querySelectorAll('.ba-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var p=b.getAttribute('data-pane');
+      ba.querySelectorAll('.ba-tabs button').forEach(function(x){
+        x.setAttribute('aria-pressed',String(x===b));
+      });
+      ba.querySelectorAll('.ba-pane').forEach(function(x){
+        x.classList.toggle('on',x.getAttribute('data-pane')===p);
+      });
+    });
+  });
+
+  /* ---------- lightbox ---------- */
+  var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),lbCap=document.getElementById('lb-cap');
+  document.getElementById('gal').addEventListener('click',function(e){
+    var fig=e.target.closest('figure'); if(!fig)return;
+    lbImg.src=fig.getAttribute('data-full');
+    var cap=fig.querySelector('figcaption span:not([style*="none"])');
+    lbCap.textContent=fig.querySelector('figcaption').innerText.trim();
+    lb.classList.add('on');
+  });
+  lb.addEventListener('click',function(){lb.classList.remove('on');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on');});
+
+  /* ---------- hero particle convergence ---------- */
+  var field=document.getElementById('field');
+  (function(){
+    var N=window.innerWidth<720?18:32;
+    var frag=document.createDocumentFragment();
+    for(var i=0;i<N;i++){
+      var s=document.createElement('span');
+      var a=(i/N)*Math.PI*2+Math.random()*0.6;
+      var r=26+Math.random()*26;
+      s.style.left=(50+Math.cos(a)*r*(window.innerWidth<720?0.9:1.5))+'%';
+      s.style.top=(42+Math.sin(a)*r*0.8)+'%';
+      s.style.transition='opacity 1.2s ease '+(i*0.02)+'s, left 2.2s cubic-bezier(.2,.7,.2,1) '+(0.5+i*0.015)+'s, top 2.2s cubic-bezier(.2,.7,.2,1) '+(0.5+i*0.015)+'s';
+      frag.appendChild(s);
+    }
+    field.appendChild(frag);
+    requestAnimationFrame(function(){
+      field.querySelectorAll('span').forEach(function(s,i){
+        s.style.opacity=(0.10+Math.random()*0.22).toFixed(2);
+      });
+      setTimeout(function(){
+        field.querySelectorAll('span').forEach(function(s,i){
+          var a=(i/N)*Math.PI*2, r=16+Math.random()*3;
+          s.style.left=(50+Math.cos(a)*r*1.25)+'%';
+          s.style.top=(42+Math.sin(a)*r*0.72)+'%';
+          s.style.opacity='0.26';
+        });
+      },900);
+    });
+  })();
+
+  /* ---------- rail + topbar ---------- */
+  var rail=document.getElementById('rail'),topbar=document.getElementById('topbar');
+  var links=Array.prototype.slice.call(rail.querySelectorAll('a'));
+  var secs=links.map(function(l){return document.querySelector(l.getAttribute('href'));});
+  function onScroll(){
+    topbar.classList.toggle('scrolled',window.scrollY>40);
+    var y=window.scrollY+window.innerHeight*0.35,cur=-1;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i;});
+    links.forEach(function(l,i){l.classList.toggle('on',i===cur);});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  /* ---------- missing-asset cleanup ---------- */
+  window.addEventListener('load',function(){
+    document.querySelectorAll('figure.missing').forEach(function(f){
+      if(f.classList.contains('placeholder'))return;
+      f.remove();
+    });
+    var gal=document.getElementById('gal');
+    if(gal&&!gal.children.length)gal.closest('section').remove();
+    onScroll();
+  });
+
+  /* ---------- init ---------- */
+  var saved=null; try{saved=localStorage.getItem('pf-lang');}catch(e){}
+  setLang(saved==='en'?'en':'zh-CN');
+  onScroll();
+})();
+</script>
+</body>
+</html>
