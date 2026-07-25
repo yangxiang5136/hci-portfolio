@@ -169,6 +169,9 @@ section.case{padding:92px 0;border-top:1px solid var(--rule);}
 .gal figure{margin:0;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:var(--surface);
             cursor:zoom-in;transition:.22s ease;box-shadow:var(--shadow-sm);}
 .gal figure:hover{border-color:var(--current);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.gal figure{display:flex;flex-direction:column;}
+.gal img{height:210px;object-fit:cover;object-position:top center;}
+.gal figcaption{margin-top:auto;}
 .gal figcaption{padding:12px 14px;font-size:12.5px;line-height:1.55;color:var(--text-muted);
                 border-top:1px solid var(--rule);background:var(--surface-subtle);}
 .lightbox{position:fixed;inset:0;z-index:90;background:rgba(17,24,39,.62);display:none;align-items:center;
