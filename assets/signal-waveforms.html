@@ -224,12 +224,12 @@ function drawPlot(pulses, opts = {}) {
       svg.appendChild(el("rect", {
         x: x(p.t0) + 0.5, y: yt + 0.5,
         width: Math.max(w - 1, 0.6), height: Math.max(h - 1, 0.6),
-        fill: C.currentSoft, stroke: C.current, "stroke-width": 1, "stroke-opacity": 0.55
+        fill: C.currentSoft, stroke: C.current, "stroke-width": 1, "stroke-opacity": 0.9
       }));
-      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current, "fill-opacity": 0.9 }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current }));
     } else if (mode === "ghost") {
-      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: h, fill: C.current, "fill-opacity": 0.13 }));
-      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current, "fill-opacity": 0.32 }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: h, fill: C.current, "fill-opacity": 0.09 }));
+      svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: 2, fill: C.current, "fill-opacity": 0.22 }));
     } else {
       const a = 0.5 + 0.5 * (p.pwm / 255);
       svg.appendChild(el("rect", { x: x(p.t0), y: yt, width: w, height: h, fill: C.current, "fill-opacity": a.toFixed(3) }));

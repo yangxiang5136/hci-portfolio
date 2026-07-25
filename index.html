@@ -382,6 +382,11 @@ html[lang="en"] [data-zh]{display:none!important;}
       <span data-en><b>Why behavior rules are written in natural language:</b> only what is written down can be reviewed, argued over, and changed. Character buried in code confines the discussion to engineers. As a contract, product, design, and algorithm can argue over the same sentence, which is exactly what an interaction design document is for.</span>
     </div>
 
+    <div class="note">
+      <span data-zh><b>它现在就在跑。</b>界面由系统按真实状态每四小时自动重新渲染一次，可以直接看：<a href="https://digital-me-dashboard.vercel.app/dashboard.html" target="_blank" rel="noopener" style="color:var(--current-hover)">digital-me-dashboard.vercel.app</a>。这一点对我很重要：设计意图如果只停在稿子上，它就还没有被真正验证过。</span>
+      <span data-en><b>It is running right now.</b> The interface re-renders itself from live system state every four hours, and you can look at it: <a href="https://digital-me-dashboard.vercel.app/dashboard.html" target="_blank" rel="noopener" style="color:var(--current-hover)">digital-me-dashboard.vercel.app</a>. That matters to me: a design intention that never leaves the mockup has not really been tested yet.</span>
+    </div>
+
     <div class="codecard" id="contract">
       <pre><span class="c"># strategist / instruction.yaml — <span data-zh>行为边界节选</span><span data-en>behavioral boundary, excerpt</span></span>
 <span class="k">judgment:</span>
@@ -392,8 +397,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
 
     <figure class="figure">
-      <img src="assets/dashboard-topology-crop.png" alt="agent topology dashboard" onerror="this.closest('figure').classList.add('missing')">
-      <figcaption><span data-zh>系统拓扑：智能体、共享总线与产出物的读写关系，由系统按真实状态自动渲染</span><span data-en>System topology: agents, shared bus, and outputs, rendered automatically from live system state</span></figcaption>
+      <img src="assets/agent-avatars.png" alt="agent avatar system" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>角色系统：六个手绘 SVG 头像，直接取自生产环境的渲染器。一个智能体一种动物，让身份在读到名字之前就先被认出来</span><span data-en>The character system: six hand-authored SVG avatars, lifted straight from the production renderer. One animal per agent, so identity registers before a single label is read.</span></figcaption>
     </figure>
   </div>
 </section>
