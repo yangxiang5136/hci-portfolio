@@ -25,8 +25,8 @@
   --maxw:960px;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body-font);
+html{scroll-behavior:auto;background:#f3f6fa;}
+body{position:relative;isolation:isolate;margin:0;background:transparent;color:var(--text);font-family:var(--body-font);
      font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 img,video{max-width:100%;display:block;}
 button{font:inherit;border:0;background:none;color:inherit;cursor:pointer;}
@@ -34,6 +34,14 @@ a{color:inherit;}
 h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.18;margin:0;}
 ::selection{background:var(--current-soft);}
 button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-offset:2px;border-radius:4px;}
+
+/* ---------- ambient pulse ---------- */
+.ambient-media{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;
+  background:#f3f6fa url("assets/portfolio-blue-pulse-poster-v2.jpg") center/cover no-repeat;}
+.ambient-media video{width:100%;height:100%;max-width:none;object-fit:cover;opacity:.88;
+  filter:saturate(.86) contrast(.96);}
+.ambient-scrim{position:absolute;inset:0;background:linear-gradient(180deg,
+  rgba(251,252,254,.18) 0%,rgba(251,252,254,.34) 34%,rgba(251,252,254,.58) 100%);}
 
 .label{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);}
 .label.gold{color:var(--current);}
@@ -46,34 +54,36 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .topbar.scrolled{border-bottom-color:var(--rule);box-shadow:0 1px 0 rgba(16,24,40,.02);}
 .topbar .who{font-size:13.5px;color:var(--text-secondary);}
 .topbar .who b{color:var(--text);font-weight:600;}
+.top-actions{display:flex;align-items:center;gap:18px;}
+.topnav{display:none;align-items:center;gap:16px;}
+.topnav a{font:500 11.5px/1 var(--mono);color:var(--text-muted);text-decoration:none;}
+.topnav a:hover{color:var(--current-hover);}
+@media(min-width:760px){.topnav{display:flex;}}
 .langtoggle{display:flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);}
 .langtoggle button{font:500 11.5px/1 var(--mono);padding:6px 13px;border-radius:999px;
                    color:var(--text-muted);transition:.18s ease;}
 .langtoggle button[aria-pressed="true"]{background:var(--current-soft);color:var(--current-hover);}
 
 /* ---------- hero ---------- */
-.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      text-align:center;padding:120px 24px 80px;overflow:hidden;}
-.hero-field{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:84px 24px 38px;overflow:hidden;cursor:pointer;background:rgba(251,252,254,.08);}
+.hero:focus-visible{outline:2px solid var(--current);outline-offset:-4px;}
+.hero-field{display:none;position:absolute;inset:0;z-index:0;pointer-events:none;}
 .hero-field span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--current);
                  opacity:0;transform:translate(-50%,-50%);}
 .hero-inner{position:relative;z-index:2;max-width:800px;}
-.hero h1{margin:20px 0 0;font-size:clamp(32px,5.2vw,56px);}
+.hero h1{margin:12px 0 0;font-size:clamp(27px,3.7vw,40px);line-height:1.12;}
 .hero h1 em{font-style:normal;color:var(--current);}
-.hero .lede{margin:24px auto 0;max-width:580px;color:var(--text-secondary);font-size:clamp(15px,1.6vw,17px);}
-.hero .stats{margin-top:44px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
-.stat{border:1px solid var(--rule);border-radius:var(--radius);padding:14px 20px;background:var(--surface);
-      min-width:146px;text-align:left;box-shadow:var(--shadow-sm);}
-.stat b{display:block;font-size:27px;font-weight:700;letter-spacing:-.02em;color:var(--current);line-height:1.1;}
-.stat span{font-size:12px;line-height:1.5;color:var(--text-muted);display:block;margin-top:6px;}
-.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;
+.hero .lede{margin:12px auto 0;max-width:580px;color:var(--text-secondary);font-size:clamp(14px,1.4vw,16px);}
+.hero .stats{margin:16px auto 0;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:680px;}
+.stat{border:1px solid var(--rule);border-radius:999px;padding:7px 11px;background:var(--surface);
+      color:var(--text-secondary);font:500 11.5px/1 var(--mono);box-shadow:var(--shadow-sm);}
+.scroll-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:2;
              font:500 10.5px/1 var(--mono);letter-spacing:.18em;color:var(--text-muted);}
-.scroll-hint::after{content:"";display:block;width:1px;height:26px;margin:10px auto 0;
-                    background:linear-gradient(var(--rule-strong),transparent);}
+.scroll-hint::after{display:none;}
 
 /* ---------- rail ---------- */
-.rail{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:40;display:none;flex-direction:column;gap:13px;}
-@media(min-width:1240px){.rail{display:flex;}}
+.rail{display:none;}
 .rail a{display:flex;align-items:center;gap:10px;font:500 11.5px/1 var(--mono);
         color:var(--text-muted);text-decoration:none;transition:.22s ease;}
 .rail a::before{content:"";width:14px;height:1.5px;border-radius:1px;background:var(--rule-strong);transition:.22s ease;}
@@ -82,7 +92,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .rail a.on::before{width:28px;background:var(--current);}
 
 /* ---------- section ---------- */
-section.case{padding:92px 0;border-top:1px solid var(--rule);}
+section.case{padding:92px 0;border-top:1px solid rgba(207,213,222,.72);
+  background:rgba(251,252,254,.91);backdrop-filter:blur(16px);}
+section.case:nth-of-type(even){background:rgba(247,249,252,.9);}
 .case-head{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
 .case-head h2{font-size:clamp(25px,3.4vw,38px);}
 .case-head .sub{color:var(--text-secondary);max-width:640px;font-size:15.5px;}
@@ -102,9 +114,135 @@ section.case{padding:92px 0;border-top:1px solid var(--rule);}
 
 .grid2{display:grid;gap:20px;}
 @media(min-width:760px){.grid2{grid-template-columns:1fr 1fr;}}
+.trial-figure{max-width:620px;margin-left:auto;margin-right:auto;}
+.hardware-grid{align-items:stretch;margin-top:10px;}
+.hardware-grid .figure{display:flex;flex-direction:column;height:100%;margin:16px 0;}
+.hardware-grid .figure img{aspect-ratio:16/9;object-fit:contain;background:#fff;}
+.hardware-grid .figure figcaption{margin-top:auto;}
+.hardware-intro{margin-top:34px;scroll-margin-top:74px;}
 .note{border-left:3px solid var(--current);background:var(--current-soft);border-radius:0 var(--radius-small) var(--radius-small) 0;
       padding:16px 20px;color:var(--text-secondary);font-size:15px;margin:26px 0;}
 .note b{color:var(--text);font-weight:600;}
+
+/* ---------- project atlas ---------- */
+.atlas{padding:38px 0 72px;border-top:1px solid rgba(207,213,222,.72);
+  background:rgba(255,255,255,.82);backdrop-filter:blur(18px);}
+.atlas-head{display:grid;gap:11px;margin-bottom:20px;}
+.atlas-head h2{font-size:clamp(25px,3.4vw,36px);max-width:720px;}
+.atlas-head p{margin:0;max-width:680px;color:var(--text-secondary);font-size:14.5px;}
+.atlas-controls{display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 24px;}
+.atlas-controls button{border:1px solid var(--rule);border-radius:999px;padding:8px 13px;
+  color:var(--text-muted);background:var(--canvas);font:500 11.5px/1 var(--mono);transition:.18s ease;}
+.atlas-controls button:hover{border-color:var(--rule-strong);color:var(--text);}
+.atlas-controls button[aria-pressed="true"]{background:var(--action-dark);border-color:var(--action-dark);color:#fff;}
+.atlas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.project-card{display:flex;flex-direction:column;min-height:250px;border:1px solid var(--rule);border-radius:16px;
+  padding:22px;background:var(--canvas);box-shadow:var(--shadow-sm);transition:.2s ease;}
+.project-card:hover{border-color:var(--rule-strong);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.project-card[hidden]{display:none;}
+.project-card.featured{grid-column:span 1;background:linear-gradient(145deg,#fff 30%,var(--current-soft));}
+.project-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;}
+.project-tier,.project-status{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;}
+.project-tier{color:var(--current-hover);}.project-status{color:var(--text-muted);text-align:right;}
+.project-card h3{font-size:20px;margin-bottom:10px;}
+.project-card p{margin:0;color:var(--text-secondary);font-size:14px;line-height:1.65;}
+.project-card details{margin-top:auto;padding-top:18px;}
+.project-card summary{cursor:pointer;color:var(--text);font:600 12px/1.3 var(--mono);list-style:none;}
+.project-card summary::-webkit-details-marker{display:none;}
+.project-card summary::after{content:" +";color:var(--current);}
+.project-card details[open] summary::after{content:" −";}
+.project-card .project-role{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--text-muted);}
+.project-card .project-link{display:inline-flex;margin-top:15px;color:var(--current-hover);font:600 12px/1 var(--mono);text-decoration:none;}
+.atlas-note{margin:24px 0 0;color:var(--text-muted);font-size:12.5px;}
+@media(min-width:860px){.project-card.featured{min-height:285px}.atlas-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- atlas scan layer ---------- */
+.atlas-controls{display:none;}
+.atlas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.project-card{position:relative;min-height:168px;padding:18px;overflow:hidden;isolation:isolate;cursor:pointer;}
+.project-card.featured{grid-column:span 2;min-height:320px;padding:0;background:var(--action-dark);color:#fff;}
+.project-card.featured .project-thumb{height:220px;overflow:hidden;background:#eaf0f5;}
+.project-card.featured .project-thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(.8);transition:transform .35s ease;}
+.project-card.featured:hover .project-thumb img{transform:scale(1.025);}
+.project-card.featured .project-meta{position:absolute;left:18px;right:18px;top:18px;z-index:2;}
+.project-card.featured .project-tier,.project-card.featured .project-status{background:rgba(17,24,39,.78);color:#fff;
+  padding:7px 9px;border-radius:999px;backdrop-filter:blur(8px);}
+.project-card.featured h3{margin:0;padding:20px 22px 24px;color:#fff;font-size:clamp(20px,2.5vw,27px);}
+.project-card>p,.project-card details{display:none;}
+.project-open{position:absolute;inset:0;width:100%;z-index:4;border-radius:inherit;}
+.project-open span{position:absolute;right:18px;bottom:19px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;color:var(--action-dark);font-size:18px;box-shadow:var(--shadow-sm);}
+.project-card:not(.featured){display:flex;padding:0;background:var(--canvas);min-height:250px;}
+.project-card:not(.featured) .project-thumb{height:150px;overflow:hidden;background:#eef2f6;border-bottom:1px solid var(--rule);}
+.project-card:not(.featured) .project-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;}
+.project-card:not(.featured) .project-thumb img.fit-contain{object-fit:contain;padding:8px;background:#f5f7fa;}
+.project-card:not(.featured):hover .project-thumb img{transform:scale(1.025);}
+.project-card:not(.featured) .project-meta{position:absolute;left:12px;right:12px;top:12px;z-index:2;margin:0;}
+.project-card:not(.featured) .project-tier,.project-card:not(.featured) .project-status{padding:6px 8px;border-radius:999px;background:rgba(17,24,39,.78);color:#fff;backdrop-filter:blur(8px);}
+.project-card:not(.featured) h3{margin:auto 0 0;padding:16px 46px 18px 17px;font-size:17px;}
+.project-card:not(.featured) .project-category{align-self:flex-start;padding:6px 8px;border-radius:7px;
+  background:var(--current-soft);color:var(--current-hover);font:600 10px/1 var(--mono);letter-spacing:.06em;margin-bottom:18px;}
+.project-card:not(.featured) .project-open span{background:var(--action-dark);color:#fff;width:28px;height:28px;right:14px;bottom:14px;font-size:15px;}
+.phone-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:100%;padding:18px 34px;background:linear-gradient(135deg,#171a1f,#262b32 60%,#403a18);}
+.phone-strip img{height:100%!important;object-fit:contain!important;border-radius:12px;box-shadow:0 14px 32px rgba(0,0,0,.3);filter:none!important;}
+.project-card.featured .project-thumb img.fit-contain{object-fit:contain;padding:14px;background:#f2f5f8;filter:none;}
+.project-card.featured .project-thumb img.focus-top{object-fit:cover;object-position:top center;filter:none;}
+.haptic-collage{position:relative;padding:14px;background:#e9edf2;}
+.haptic-collage .haptic-ui{width:86%!important;height:100%!important;object-fit:cover!important;object-position:top left;border-radius:11px;box-shadow:0 12px 26px rgba(16,24,40,.18);filter:none!important;}
+.haptic-collage .haptic-imu{position:absolute;right:14px;bottom:14px;width:34%!important;height:46%!important;object-fit:cover!important;object-position:center;border:5px solid #fff;border-radius:10px;box-shadow:0 12px 28px rgba(16,24,40,.24);filter:none!important;}
+.digital-collage{display:grid;grid-template-columns:1.5fr .8fr;gap:10px;padding:14px;background:#e9edf2;}
+.digital-collage img{width:100%!important;height:100%!important;border-radius:10px;box-shadow:0 9px 22px rgba(16,24,40,.14);filter:none!important;}
+.digital-collage .digital-board{object-fit:cover!important;object-position:left top;}
+.digital-collage .digital-structure{object-fit:cover!important;object-position:center;}
+
+.project-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+  background:rgba(17,24,39,.58);backdrop-filter:blur(8px);}
+.project-modal.on{display:flex;}
+.project-dialog{position:relative;width:min(860px,100%);max-height:min(820px,92vh);overflow:auto;border-radius:20px;
+  background:var(--surface);box-shadow:var(--shadow);padding:22px;}
+.project-close{position:absolute;right:18px;top:18px;width:34px;height:34px;border:1px solid var(--rule);border-radius:50%;
+  background:var(--surface-subtle);font-size:20px;line-height:1;}
+.modal-kicker{padding-right:48px;font:500 10.5px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--current-hover);}
+.project-dialog h2{margin:14px 48px 12px 0;font-size:clamp(25px,4vw,36px);}
+.modal-summary{margin:0;color:var(--text-secondary);font-size:15px;line-height:1.7;}
+.modal-gallery{position:relative;margin:18px 0 20px;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:#eef2f6;}
+.modal-stage{height:min(50vh,430px);display:grid;place-items:center;}
+.modal-stage img{width:auto;max-width:100%;height:auto;max-height:min(50vh,430px);object-fit:contain;}
+.modal-gallery-nav{position:absolute;left:12px;right:12px;top:50%;display:flex;justify-content:space-between;pointer-events:none;transform:translateY(-50%);}
+.modal-gallery-nav button{pointer-events:auto;width:38px;height:38px;border-radius:50%;background:rgba(17,24,39,.8);color:#fff;font-size:20px;box-shadow:var(--shadow-sm);}
+.modal-counter{position:absolute;right:12px;bottom:12px;padding:6px 9px;border-radius:999px;background:rgba(17,24,39,.78);color:#fff;font:500 10.5px/1 var(--mono);}
+.modal-role{margin-top:24px;padding:17px 18px;border-radius:11px;background:var(--surface-subtle);color:var(--text-secondary);font-size:13.5px;}
+.modal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+.modal-primary{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--action-dark);color:#fff;text-decoration:none;font-weight:600;font-size:13px;}
+.modal-secondary{padding:11px 15px;border:1px solid var(--rule);border-radius:9px;color:var(--text-secondary);font-size:13px;}
+body.modal-open{overflow:hidden;}
+section,footer{scroll-margin-top:68px;}
+@media(min-width:760px){
+  .atlas-grid{grid-template-columns:repeat(6,minmax(0,1fr));}
+  .project-card.featured{grid-column:span 3;}
+  .project-card:not(.featured){grid-column:span 2;}
+}
+@media(max-width:759px){
+  .topbar .who{display:none;}
+  .topnav{display:flex;gap:12px;}
+  .topbar{padding-left:16px;padding-right:16px;}
+  .phone-strip{gap:7px;padding:16px;}
+  .haptic-collage .haptic-ui{width:90%!important;}
+  .digital-collage{grid-template-columns:1.35fr .75fr;padding:10px;gap:7px;}
+  .project-dialog{padding:16px;}
+  .modal-stage{height:46vh;}
+  .modal-stage img{max-height:46vh;}
+}
+@media(max-width:520px){
+  .hero{padding:72px 18px 28px;}
+  .hero h1{font-size:26px;line-height:1.1;}
+  .hero .lede{font-size:13.5px;line-height:1.55;}
+  .hero .stats{display:none;}
+  .scroll-hint{bottom:9px;letter-spacing:.12em;}
+  .atlas{padding-top:27px;}
+  .atlas-head{margin-bottom:14px;}
+  .atlas-head p{display:none;}
+}
 
 /* ---------- signal cards ---------- */
 .sigrow{display:flex;flex-direction:column;gap:9px;margin:24px 0;}
@@ -145,6 +283,52 @@ section.case{padding:92px 0;border-top:1px solid var(--rule);}
 .ba-verdict.bad{background:var(--waiting-soft);color:var(--waiting-dark);border-color:var(--waiting-border);}
 .ba-verdict.good{background:var(--success-soft);color:var(--success-dark);border-color:var(--success-border);}
 
+/* ---------- work-zone reconstruction ---------- */
+.wz-demo{margin:28px 0;border:1px solid var(--rule);border-radius:18px;background:var(--surface);
+  overflow:hidden;box-shadow:var(--shadow-md);}
+.wz-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;
+  border-bottom:1px solid var(--rule);background:var(--surface-subtle);}
+.wz-top strong{font-size:13.5px;}.wz-step{font:500 11px/1 var(--mono);color:var(--text-muted);}
+.wz-layout{display:grid;min-height:440px;}
+.wz-map{position:relative;min-height:300px;overflow:hidden;background:
+  linear-gradient(112deg,transparent 0 33%,#e7ebef 33% 52%,transparent 52%),
+  linear-gradient(22deg,#edf3e8 0 48%,#dfe9d9 48% 100%);}
+.wz-road{position:absolute;left:-12%;top:43%;width:125%;height:88px;transform:rotate(-12deg);
+  background:#c8ced5;border-top:3px solid #fff;border-bottom:3px solid #fff;box-shadow:0 0 0 10px rgba(103,115,132,.12);}
+.wz-road::after{content:"";position:absolute;left:0;right:0;top:41px;border-top:3px dashed rgba(255,255,255,.8);}
+.wz-zone{position:absolute;left:50%;top:49%;width:164px;height:164px;border:3px solid var(--waiting);
+  border-radius:50%;background:rgba(232,135,0,.13);transform:translate(-50%,-50%) scale(.15);opacity:.18;
+  transition:transform .5s ease,opacity .3s ease,border-color .3s ease;}
+.wz-demo[data-stage="1"] .wz-zone,.wz-demo[data-stage="2"] .wz-zone,.wz-demo[data-stage="3"] .wz-zone{transform:translate(-50%,-50%) scale(1);opacity:1;}
+.wz-worker{position:absolute;left:17%;top:67%;width:34px;height:34px;border-radius:50%;background:var(--action-dark);
+  color:#fff;display:grid;place-items:center;font:600 12px/1 var(--mono);box-shadow:0 0 0 7px rgba(17,24,39,.12);
+  transition:left 1.2s cubic-bezier(.2,.7,.2,1),top 1.2s cubic-bezier(.2,.7,.2,1),background .3s ease;}
+.wz-demo[data-stage="2"] .wz-worker,.wz-demo[data-stage="3"] .wz-worker{left:43%;top:54%;background:var(--waiting-dark);}
+.wz-site-label{position:absolute;right:18px;top:18px;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,.9);
+  font:500 10.5px/1 var(--mono);color:var(--text-secondary);box-shadow:var(--shadow-sm);}
+.wz-panel{padding:24px;display:flex;flex-direction:column;gap:18px;}
+.wz-panel h3{font-size:20px;}.wz-panel p{margin:0;color:var(--text-secondary);font-size:14px;}
+.wz-options{display:flex;flex-wrap:wrap;gap:8px;}
+.wz-options button{padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--surface-subtle);
+  color:var(--text-secondary);font-size:13px;}
+.wz-options button[aria-pressed="true"]{border-color:var(--current);background:var(--current-soft);color:var(--current-hover);}
+.wz-range{display:grid;gap:8px;}.wz-range label{font:500 11px/1 var(--mono);color:var(--text-muted);}
+.wz-range input{width:100%;accent-color:var(--waiting);}
+.wz-event{display:none;border-left:3px solid var(--waiting);padding:13px 15px;background:var(--waiting-soft);
+  color:var(--waiting-dark);font-size:13px;border-radius:0 8px 8px 0;}
+.wz-demo[data-stage="3"] .wz-event{display:block;}
+.wz-actions{display:flex;align-items:center;gap:10px;margin-top:auto;}
+.wz-next{padding:11px 15px;border-radius:9px;background:var(--action-dark);color:#fff;font-weight:600;font-size:13px;}
+.wz-reset{padding:10px;color:var(--text-muted);font:500 11px/1 var(--mono);}
+.wz-disclosure{padding:12px 18px;border-top:1px solid var(--rule);color:var(--text-muted);font-size:11.5px;background:var(--surface-subtle);}
+@media(min-width:760px){.wz-layout{grid-template-columns:1.18fr .82fr}.wz-map{min-height:440px}}
+@media(prefers-reduced-motion:reduce){.wz-zone,.wz-worker{transition:none;}}
+.wz-screens{display:grid;gap:14px;margin:28px 0;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
+.wz-screens figure{margin:0;border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:#16191d;box-shadow:var(--shadow-md);}
+.wz-screens img{width:100%;aspect-ratio:9/18.5;object-fit:cover;object-position:top;}
+.wz-screens figcaption{padding:11px 12px;background:var(--surface);color:var(--text-muted);font-size:11.5px;line-height:1.55;}
+@media(max-width:640px){.wz-screens{grid-template-columns:1fr 1fr}.wz-screens figure:last-child{grid-column:span 2;max-width:50%;justify-self:center}}
+
 /* ---------- avatars ---------- */
 .avatars{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:12px;margin:26px 0;}
 .av{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:20px 14px;
@@ -174,6 +358,7 @@ section.case{padding:92px 0;border-top:1px solid var(--rule);}
 .gal figcaption{margin-top:auto;}
 .gal figcaption{padding:12px 14px;font-size:12.5px;line-height:1.55;color:var(--text-muted);
                 border-top:1px solid var(--rule);background:var(--surface-subtle);}
+.principle-gallery img{height:190px;object-position:center;}
 .lightbox{position:fixed;inset:0;z-index:90;background:rgba(17,24,39,.62);display:none;align-items:center;
           justify-content:center;padding:36px;cursor:zoom-out;backdrop-filter:blur(6px);}
 .lightbox.on{display:flex;}
@@ -183,7 +368,8 @@ section.case{padding:92px 0;border-top:1px solid var(--rule);}
                font-size:13px;line-height:1.6;color:#fff;}
 
 /* ---------- footer ---------- */
-footer{padding:80px 0 64px;border-top:1px solid var(--rule);background:var(--surface-subtle);}
+footer{padding:80px 0 64px;border-top:1px solid rgba(207,213,222,.72);
+  background:rgba(247,249,252,.9);backdrop-filter:blur(16px);}
 .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .contact a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);border-radius:var(--radius-small);
            padding:11px 16px;font:400 13.5px/1 var(--mono);color:var(--text-secondary);text-decoration:none;
@@ -195,34 +381,53 @@ html[lang="zh-CN"] [data-en]{display:none!important;}
 html[lang="en"] [data-zh]{display:none!important;}
 
 @media print{
-  .topbar,.rail,.scroll-hint,.lightbox,.hero-field{display:none!important;}
+  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media{display:none!important;}
   body{background:#fff;}
   section.case{padding:24px 0;page-break-inside:avoid;}
   .sig-body{max-height:none!important;}
   .ba-pane{display:block!important;}
   .av .persona{max-height:none!important;margin-top:10px;}
 }
+@media(prefers-reduced-motion:reduce){
+  .ambient-media video{display:none;}
+  .ambient-media{background-image:url("assets/portfolio-blue-pulse-poster-v2.jpg");}
+}
 </style>
 </head>
 <body>
 
+<div class="ambient-media" aria-hidden="true">
+  <video autoplay muted loop playsinline preload="metadata" poster="assets/portfolio-blue-pulse-poster-v2.jpg">
+    <source src="assets/portfolio-blue-pulse-background-v2.mp4" type="video/mp4">
+  </video>
+  <div class="ambient-scrim"></div>
+</div>
+
 <div class="topbar" id="topbar">
   <div class="who"><b>杨翔</b> <span data-zh>· 人机交互体验设计</span><span data-en>· Human-Machine Interaction Design</span></div>
-  <div class="langtoggle">
-    <button id="btn-zh" aria-pressed="true">中文</button>
-    <button id="btn-en" aria-pressed="false">EN</button>
+  <div class="top-actions">
+    <nav class="topnav" aria-label="Primary">
+      <a href="#atlas"><span data-zh>项目</span><span data-en>Projects</span></a>
+      <a href="#c1"><span data-zh>案例</span><span data-en>Cases</span></a>
+      <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
+    </nav>
+    <div class="langtoggle">
+      <button id="btn-zh" aria-pressed="true">中文</button>
+      <button id="btn-en" aria-pressed="false">EN</button>
+    </div>
   </div>
 </div>
 
 <nav class="rail" id="rail">
+  <a href="#atlas"><span data-zh>项目地图</span><span data-en>Atlas</span></a>
   <a href="#c1"><span data-zh>触觉信号</span><span data-en>Haptics</span></a>
   <a href="#c2"><span data-zh>信任设计</span><span data-en>Trust</span></a>
   <a href="#c3"><span data-zh>角色感</span><span data-en>Character</span></a>
-  <a href="#c4"><span data-zh>接纳沙盘</span><span data-en>Sandbox</span></a>
-  <a href="#c5"><span data-zh>设计文档</span><span data-en>Documents</span></a>
+  <a href="#c4"><span data-zh>假设观察</span><span data-en>Assumptions</span></a>
+  <a href="#c5"><span data-zh>系统原则</span><span data-en>System principles</span></a>
 </nav>
 
-<header class="hero">
+<header class="hero" id="hero" role="link" tabindex="0" aria-label="查看项目">
   <div class="hero-field" id="field"></div>
   <div class="hero-inner">
     <div class="label gold" data-zh>人因工程博士 · 弗吉尼亚理工</div>
@@ -232,20 +437,145 @@ html[lang="en"] [data-zh]{display:none!important;}
       <span data-en>Turning “it just feels off”<br>into <em>measurable, verifiable</em> design</span>
     </h1>
     <p class="lede">
-      <span data-zh>我研究人怎么感知机器、怎么信任机器。算法和运控强的人不缺，我补的是“人”这一侧最难标定的那颗器件。</span>
-      <span data-en>I study how people perceive machines, and how they come to trust them. Teams rarely lack algorithms or control engineers. What I calibrate is the hardest component on the other side: the human.</span>
+      <span data-zh>我把复杂、模糊的人机问题，转化为可理解、可验证、可纠正的体验系统。</span>
+      <span data-en>I turn ambiguous human-machine problems into experiences that can be understood, tested, and corrected.</span>
     </p>
     <div class="stats">
-      <div class="stat"><b>+15%</b><span data-zh>动态触觉信号<br>反应与准确率提升</span><span data-en>faster & more accurate<br>with dynamic haptics</span></div>
-      <div class="stat"><b>5</b><span data-zh>人团队 · 从 PRD<br>到 MVP 交付</span><span data-en>engineers led<br>PRD → MVP</span></div>
-      <div class="stat"><b>7</b><span data-zh>个 AI 智能体<br>生产环境运行</span><span data-en>AI agents live<br>in production</span></div>
+      <div class="stat"><span data-zh>研究</span><span data-en>Research</span></div>
+      <div class="stat"><span data-zh>产品定义</span><span data-en>Product definition</span></div>
+      <div class="stat"><span data-zh>交互设计</span><span data-en>Interaction design</span></div>
+      <div class="stat"><span data-zh>原型构建</span><span data-en>Prototyping</span></div>
+      <div class="stat"><span data-zh>证据驱动迭代</span><span data-en>Evidence-led iteration</span></div>
     </div>
   </div>
-  <div class="scroll-hint" data-zh>向下</div>
-  <div class="scroll-hint" data-en>SCROLL</div>
+  <div class="scroll-hint" data-zh>点击进入项目</div>
+  <div class="scroll-hint" data-en>TAP FOR PROJECTS</div>
 </header>
 
 <main>
+
+<!-- ============ PROJECT ATLAS ============ -->
+<section class="atlas" id="atlas">
+  <div class="wrap">
+    <div class="atlas-head">
+      <div class="label gold"><span data-zh>精选项目</span><span data-en>Selected work</span></div>
+      <h2><span data-zh>我做过的产品、研究和小工具</span><span data-en>Products, research, and tools I’ve built</span></h2>
+      <p><span data-zh>从社区产品、施工安全到个人 AI。先看界面，再决定要不要继续往下看。</span><span data-en>From community products and work-zone safety to personal AI. Start with the interface, then open the projects that interest you.</span></p>
+    </div>
+
+    <div class="atlas-grid" id="atlas-grid">
+      <article class="project-card featured" data-kind="featured product" data-target="#c5" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
+        <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
+        <h3><span data-zh>本地华人生活服务社区站</span><span data-en>Local Chinese Community Hub</span></h3>
+        <p><span data-zh>在不引入沉重账户体系的前提下，为本地社区建立足够的身份连续性、信任与联系方式交换。</span><span data-en>Building enough identity continuity, trust, and contact exchange for a local community without a heavy account system.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验主导；实现包含 AI 辅助。首页图依据真实页面重新排版并脱敏，后续功能图来自公开站点；当前流量与采用情况需按日期单独核验。</span><span data-en>Product and experience lead; implementation included AI assistance. The homepage visual is a privacy-safe re-layout of the real interface, followed by captures from the public product. Current traffic and adoption require dated verification.</span></p><a class="project-link" href="#c5"><span data-zh>查看信任交换蓝图 →</span><span data-en>See the trust-exchange blueprint →</span></a></details>
+        <button class="project-open" aria-label="Quick view: Local Chinese Community Hub"><span>↗</span></button>
+      </article>
+
+      <article class="project-card featured" data-kind="featured research" data-target="#c1" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>博士研究平台</span><span data-en>Doctoral research platform</span></span></div>
+        <div class="project-thumb haptic-collage"><img class="haptic-ui" src="assets/vibrotactile-controller-redraw-4k.png" alt="基于真实运行界面高清重绘的 Python 触觉实验控制器"><img class="haptic-imu" src="assets/vibrotactile-imu-redraw-hd.png" alt="高清重绘的 IMU 实时姿态放大视图"></div>
+        <h3><span data-zh>可穿戴触觉预警系统</span><span data-en>Vibrotactile Warning System</span></h3>
+        <p><span data-zh>探索在视觉或听觉负荷很高时，有限的触觉通道如何清楚表达方向与紧迫度。</span><span data-en>Exploring how a limited tactile channel can communicate direction and urgency under visual or auditory load.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>研究设计与 Python 实验系统构建；首页图基于一次真实运行界面进行高清重绘，参与者与 session 标识已替换为演示值。量化结果在样本、单位和来源核验完成前不公开。</span><span data-en>Research design and Python experiment-system development. The homepage visual is a high-definition reconstruction grounded in a real run, with participant and session identifiers replaced by demo values. Quantitative outcomes remain gated until sample, unit, and source are verified.</span></p><a class="project-link" href="#c1"><span data-zh>进入信号方法 →</span><span data-en>Explore the signal method →</span></a></details>
+        <button class="project-open" aria-label="Quick view: Vibrotactile Warning System"><span>↗</span></button>
+      </article>
+
+      <article class="project-card featured" data-kind="featured product research" data-target="#c2" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>匿名产业合作</span><span data-en>Anonymized industry collaboration</span></span></div>
+        <div class="project-thumb phone-strip"><img src="assets/workzone-manager-home.png" alt="安全经理首页"><img src="assets/workzone-worker-context.png" alt="工人作业情境输入"><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"></div>
+        <h3><span data-zh>智慧工区安全平台</span><span data-en>Smart Work-Zone Safety Platform</span></h3>
+        <p><span data-zh>把工人端的情境输入、实时定位与管理端的工区划定、风险可视化和事件复盘连接成一条双角色流程。</span><span data-en>Connecting worker context and location with manager-side work-zone definition, risk visualization, and incident review.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品经理兼交互设计负责人；主导需求定义、交互模型、利益相关者协调与 MVP 规划，工程实现由团队协作完成。</span><span data-en>Product Manager &amp; Interaction Design Lead; led requirements, interaction model, stakeholder coordination, and MVP planning while engineering was delivered collaboratively.</span></p><a class="project-link" href="#c2"><span data-zh>查看案例入口 →</span><span data-en>Open the case entry →</span></a></details>
+        <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
+      </article>
+
+      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-gallery="assets/attention-board-synthetic.png|assets/digital-me-structure-live.png|assets/agent-avatars.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
+        <div class="project-thumb digital-collage"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"><img class="digital-structure" src="assets/digital-me-structure-live.png" alt="Digital Me 从捕获到交付的四层结构"></div>
+        <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
+        <p><span data-zh>让个人 AI 的主动判断保持可见、可纠正、可撤销，并把 Attention Board 作为真实日常使用中的界面模块。</span><span data-en>Keeping proactive AI judgment visible, correctable, and reversible, with Attention Board as an interface module used in daily life.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a></details>
+        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="product" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>精选项目</span><span data-en>Selected</span></span><span class="project-status"><span data-zh>公开重绘 · 小群体服务</span><span data-en>Public reconstruction · small-group service</span></span></div>
+        <div class="project-thumb"><img src="assets/household-care-coordination-redraw-hd.png" alt="家庭今日待办、责任人和完成记录的高清重绘界面"></div>
+        <h3><span data-zh>家庭任务与照料协作</span><span data-en>Household Tasks &amp; Care Coordination</span></h3>
+        <p><span data-zh>把今天谁需要做什么、谁正在负责、什么已经完成，放进一个安静的家庭共用界面里。</span><span data-en>A calm shared view of what needs attention today, who is responsible, and what has already been completed.</span></p>
+        <details><summary><span data-zh>设计重点</span><span data-en>Design focus</span></summary><p class="project-role"><span data-zh>界面强调异常优先、低提醒密度和责任连续性；首图依据现有原型高清重绘，真实使用叙事仍需参与者同意后公开。</span><span data-en>The interface prioritizes exceptions, low notification density, and continuity of responsibility. The lead visual is an HD reconstruction grounded in the existing prototype; real-use narratives still require participant consent.</span></p></details>
+        <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="product tools" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>历史原型 · 高清重绘</span><span data-en>Historical prototype · HD reconstruction</span></span></div>
+        <div class="project-thumb"><img src="assets/taskflow-single-task-timer-redraw-hd.png" alt="把当前工作、任务队列、持续时长和完成记录放在一起的 TaskFlow 高清重绘界面"></div>
+        <h3><span data-zh>TaskFlow · 工作流与时长记录</span><span data-en>TaskFlow · Workflow &amp; Time Tracking</span></h3>
+        <p><span data-zh>把任务队列、当前工作、持续时长和完成历史放进同一条流程，让时间记录服务于工作推进，而不是成为额外负担。</span><span data-en>Combining the task queue, current work, elapsed time, and completion history so time tracking supports the workflow instead of interrupting it.</span></p>
+        <details><summary><span data-zh>为什么保留</span><span data-en>Why it matters</span></summary><p class="project-role"><span data-zh>这是一个边界清楚的独立小产品，不与后来的注意力方法实验混为一谈。</span><span data-en>A bounded standalone product, distinct from the later attention-method experiments.</span></p></details>
+        <button class="project-open" aria-label="Quick view: TaskFlow Workflow and Time Tracking"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="ai tools" data-gallery="assets/branch-return-path-redraw-hd.png|assets/branch-compass-portfolio.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>方法探索 · 高清重绘</span><span data-en>Design inquiry · HD reconstruction</span></span></div>
+        <div class="project-thumb"><img src="assets/branch-return-path-redraw-hd.png" alt="标出主任务、当前分支和返回位置的高清重绘界面"></div>
+        <h3><span data-zh>中断恢复工作流</span><span data-en>Interruption Recovery Workflow</span></h3>
+        <p><span data-zh>保留主任务、临时分支和准确的返回位置，帮助人在被打断后快速恢复工作流，减少重新理解上下文的时间。</span><span data-en>Preserving the main task, temporary branch, and exact return point so people can resume a workflow without rebuilding its context.</span></p>
+        <details><summary><span data-zh>当前结论</span><span data-en>Current learning</span></summary><p class="project-role"><span data-zh>不同工具能缓解不同断裂点，但目前没有一个方法能胜任所有工作连续性问题。</span><span data-en>Different tools relieve different breaks in continuity; no single method currently handles the full problem.</span></p></details>
+        <button class="project-open" aria-label="Quick view: Interruption Recovery Workflow"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="tools product" data-gallery="assets/local-private-search-redraw-hd.png|assets/local-file-finder-ui.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>严格本地概念试点</span><span data-en>Strict-local concept pilot</span></span></div>
+        <div class="project-thumb"><img src="assets/local-private-search-redraw-hd.png" alt="明确标出文件留在本机、不上传云端的本地搜索高清重绘界面"></div>
+        <h3><span data-zh>本地优先文件检索工作流</span><span data-en>Local-First File Retrieval Workflow</span></h3>
+        <p><span data-zh>把自然语言检索嵌入现有文件工作流；无需迁移资料，索引和结果留在本机，敏感内容不上传云端。</span><span data-en>Adding natural-language retrieval to the existing file workflow without migration, while keeping the index, results, and sensitive content on the computer.</span></p>
+        <details><summary><span data-zh>证据边界</span><span data-en>Evidence boundary</span></summary><p class="project-role"><span data-zh>本地优先边界、检索交互与评估协议已有；真实文件夹试点和目标机器验证仍待完成。</span><span data-en>The local-first boundary, retrieval interaction, and evaluation protocol exist; real-folder pilot and target-machine validation remain pending.</span></p></details>
+        <button class="project-open" aria-label="Quick view: Local-First File Retrieval Workflow"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="tools ai" data-gallery="assets/handy-voice-input-workflow-hd.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>输入工作流</span><span data-en>Input workflow</span></span><span class="project-status"><span data-zh>日用改造 · 开源 Handy</span><span data-en>Daily adaptation · open-source Handy</span></span></div>
+        <div class="project-thumb"><img src="assets/handy-voice-input-workflow-hd.png" alt="从快捷键录音、本地转录到结构化文字回到当前光标的 Handy 工作流"></div>
+        <h3><span data-zh>Handy · 不离开当前任务的语音输入</span><span data-en>Handy · Voice Input Without Leaving the Task</span></h3>
+        <p><span data-zh>按一次键开始说话，本地转录后按语义做保守整理，再把文字送回正在使用的应用；原文和整理版都保留。</span><span data-en>One key starts capture; local transcription is conservatively organized and returned to the active app, while both the raw and organized versions remain available.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>我定义并验证了快捷键、模型选择、保守结构化、失败时回原文和回到当前光标的工作流，并制作 HandyBar 配置工具；底层桌面应用与本地转录框架来自开源 Handy。音频留在本机，启用结构化时文本会发送给所配置的语言模型。</span><span data-en>I defined and tested the shortcut, model choice, conservative organization, raw-text fallback, and return-to-cursor workflow, and built the HandyBar configuration utility. The desktop app and local transcription foundation come from open-source Handy. Audio stays on-device; when organization is enabled, transcript text is sent to the configured language model.</span></p></details>
+        <button class="project-open" aria-label="Quick view: Handy Voice Input Without Leaving the Task"><span>↗</span></button>
+      </article>
+
+      <article class="project-card" data-kind="research tools" data-target="#c4" data-gallery="assets/virtual-user-reaction-lab-redraw-hd.png|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
+        <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
+        <div class="project-thumb"><img src="assets/virtual-user-reaction-lab-redraw-hd.png" alt="同一产品概念被八类合成角色理解并汇总为反应模式的高清重绘界面"></div>
+        <h3><span data-zh>产品假设观察站</span><span data-en>Product Assumption Observatory</span></h3>
+        <p><span data-zh>把团队对用户反应的默认想象放进不同生活情境，比较同一项变化如何被重新理解，以及这些理解会带来什么后续选择。</span><span data-en>Placing a team's assumptions about user response into different life contexts to compare how the same change is reinterpreted and what choices may follow.</span></p>
+        <details><summary><span data-zh>查看现有案例</span><span data-en>Open current case</span></summary><p class="project-role"><span data-zh>概念、产品模型与信息可视化；所有人物、事件与结果均为合成内容。</span><span data-en>Concept, product model, and information visualization; all people, events, and outcomes are synthetic.</span></p><a class="project-link" href="#c4"><span data-zh>进入观察站 →</span><span data-en>Explore the observatory →</span></a></details>
+        <button class="project-open" aria-label="Quick view: Product Assumption Observatory"><span>↗</span></button>
+      </article>
+    </div>
+    <p class="atlas-note"><span data-zh>状态标签描述的是今天可以被证据支持的范围，不是项目质量评分。</span><span data-en>Status labels describe what today's evidence supports; they are not quality scores.</span></p>
+  </div>
+</section>
+
+<div class="project-modal" id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="project-dialog">
+    <button class="project-close" id="project-close" aria-label="Close project preview">×</button>
+    <div class="modal-kicker" id="modal-kicker"></div>
+    <h2 id="modal-title"></h2>
+    <div class="modal-gallery" id="modal-gallery">
+      <div class="modal-stage"><img id="modal-image" alt=""></div>
+      <div class="modal-gallery-nav"><button id="modal-prev" aria-label="Previous image">‹</button><button id="modal-next" aria-label="Next image">›</button></div>
+      <div class="modal-counter" id="modal-counter"></div>
+    </div>
+    <p class="modal-summary" id="modal-summary"></p>
+    <div class="modal-role" id="modal-role"></div>
+    <div class="modal-actions">
+      <a class="modal-primary" id="modal-primary" href="#atlas"><span data-zh>直接进入案例</span><span data-en>Open case directly</span></a>
+      <button class="modal-secondary" id="modal-secondary"><span data-zh>返回项目地图</span><span data-en>Back to project map</span></button>
+    </div>
+  </div>
+</div>
 
 <!-- ============ CASE 1 ============ -->
 <section class="case" id="c1">
@@ -255,8 +585,8 @@ html[lang="en"] [data-zh]{display:none!important;}
       <div class="label" data-en>CASE 01 · Doctoral research · 2021–2026</div>
       <h2><span data-zh>给皮肤设计一套不用学的警示语言</span><span data-en>A warning language for the skin, with nothing to learn</span></h2>
       <p class="sub">
-        <span data-zh>视觉被占满、环境嘈杂时，信息该走哪个通道？我在头部与躯干上搭了分布式触觉阵列，把“这个提醒够不够明显”变成个体化的感知阈值与反应延迟指标，并证明多部位协同的动态信号比传统静态信号在反应速度和警示准确率上提升 15%。</span>
-        <span data-en>When vision is saturated and the environment is loud, which channel should information take? I built a distributed haptic array across the head and torso, turned “is this alert noticeable enough” into per-person perception thresholds and response latencies, and showed that coordinated dynamic signals beat conventional static ones by 15% on response speed and accuracy.</span>
+        <span data-zh>视觉被占满、环境嘈杂时，信息该走哪个通道？我在头部与躯干上搭建分布式触觉阵列，把“这个提醒够不够明显”转化为个体化感知阈值、反应延迟与辨识准确率等可测问题。量化结果将在样本与来源核验后公开。</span>
+        <span data-en>When vision is saturated and the environment is loud, which channel should information take? I built a distributed haptic array across the head and torso and translated “is this alert noticeable enough?” into measurable questions of individual thresholds, response latency, and identification accuracy. Quantitative results will be published after sample and source verification.</span>
       </p>
       <div class="tags">
         <span class="tag" data-zh>多模态交互</span><span class="tag" data-en>Multimodal</span>
@@ -280,13 +610,20 @@ html[lang="en"] [data-zh]{display:none!important;}
       <figcaption><span data-zh>四类信号的时序规范图 —— 参数直接来自实验平台的信号规格文档</span><span data-en>Timing specification for the four signal classes, drawn from the platform's signal spec</span></figcaption>
     </figure>
 
-    <div class="grid2">
+    <figure class="figure trial-figure">
+      <img src="assets/trial-flow.png" alt="trial flow diagram" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>单次试次流程图：预警分支、双时间戳、IMU 并行记录</span><span data-en>Per-trial flow: pre-warning branch, dual timestamps, parallel IMU capture</span></figcaption>
+    </figure>
+
+    <div class="label hardware-intro" id="haptic-hardware"><span data-zh>两种载体，同一套方向语言</span><span data-en>Two carriers, one directional grammar</span></div>
+    <div class="grid2 hardware-grid">
       <figure class="figure">
-        <img src="assets/trial-flow.png" alt="trial flow diagram" onerror="this.closest('figure').classList.add('missing')">
-        <figcaption><span data-zh>单次试次流程图：预警分支、双时间戳、IMU 并行记录</span><span data-en>Per-trial flow: pre-warning branch, dual timestamps, parallel IMU capture</span></figcaption>
+        <img src="assets/smart-helmet-haptic-array-no-caption.svg" alt="智能头盔外部电子模块、内部四点触觉阵列与方向定义" onerror="this.closest('figure').classList.add('missing')">
+        <figcaption><span data-zh>智能头盔触觉阵列：外部集成 IMU、ESP32、控制盒与电源；内部以前、后、左、右四个触点表达方位。右侧方向图把硬件布局和佩戴者的空间参照对应起来。</span><span data-en>Smart-helmet haptic array: an external IMU, ESP32, control enclosure, and power source support four internal tactors for front, back, left, and right. The orientation diagram maps the hardware layout to the wearer’s spatial frame of reference.</span></figcaption>
       </figure>
-      <figure class="figure placeholder" data-slot="hardware">
-        <p><span data-zh>［硬件原型实拍 ——<br>头盔／背心触觉阵列、ESP32 台架］</span><span data-en>[Hardware prototype photo —<br>helmet / vest haptic array, ESP32 rig]</span></p>
+      <figure class="figure">
+        <img src="assets/smart-vest-haptic-array.png" alt="智能背心正反面实拍及肩部、躯干和上背部振动电机位置" onerror="this.closest('figure').classList.add('missing')">
+        <figcaption><span data-zh>智能背心触觉阵列：正面触点分布在双肩与躯干，背面触点位于上背部；可穿戴载体把方位提示从头部扩展到身体。</span><span data-en>Smart-vest haptic array: front tactors are distributed across the shoulders and torso, with an upper-back tactor on the rear. The wearable carrier extends directional cues from the head to the body.</span></figcaption>
       </figure>
     </div>
 
@@ -296,8 +633,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
 
     <figure class="figure">
-      <img src="assets/experiment-gui.png" alt="experiment control console" onerror="this.closest('figure').classList.add('missing')">
-      <figcaption><span data-zh>实验控制台：七态试次状态机、BLE 硬件连接、被试配平、实时数据记录 —— 我自己写的</span><span data-en>Experiment console: seven-state trial machine, BLE link, counterbalancing, live logging. Written by me.</span></figcaption>
+      <img src="assets/vibrotactile-controller-redraw-4k.png" alt="High-definition reconstruction of the running Python vibrotactile experiment console" onerror="this.closest('figure').classList.add('missing')">
+      <figcaption><span data-zh>我编写的 Python 实验控制台：把硬件连接、试次进度、方向与信号映射、反应时、已完成试次、运动轨迹和 IMU 实时姿态收进同一界面。本图依据一次真实运行界面高清重绘；参与者与 session 标识已替换为演示值。</span><span data-en>My Python experiment console brings hardware connectivity, trial progress, direction and signal mapping, reaction time, completed trials, position trajectory, and live IMU orientation into one surface. This high-definition reconstruction is grounded in a real run, with participant and session identifiers replaced by demo values.</span></figcaption>
     </figure>
   </div>
 </section>
@@ -306,18 +643,18 @@ html[lang="en"] [data-zh]{display:none!important;}
 <section class="case" id="c2">
   <div class="wrap">
     <div class="case-head">
-      <div class="label" data-zh>案例 02 · 产品经理与交互负责人 · 2023–</div>
-      <div class="label" data-en>CASE 02 · Product manager & interaction lead · 2023–</div>
-      <h2><span data-zh>警示系统最大的敌人不是感知不到，是狼来了</span><span data-en>The enemy of an alert system is not weak signal. It is crying wolf.</span></h2>
+      <div class="label" data-zh>案例 02 · 产品经理兼交互设计负责人 · 匿名产业合作</div>
+      <div class="label" data-en>CASE 02 · Product Manager &amp; Interaction Design Lead · Anonymized industry collaboration</div>
+      <h2><span data-zh>智慧工区安全平台</span><span data-en>Smart Work-Zone Safety Platform</span></h2>
       <p class="sub">
-        <span data-zh>智慧工地安全平台。工人对灯光与声音警示已经全面脱敏 —— 不是听不见，是不再相信。我们蹲现场做人因调研，重构了报警阈值与多模态通道分配逻辑，让“响 = 真有事”，接受度与留存跟着回来。项目获全美 Top 20 建筑商 Allan Myers 投资。</span>
-        <span data-en>A construction-site safety platform. Workers had gone fully numb to light and sound alerts. Not because they could not perceive them, but because they no longer believed them. We ran on-site human-factors research, rebuilt the alert thresholds and the multimodal channel allocation so that an alarm again meant something real, and acceptance and retention followed. The project was funded by Allan Myers, a top-20 US builder.</span>
+        <span data-zh>面向施工现场的双角色安全工作流：工人端提供实时定位与作业情境，管理端划定工区、查看风险分布并复盘事件。我主导需求定义、交互模型、利益相关者协调与 MVP 规划；工程实现由跨学科团队协作完成。</span>
+        <span data-en>A two-sided safety workflow for construction sites: workers provide location and task context while managers define work zones, inspect risk patterns, and review events. I led requirements, interaction modeling, stakeholder coordination, and MVP planning; engineering was delivered collaboratively by a cross-disciplinary team.</span>
       </p>
       <div class="tags">
-        <span class="tag" data-zh>用户洞察到落地</span><span class="tag" data-en>Insight → shipped</span>
+        <span class="tag" data-zh>需求到 MVP</span><span class="tag" data-en>Requirements → MVP</span>
         <span class="tag" data-zh>人机信任</span><span class="tag" data-en>Human-machine trust</span>
         <span class="tag" data-zh>0→1 产品定义</span><span class="tag" data-en>0→1 definition</span>
-        <span class="tag alt" data-zh>跨平台 5 人团队</span><span class="tag alt" data-en>Cross-platform team of 5</span>
+        <span class="tag alt" data-zh>跨学科协作</span><span class="tag alt" data-en>Cross-disciplinary collaboration</span>
       </div>
     </div>
 
@@ -334,7 +671,7 @@ html[lang="en"] [data-zh]{display:none!important;}
           <li><span data-zh><b>所有等级用同一种表达</b> —— 灯光加蜂鸣，紧急和例行长得一模一样。</span><span data-en><b>Every severity looks identical.</b> Light plus buzzer, whether it is an emergency or a routine notice.</span></li>
           <li><span data-zh><b>误报没有代价</b> —— 系统不知道自己错了，也没人反馈。</span><span data-en><b>False alarms cost nothing.</b> The system never learns it was wrong, and no one tells it.</span></li>
         </ul>
-        <div class="ba-verdict bad"><span data-zh>结果：两周后工人默认忽略提示。系统仍然“在工作”，安全收益已经归零。</span><span data-en>Result: within two weeks workers ignore alerts by default. The system still "works" while its safety value has gone to zero.</span></div>
+        <div class="ba-verdict bad"><span data-zh>设计风险：如果例行信息和紧急风险使用同样强度，系统会持续消耗人的注意力与信任。</span><span data-en>Design risk: when routine information and critical hazards use the same intensity, the system continually spends human attention and trust.</span></div>
       </div>
       <div class="ba-pane" data-pane="after">
         <ul>
@@ -342,18 +679,23 @@ html[lang="en"] [data-zh]{display:none!important;}
           <li><span data-zh><b>通道按紧急度分配</b> —— 紧急：多模态齐上；次要：单通道；例行：静默入日志，不打断人。</span><span data-en><b>Channels allocated by urgency.</b> Critical: all modalities. Secondary: one channel. Routine: silent logging that never interrupts.</span></li>
           <li><span data-zh><b>误报进入回路</b> —— 工人一键标记误报，阈值按真实反馈校准。</span><span data-en><b>False alarms enter the loop.</b> Workers flag them in one tap, and thresholds recalibrate on real feedback.</span></li>
         </ul>
-        <div class="ba-verdict good"><span data-zh>结果：“响 = 真有事”重新成立。接受度与留存显著提升，安全收益回到系统里。</span><span data-en>Result: an alarm means something again. Acceptance and retention rose markedly, and the safety value came back.</span></div>
+        <div class="ba-verdict good"><span data-zh>设计方向：让提醒强度匹配风险，把误报反馈重新送回阈值与产品决策。</span><span data-en>Design direction: match interruption intensity to risk and return false-alarm feedback to threshold and product decisions.</span></div>
       </div>
     </div>
 
     <div class="note">
-      <span data-zh><b>迁移到陪伴与看护产品：</b>同一个陷阱在家庭场景里更贵。如果一台看护机器人对家长的提醒经常是假警报，第三周就没人看了 —— 而那时它已经在家里，家长以为自己被保护着。所以我把“信任衰减率”当成一等公民指标：第 1 周与第 4 周的主动交互频次差，比任何满意度问卷都诚实。</span>
-      <span data-en><b>Porting this to companion and monitoring products:</b> the same trap is more expensive at home. If a caregiving robot's alerts to a parent are often false, nobody watches by week three, and by then it is already in the house while the parent believes they are covered. So I treat trust decay as a first-class metric: the drop in unprompted interaction between week one and week four is more honest than any satisfaction survey.</span>
+      <span data-zh><b>核心产品判断：</b>安全界面不能只问“能否发出提示”，还要问每一次打断是否值得。阈值、表达通道、误报反馈与事后复盘必须属于同一条产品回路。</span>
+      <span data-en><b>Core product judgment:</b> a safety interface cannot ask only whether it can issue an alert; it must ask whether each interruption is worth making. Thresholds, expression channels, false-alarm feedback, and incident review belong in one product loop.</span>
     </div>
 
-    <figure class="figure placeholder" data-slot="saas">
-      <p><span data-zh>［平台界面截图 —— 移动端感知 + Web 决策台］</span><span data-en>[Platform screens: mobile sensing + web decision dashboard]</span></p>
-    </figure>
+    <div class="label" data-zh>真实原型界面 — 两种角色，一条安全工作流</div>
+    <div class="label" data-en>Original prototype UI — two roles, one safety workflow</div>
+    <div class="wz-screens">
+      <figure><img src="assets/workzone-worker-context.png" alt="工人端作业情境输入"><figcaption><span data-zh>工人端：先记录当天的作业方式与情境</span><span data-en>Worker: capture today's work mode and context first</span></figcaption></figure>
+      <figure><img src="assets/workzone-manager-home.png" alt="安全经理端首页"><figcaption><span data-zh>安全经理端：进入工区、人员与风险管理入口</span><span data-en>Safety manager: enter work-zone, people, and risk controls</span></figcaption></figure>
+      <figure><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"><figcaption><span data-zh>管理看板：汇总区域、工人和近期告警</span><span data-en>Dashboard: summarize zones, workers, and recent alerts</span></figcaption></figure>
+    </div>
+    <p class="atlas-note"><span data-zh>界面来自项目原始原型；公开版本已移除客户品牌与可识别信息。项目经历在简历中可注明 Allan Myers。</span><span data-en>These screens come from the original prototype. Client branding and identifying details are removed here; the résumé may name Allan Myers.</span></p>
   </div>
 </section>
 
@@ -361,18 +703,18 @@ html[lang="en"] [data-zh]{display:none!important;}
 <section class="case" id="c3">
   <div class="wrap">
     <div class="case-head">
-      <div class="label" data-zh>案例 03 · 独立开发与系统架构 · 2026–</div>
-      <div class="label" data-en>CASE 03 · Solo build & system architecture · 2026–</div>
+      <div class="label" data-zh>案例 03 · 产品与体验架构 · 长期 n=1 设计探索</div>
+      <div class="label" data-en>CASE 03 · Product &amp; experience architecture · Long-running n=1 inquiry</div>
       <h2><span data-zh>角色感不是起个名字，是每个状态下的行为都自洽</span><span data-en>Character is not a name. It is behaving consistently in every state.</span></h2>
       <p class="sub">
-        <span data-zh>我独立搭建并部署了一套个人 AI 系统，七个智能体各有人格 —— 大象记忆、狐狸策略、猫头鹰情报、章鱼学习。人格不停在头像上，它落在可读可改的自然语言行为契约里：什么时候说话、什么时候闭嘴、失败了怎么表现。系统在生产环境跑了半年。</span>
-        <span data-en>I built and deployed a personal AI system on my own. Seven agents, each with a character: elephant for memory, fox for strategy, owl for intelligence, octopus for learning. The character does not stop at the avatar. It lives in readable, editable natural-language behavior contracts that say when to speak, when to stay quiet, and how to behave on failure. The system has run in production for six months.</span>
+        <span data-zh>我持续构建并使用一套个人 AI 系统，通过不同角色处理记忆、策略、情报与学习。角色感不只停在头像上，而是落在可读可改的自然语言行为契约里：什么时候说话、什么时候保持安静、失败时怎样让用户仍然拥有决定权。</span>
+        <span data-en>I continue to build and use a personal AI system whose roles support memory, strategy, intelligence, and learning. Character does not stop at an avatar; it lives in readable, editable behavior contracts that define when to speak, when to stay quiet, and how to preserve user decision ownership when the system fails.</span>
       </p>
       <div class="tags">
         <span class="tag" data-zh>角色与人格设计</span><span class="tag" data-en>Character design</span>
         <span class="tag" data-zh>行为逻辑文档</span><span class="tag" data-en>Behavior documentation</span>
         <span class="tag" data-zh>AI 产品</span><span class="tag" data-en>AI product</span>
-        <span class="tag alt" data-zh>语音 · 多模态输入</span><span class="tag alt" data-en>Voice & multimodal input</span>
+        <span class="tag alt" data-zh>语音 · 多模态输入</span><span class="tag alt" data-en>Voice &amp; multimodal input</span>
       </div>
     </div>
 
@@ -386,8 +728,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
 
     <div class="note">
-      <span data-zh><b>它现在就在跑。</b>界面由系统按真实状态每四小时自动重新渲染一次，可以直接看：<a href="https://digital-me-dashboard.vercel.app/dashboard.html" target="_blank" rel="noopener" style="color:var(--current-hover)">digital-me-dashboard.vercel.app</a>。这一点对我很重要：设计意图如果只停在稿子上，它就还没有被真正验证过。</span>
-      <span data-en><b>It is running right now.</b> The interface re-renders itself from live system state every four hours, and you can look at it: <a href="https://digital-me-dashboard.vercel.app/dashboard.html" target="_blank" rel="noopener" style="color:var(--current-hover)">digital-me-dashboard.vercel.app</a>. That matters to me: a design intention that never leaves the mockup has not really been tested yet.</span>
+      <span data-zh><b>公开面与私人运行面严格分开。</b>作品集只展示可公开的架构与合成数据交互，不公开个人 backlog、邮件或私有运行状态。这里讨论的是 n=1 使用中形成的设计方法，不暗示规模化采用。</span>
+      <span data-en><b>The public surface and private runtime stay separate.</b> This portfolio shows only public-safe architecture and synthetic interactions—not personal backlogs, email, or private runtime state. It presents methods formed through n=1 use and does not imply scaled adoption.</span>
     </div>
 
     <div class="codecard" id="contract">
@@ -412,15 +754,15 @@ html[lang="en"] [data-zh]{display:none!important;}
     <div class="case-head">
       <div class="label" data-zh>案例 04 · 概念探索 · 公开项目</div>
       <div class="label" data-en>CASE 04 · Concept exploration · Open project</div>
-      <h2><span data-zh>一个新硬件进入生活时，会被怎么误解？</span><span data-en>When a new device enters someone's life, how will it be misread?</span></h2>
+      <h2><span data-zh>同一项变化，为什么会被不同的人理解成不同的事？</span><span data-en>Why does the same change become something different to each person?</span></h2>
       <p class="sub">
-        <span data-zh>把“新模块被用户接纳还是误解”做成可模拟、可观察的沙盘：八个虚拟个体各有自己的需要、解读方式和核心疑问；同一个模块注入后，他们把它重新分类成不同的东西。视角、个体、时相、事件四个维度联动 —— 比问卷便宜，比上线安全。</span>
-        <span data-en>A sandbox that makes "will this module be adopted or misunderstood" simulable and observable. Eight synthetic individuals, each with their own needs, interpretive frame, and central question. Inject the same module and they reclassify it into different things. Viewpoint, individual, time-of-day, and event interlock across four dimensions. Cheaper than a survey, safer than shipping.</span>
+        <span data-zh>这是一个用合成人物外化产品假设的观察工具：把同一项新功能、规则或事件放进不同生活情境，比较人们如何根据自身需要重新理解它，以及这些理解如何改变后续选择与关系。它不是预测模型，而是一种在上线前发现盲点、讨论分歧的设计方法。</span>
+        <span data-en>An observatory for externalizing product assumptions through synthetic people. It places the same feature, rule, or event into different life contexts, then compares how people reinterpret it through their own needs and how those interpretations may shape later choices and relationships. It is not a prediction model; it is a design method for finding blind spots and debating differences before launch.</span>
       </p>
       <div class="tags">
-        <span class="tag" data-zh>新型交互</span><span class="tag" data-en>Novel interaction</span>
-        <span class="tag" data-zh>用户旅程建模</span><span class="tag" data-en>Journey modeling</span>
-        <span class="tag" data-zh>四维状态联动</span><span class="tag" data-en>Four-dimensional state</span>
+        <span class="tag" data-zh>设计假设可视化</span><span class="tag" data-en>Assumption visualization</span>
+        <span class="tag" data-zh>多视角推演</span><span class="tag" data-en>Multi-perspective exploration</span>
+        <span class="tag" data-zh>后果链探索</span><span class="tag" data-en>Consequence mapping</span>
       </div>
     </div>
 
@@ -430,8 +772,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     </figure>
 
     <div class="note">
-      <span data-zh><b>其中一个设计细节值得单说：</b>四个时相（黎明／白天／黄昏／夜晚）各自绑定一组灯光参数 —— 天空、雾、环境光、霓虹、窗光。这不是美术滤镜，是“每个状态一套完整的表达参数”这一原则的练习。同一个原则换个载体，就是机器人的灯效与表情状态设计。</span>
-      <span data-en><b>One detail is worth calling out:</b> each of the four phases (dawn, day, dusk, night) binds a full set of lighting parameters covering sky, fog, ambient, neon, and window light. This is not an art filter. It is an exercise in one principle: every state carries a complete set of expressive parameters. Change the medium and the same principle becomes a robot's light and expression state design.</span>
+      <span data-zh><b>核心设计判断：</b>这里被观察的不是“数字人有多像真人”，而是团队对用户的默认想象。把这些想象放进多个情境和后果链里，谁把它当工具、谁感到被约束、谁暂缓接受，才会变成可见、可讨论、可修改的设计问题。</span>
+      <span data-en><b>Core design judgment:</b> the subject is not how convincingly synthetic people imitate real people, but the team's default assumptions about users. Placing those assumptions across contexts and consequence chains makes it possible to see, debate, and revise who treats a change as a tool, who feels constrained by it, and who delays adoption.</span>
     </div>
 
     <div class="grid2">
@@ -451,44 +793,35 @@ html[lang="en"] [data-zh]{display:none!important;}
 <section class="case" id="c5">
   <div class="wrap">
     <div class="case-head">
-      <div class="label" data-zh>选辑 · 结构化设计文档</div>
-      <div class="label" data-en>Selected works · Structured design documents</div>
-      <h2><span data-zh>状态机、服务蓝图、失败反馈策略</span><span data-en>State machines, service blueprints, failure-feedback strategy</span></h2>
+      <div class="label" data-zh>选辑 · 交互系统设计</div>
+      <div class="label" data-en>Selected work · Interaction system design</div>
+      <h2><span data-zh>让复杂系统保持可理解、可控、可恢复</span><span data-en>Keeping complex systems understandable, controllable, and recoverable</span></h2>
       <p class="sub">
-        <span data-zh>体验方案要能被研发、测试、市场读懂并执行，这一节是我日常产出的这类文档。点开看大图。</span>
-        <span data-en>An experience spec has to be legible and executable for engineering, QA, and marketing alike. These are the documents I produce for that. Click to enlarge.</span>
+        <span data-zh>我把复杂机制转化成用户能感知的反馈：看得见系统状态，知道信息何时交换，也能在能力受限时继续完成核心任务。</span>
+        <span data-en>I translate complex system behavior into feedback people can understand: visible state, deliberate information exchange, and a core task that survives reduced capability.</span>
       </p>
     </div>
 
-    <div class="gal" id="gal">
-      <figure data-full="assets/agent-state-machine.png">
-        <img src="assets/agent-state-machine.png" alt="conversational state machine" onerror="this.closest('figure').remove()">
-        <figcaption><span data-zh>对话状态机 —— 含六条失败与降级分支，每条标注给用户的反馈文案</span><span data-en>Conversational state machine, with six failure and degradation branches, each annotated with its user-facing message</span></figcaption>
+    <div class="gal principle-gallery" id="gal">
+      <figure data-full="assets/principle-state-clarity.png">
+        <img src="assets/principle-state-clarity.png" alt="Abstract visualization of visible system state and recovery" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh><b>理解状态：</b>用持续、明确的反馈，让用户知道系统正在做什么，以及下一步会发生什么。</span><span data-en><b>Understand the state:</b> continuous, explicit feedback shows what the system is doing and what happens next.</span></figcaption>
       </figure>
-      <figure data-full="assets/trust-exchange-blueprint.png">
-        <img src="assets/trust-exchange-blueprint.png" alt="trust exchange blueprint" onerror="this.closest('figure').remove()">
-        <figcaption><span data-zh>服务蓝图 —— 非对称信息交换的三泳道流转与一次锁定规则</span><span data-en>Service blueprint: asymmetric information exchange across three lanes, with a one-time locking rule</span></figcaption>
+      <figure data-full="assets/principle-consent-exchange.png">
+        <img src="assets/principle-consent-exchange.png" alt="Abstract visualization of consent before information exchange" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh><b>控制交换：</b>让敏感信息只在明确确认后出现，避免系统替用户做决定。</span><span data-en><b>Control the exchange:</b> sensitive information appears only after explicit confirmation, so the system never decides on the user's behalf.</span></figcaption>
       </figure>
-      <figure data-full="assets/capability-negotiation.png">
-        <img src="assets/capability-negotiation.png" alt="capability negotiation model" onerror="this.closest('figure').remove()">
-        <figcaption><span data-zh>能力协商模型 —— 后端能力不足时界面如何优雅降级而不崩坏</span><span data-en>Capability negotiation: how the interface degrades gracefully when the backend cannot deliver</span></figcaption>
+      <figure data-full="assets/principle-graceful-fallback.png">
+        <img src="assets/principle-graceful-fallback.png" alt="Abstract visualization of graceful fallback that preserves the core task" onerror="this.closest('figure').remove()">
+        <figcaption><span data-zh><b>保持连续：</b>能力受限时保留核心任务；条件恢复后，再自然接回完整体验。</span><span data-en><b>Maintain continuity:</b> preserve the core task under reduced capability, then restore the full experience when conditions recover.</span></figcaption>
       </figure>
-      <figure data-full="assets/trial-flow.png">
-        <img src="assets/trial-flow.png" alt="trial flow" onerror="this.closest('figure').remove()">
-        <figcaption><span data-zh>实验流程图 —— 分支、双时间戳与并行数据采集</span><span data-en>Trial flow: branching, dual timestamps, parallel capture</span></figcaption>
-      </figure>
-    </div>
-
-    <div class="note">
-      <span data-zh><b>关于优雅降级 ——</b> 那张能力协商图讲的是软件面板，但规则可以原样搬到硬件上：户外机器人丢网络、丢定位、传感器脏了、电量见底时，交互不该崩掉，而该有序退档。用户想要什么（意图）和系统此刻能做什么（能力）是两个变量，界面呈现的是它们的交集 —— 并且能力恢复时，意图还在，体验自动回来。</span>
-      <span data-en><b>On graceful degradation:</b> that capability diagram describes software panels, but the rule transfers to hardware unchanged. When an outdoor robot loses network or localization, when sensors are dirty or the battery is nearly out, the interaction should not collapse. It should step down in an orderly way. What the user wants (intent) and what the system can currently do (capability) are two separate variables, and the interface presents their intersection. When capability returns, the intent is still there, and the experience comes back on its own.</span>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer>
+<footer id="contact">
   <div class="wrap">
     <div class="label gold" data-zh>联系</div>
     <div class="label gold" data-en>Contact</div>
@@ -517,16 +850,33 @@ html[lang="en"] [data-zh]{display:none!important;}
   "use strict";
 
   /* ---------- language ---------- */
-  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en');
+  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero');
   function setLang(l){
+    var currentAnchor=null,currentOffset=0;
+    document.querySelectorAll('header[id],section[id]').forEach(function(section){
+      var top=section.getBoundingClientRect().top;
+      if(top<=72){currentAnchor=section;currentOffset=top;}
+    });
     document.documentElement.lang=l;
     btnZh.setAttribute('aria-pressed',String(l==='zh-CN'));
     btnEn.setAttribute('aria-pressed',String(l==='en'));
+    heroJump.setAttribute('aria-label',l==='en'?'View selected projects':'查看精选项目');
     try{localStorage.setItem('pf-lang',l);}catch(e){}
     render();
+    if(currentAnchor){window.scrollBy({top:currentAnchor.getBoundingClientRect().top-currentOffset,behavior:'auto'});}
   }
   btnZh.addEventListener('click',function(){setLang('zh-CN');});
   btnEn.addEventListener('click',function(){setLang('en');});
+  function jumpToProjects(){
+    document.getElementById('atlas').scrollIntoView({block:'start',behavior:'auto'});
+  }
+  heroJump.addEventListener('click',function(e){
+    if(e.target.closest('a,button')||String(window.getSelection()).trim())return;
+    jumpToProjects();
+  });
+  heroJump.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();jumpToProjects();}
+  });
 
   /* ---------- data ---------- */
   var SIGNALS=[
@@ -572,6 +922,8 @@ html[lang="en"] [data-zh]{display:none!important;}
      en:'Still a sketch. The system leaves room for things not yet figured out.'}
   ];
 
+  var wzState={stage:0,context:'foot',radius:30};
+
   /* ---------- render language-dependent widgets ---------- */
   function isEn(){return document.documentElement.lang==='en';}
 
@@ -608,6 +960,137 @@ html[lang="en"] [data-zh]{display:none!important;}
                    '<div class="persona">'+(en?a.en:a.zh)+'</div>';
       av.appendChild(el);
     });
+    renderWorkZone();
+    if(activeProjectCard)fillProjectModal(activeProjectCard);
+  }
+
+  /* ---------- compact atlas + project preview ---------- */
+  var atlasGrid=document.getElementById('atlas-grid');
+  var projectModal=document.getElementById('project-modal');
+  var projectClose=document.getElementById('project-close');
+  var modalSecondary=document.getElementById('modal-secondary');
+  var modalPrimary=document.getElementById('modal-primary');
+  var modalImage=document.getElementById('modal-image');
+  var modalPrev=document.getElementById('modal-prev');
+  var modalNext=document.getElementById('modal-next');
+  var modalCounter=document.getElementById('modal-counter');
+  var activeProjectCard=null;
+  var projectTrigger=null;
+  var activeGallery=[];
+  var activeGalleryIndex=0;
+  function localizedText(root){
+    if(!root)return'';
+    var match=root.querySelector(isEn()?'[data-en]':'[data-zh]');
+    return(match||root).textContent.trim();
+  }
+  function fillProjectModal(card){
+    var title=localizedText(card.querySelector('h3'));
+    var status=localizedText(card.querySelector('.project-status'));
+    var tier=localizedText(card.querySelector('.project-tier'));
+    document.getElementById('modal-kicker').textContent=tier+' · '+status;
+    document.getElementById('modal-title').textContent=title;
+    document.getElementById('modal-summary').textContent=localizedText(card.querySelector(':scope > p'));
+    document.getElementById('modal-role').textContent=localizedText(card.querySelector('.project-role'));
+    var target=card.getAttribute('data-target');
+    modalPrimary.hidden=!target;
+    if(target)modalPrimary.setAttribute('href',target);
+    activeGallery=(card.getAttribute('data-gallery')||'').split('|').filter(Boolean);
+    if(activeGalleryIndex>=activeGallery.length)activeGalleryIndex=0;
+    renderModalImage();
+  }
+  function renderModalImage(){
+    var hasImages=activeGallery.length>0;
+    document.getElementById('modal-gallery').hidden=!hasImages;
+    if(!hasImages)return;
+    modalImage.src=activeGallery[activeGalleryIndex];
+    modalImage.alt=localizedText(activeProjectCard.querySelector('h3'))+' · '+(activeGalleryIndex+1);
+    modalCounter.textContent=(activeGalleryIndex+1)+' / '+activeGallery.length;
+    modalPrev.hidden=activeGallery.length<2;modalNext.hidden=activeGallery.length<2;
+  }
+  function openProjectModal(card,trigger){
+    activeProjectCard=card;projectTrigger=trigger;activeGalleryIndex=0;fillProjectModal(card);
+    projectModal.classList.add('on');document.body.classList.add('modal-open');projectClose.focus();
+  }
+  function closeProjectModal(){
+    projectModal.classList.remove('on');document.body.classList.remove('modal-open');activeProjectCard=null;
+    if(projectTrigger)projectTrigger.focus();
+  }
+  modalPrev.addEventListener('click',function(){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderModalImage();});
+  modalNext.addEventListener('click',function(){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderModalImage();});
+  if(atlasGrid){
+    atlasGrid.addEventListener('click',function(e){
+      var button=e.target.closest('.project-open');if(!button)return;
+      openProjectModal(button.closest('.project-card'),button);
+    });
+  }
+  if(projectModal){
+    projectClose.addEventListener('click',closeProjectModal);
+    modalSecondary.addEventListener('click',closeProjectModal);
+    modalPrimary.addEventListener('click',closeProjectModal);
+    projectModal.addEventListener('click',function(e){if(e.target===projectModal)closeProjectModal();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&projectModal.classList.contains('on'))closeProjectModal();});
+  }
+
+  /* ---------- anonymized work-zone reconstruction ---------- */
+  var wzDemo=document.getElementById('wz-demo');
+  var wzOptions=document.getElementById('wz-options');
+  var wzRange=document.getElementById('wz-range');
+  var wzNext=document.getElementById('wz-next');
+  var wzReset=document.getElementById('wz-reset');
+  var zoneSize=document.getElementById('zone-size');
+  var zoneOutput=document.getElementById('zone-output');
+  function wzText(zh,en){return isEn()?en:zh;}
+  function renderWorkZone(){
+    if(!wzDemo)return;
+    var stages=[
+      {
+        role:['工人端','Worker view'],
+        title:['先说清今天的作业情境','Start with today\'s task context'],
+        copy:['同一段距离在步行、驾驶和重型机械作业中不代表同一种风险。','The same distance does not mean the same risk when walking, driving, or operating heavy equipment.'],
+        action:['交给安全经理','Hand off to safety manager']
+      },
+      {
+        role:['安全经理端','Safety manager view'],
+        title:['为这次作业定义警戒边界','Define a boundary for this task'],
+        copy:['边界是一条可复盘的产品决策，不是地图上永远不变的圆。','A boundary is a reviewable product decision, not a permanent circle on a map.'],
+        action:['模拟人员接近','Simulate approach']
+      },
+      {
+        role:['系统状态','System state'],
+        title:['情境与距离共同触发提醒','Context and distance trigger together'],
+        copy:['人员进入边界时，系统保留作业情境，而不是只留下一个失去上下文的告警。','When someone enters the boundary, the system preserves task context instead of leaving a context-free alert.'],
+        action:['记录并复盘','Record and review']
+      },
+      {
+        role:['事件复盘','Event review'],
+        title:['把一次提醒送回产品回路','Return one alert to the product loop'],
+        copy:['安全经理可以结合当时情境判断边界是否合理，并把误报或漏报变成下一轮调整依据。','The safety manager can judge the boundary against its context and turn false or missed alerts into the next adjustment.'],
+        action:['再体验一次','Run again']
+      }
+    ];
+    var item=stages[wzState.stage];
+    wzDemo.setAttribute('data-stage',String(wzState.stage));
+    document.getElementById('wz-step').textContent=(wzState.stage+1)+' / 4';
+    document.getElementById('wz-role').textContent=wzText(item.role[0],item.role[1]);
+    document.getElementById('wz-title').textContent=wzText(item.title[0],item.title[1]);
+    document.getElementById('wz-copy').textContent=wzText(item.copy[0],item.copy[1]);
+    wzNext.textContent=wzText(item.action[0],item.action[1]);
+    wzOptions.hidden=wzState.stage!==0;
+    wzRange.hidden=wzState.stage!==1;
+    zoneOutput.textContent=wzState.radius+' m';
+    var zone=wzDemo.querySelector('.wz-zone');
+    var diameter=116+wzState.radius*1.6;
+    zone.style.width=diameter+'px';zone.style.height=diameter+'px';
+  }
+  if(wzDemo){
+    wzOptions.addEventListener('click',function(e){
+      var button=e.target.closest('button[data-context]');if(!button)return;
+      wzState.context=button.getAttribute('data-context');
+      wzOptions.querySelectorAll('button').forEach(function(item){item.setAttribute('aria-pressed',String(item===button));});
+    });
+    zoneSize.addEventListener('input',function(){wzState.radius=Number(zoneSize.value);renderWorkZone();});
+    wzNext.addEventListener('click',function(){wzState.stage=wzState.stage===3?0:wzState.stage+1;renderWorkZone();});
+    wzReset.addEventListener('click',function(){wzState={stage:0,context:'foot',radius:30};zoneSize.value='30';wzOptions.querySelectorAll('button').forEach(function(item,i){item.setAttribute('aria-pressed',String(i===0));});renderWorkZone();});
   }
 
   /* ---------- before/after ---------- */
@@ -636,35 +1119,19 @@ html[lang="en"] [data-zh]{display:none!important;}
   lb.addEventListener('click',function(){lb.classList.remove('on');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on');});
 
-  /* ---------- hero particle convergence ---------- */
-  var field=document.getElementById('field');
-  (function(){
-    var N=window.innerWidth<720?18:32;
-    var frag=document.createDocumentFragment();
-    for(var i=0;i<N;i++){
-      var s=document.createElement('span');
-      var a=(i/N)*Math.PI*2+Math.random()*0.6;
-      var r=26+Math.random()*26;
-      s.style.left=(50+Math.cos(a)*r*(window.innerWidth<720?0.9:1.5))+'%';
-      s.style.top=(42+Math.sin(a)*r*0.8)+'%';
-      s.style.transition='opacity 1.2s ease '+(i*0.02)+'s, left 2.2s cubic-bezier(.2,.7,.2,1) '+(0.5+i*0.015)+'s, top 2.2s cubic-bezier(.2,.7,.2,1) '+(0.5+i*0.015)+'s';
-      frag.appendChild(s);
-    }
-    field.appendChild(frag);
-    requestAnimationFrame(function(){
-      field.querySelectorAll('span').forEach(function(s,i){
-        s.style.opacity=(0.10+Math.random()*0.22).toFixed(2);
-      });
-      setTimeout(function(){
-        field.querySelectorAll('span').forEach(function(s,i){
-          var a=(i/N)*Math.PI*2, r=16+Math.random()*3;
-          s.style.left=(50+Math.cos(a)*r*1.25)+'%';
-          s.style.top=(42+Math.sin(a)*r*0.72)+'%';
-          s.style.opacity='0.26';
-        });
-      },900);
-    });
-  })();
+  /* ---------- ambient motion preference ---------- */
+  var ambientVideo=document.querySelector('.ambient-media video');
+  var motionQuery=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');
+  function syncAmbientMotion(){
+    if(!ambientVideo||!motionQuery)return;
+    if(motionQuery.matches){ambientVideo.pause();}
+    else{var playback=ambientVideo.play();if(playback&&playback.catch)playback.catch(function(){});}
+  }
+  if(motionQuery){
+    if(motionQuery.addEventListener)motionQuery.addEventListener('change',syncAmbientMotion);
+    else if(motionQuery.addListener)motionQuery.addListener(syncAmbientMotion);
+    syncAmbientMotion();
+  }
 
   /* ---------- rail + topbar ---------- */
   var rail=document.getElementById('rail'),topbar=document.getElementById('topbar');
