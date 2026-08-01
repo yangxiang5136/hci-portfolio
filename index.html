@@ -54,15 +54,27 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .topbar.scrolled{border-bottom-color:var(--rule);box-shadow:0 1px 0 rgba(16,24,40,.02);}
 .topbar .who{font-size:13.5px;color:var(--text-secondary);}
 .topbar .who b{color:var(--text);font-weight:600;}
-.top-actions{display:flex;align-items:center;gap:18px;}
-.topnav{display:none;align-items:center;gap:16px;}
-.topnav a{font:500 11.5px/1 var(--mono);color:var(--text-muted);text-decoration:none;}
-.topnav a:hover{color:var(--current-hover);}
+.top-actions{display:flex;align-items:center;gap:12px;}
+.topnav{display:none;align-items:center;gap:2px;padding:3px;border:1px solid var(--rule);
+  border-radius:999px;background:rgba(255,255,255,.86);box-shadow:var(--shadow-sm);}
+.topnav a{display:inline-flex;min-height:31px;align-items:center;justify-content:center;padding:0 12px;
+  border-radius:999px;font:600 11.5px/1 var(--mono);color:var(--text-muted);text-decoration:none;
+  transition:color .18s ease,background-color .18s ease,box-shadow .18s ease;}
+.topnav a:hover{color:var(--current-hover);background:var(--surface-subtle);}
+.topnav a.on{color:var(--current-hover);background:var(--current-soft);box-shadow:inset 0 0 0 1px rgba(0,149,255,.12);}
 @media(min-width:760px){.topnav{display:flex;}}
 .langtoggle{display:flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);}
 .langtoggle button{font:500 11.5px/1 var(--mono);padding:6px 13px;border-radius:999px;
                    color:var(--text-muted);transition:.18s ease;}
 .langtoggle button[aria-pressed="true"]{background:var(--current-soft);color:var(--current-hover);}
+.back-to-top{position:fixed;right:24px;bottom:24px;z-index:45;display:flex;align-items:center;justify-content:center;
+  min-width:132px;min-height:48px;padding:0 18px;border:1px solid rgba(255,255,255,.22);border-radius:999px;
+  background:rgba(23,26,31,.94);color:#fff;box-shadow:0 12px 34px rgba(16,24,40,.24);
+  font:600 12px/1 var(--mono);letter-spacing:.02em;opacity:0;transform:translateY(12px);
+  pointer-events:none;transition:opacity .2s ease,transform .2s ease,background-color .2s ease;}
+.back-to-top.on{opacity:1;transform:translateY(0);pointer-events:auto;}
+.back-to-top:hover{background:var(--current-hover);}
+.back-to-top:focus-visible{outline:3px solid rgba(0,149,255,.36);outline-offset:3px;}
 
 /* ---------- hero ---------- */
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -230,7 +242,10 @@ section,footer{scroll-margin-top:68px;}
 }
 @media(max-width:759px){
   .topbar .who{display:none;}
-  .topnav{display:flex;gap:12px;}
+  .top-actions{width:100%;justify-content:space-between;gap:8px;}
+  .topnav{display:flex;gap:1px;}
+  .topnav a{min-height:30px;padding:0 9px;font-size:10.5px;}
+  .langtoggle button{padding-left:10px;padding-right:10px;}
   .topbar{padding-left:16px;padding-right:16px;}
   .phone-strip{gap:7px;padding:16px;}
   .haptic-collage .haptic-ui{width:90%!important;}
@@ -242,6 +257,8 @@ section,footer{scroll-margin-top:68px;}
   .modal-stage img{max-height:46vh;}
 }
 @media(max-width:520px){
+  .back-to-top{left:50%;right:auto;bottom:16px;min-width:156px;transform:translate(-50%,12px);}
+  .back-to-top.on{transform:translate(-50%,0);}
   .hero{padding:72px 18px 28px;}
   .hero h1{font-size:26px;line-height:1.1;}
   .hero .lede{font-size:13.5px;line-height:1.55;}
@@ -389,7 +406,7 @@ html[lang="zh-CN"] [data-en]{display:none!important;}
 html[lang="en"] [data-zh]{display:none!important;}
 
 @media print{
-  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media{display:none!important;}
+  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media,.back-to-top{display:none!important;}
   body{background:#fff;}
   section.case{padding:24px 0;page-break-inside:avoid;}
   .sig-body{max-height:none!important;}
@@ -425,6 +442,10 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
   </div>
 </div>
+
+<button class="back-to-top" id="back-to-top" type="button" aria-label="回到顶部" aria-hidden="true" tabindex="-1">
+  <span data-zh>回到顶部</span><span data-en>Back to top</span>
+</button>
 
 <nav class="rail" id="rail">
   <a href="#atlas"><span data-zh>项目地图</span><span data-en>Atlas</span></a>
@@ -499,7 +520,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-gallery="assets/attention-board-synthetic.png|assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg">
+      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
         <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
         <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
@@ -860,7 +881,7 @@ html[lang="en"] [data-zh]{display:none!important;}
   "use strict";
 
   /* ---------- language ---------- */
-  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero');
+  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero'),backToTop=document.getElementById('back-to-top');
   function setLang(l){
     var currentAnchor=null,currentOffset=0;
     document.querySelectorAll('header[id],section[id]').forEach(function(section){
@@ -871,6 +892,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     btnZh.setAttribute('aria-pressed',String(l==='zh-CN'));
     btnEn.setAttribute('aria-pressed',String(l==='en'));
     heroJump.setAttribute('aria-label',l==='en'?'View selected projects':'查看精选项目');
+    backToTop.setAttribute('aria-label',l==='en'?'Back to top':'回到顶部');
     try{localStorage.setItem('pf-lang',l);}catch(e){}
     render();
     if(currentAnchor){window.scrollBy({top:currentAnchor.getBoundingClientRect().top-currentOffset,behavior:'auto'});}
@@ -886,6 +908,10 @@ html[lang="en"] [data-zh]{display:none!important;}
   });
   heroJump.addEventListener('keydown',function(e){
     if(e.key==='Enter'||e.key===' '){e.preventDefault();jumpToProjects();}
+  });
+  backToTop.addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'auto'});
+    if(window.location.hash)history.replaceState(null,'',window.location.pathname+window.location.search);
   });
 
   /* ---------- data ---------- */
@@ -1148,14 +1174,33 @@ html[lang="en"] [data-zh]{display:none!important;}
   }
 
   /* ---------- rail + topbar ---------- */
-  var rail=document.getElementById('rail'),topbar=document.getElementById('topbar');
+  var rail=document.getElementById('rail'),topbar=document.getElementById('topbar'),topnav=document.querySelector('.topnav');
   var links=Array.prototype.slice.call(rail.querySelectorAll('a'));
   var secs=links.map(function(l){return document.querySelector(l.getAttribute('href'));});
+  var topLinks=Array.prototype.slice.call(topnav.querySelectorAll('a'));
+  var atlasSection=document.getElementById('atlas'),firstCase=document.getElementById('c1'),contactSection=document.getElementById('contact');
   function onScroll(){
     topbar.classList.toggle('scrolled',window.scrollY>40);
+    var showBackToTop=window.scrollY>Math.max(360,window.innerHeight*.7);
+    backToTop.classList.toggle('on',showBackToTop);
+    backToTop.setAttribute('aria-hidden',String(!showBackToTop));
+    if(showBackToTop)backToTop.removeAttribute('tabindex');
+    else backToTop.setAttribute('tabindex','-1');
     var y=window.scrollY+window.innerHeight*0.35,cur=-1;
     secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i;});
     links.forEach(function(l,i){l.classList.toggle('on',i===cur);});
+    var navTarget='#atlas';
+    var navY=window.scrollY+topbar.offsetHeight+28;
+    var nearPageEnd=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-4;
+    if(contactSection&&(contactSection.offsetTop<=navY||nearPageEnd))navTarget='#contact';
+    else if(firstCase&&firstCase.offsetTop<=navY)navTarget='#c1';
+    else if(atlasSection&&atlasSection.offsetTop<=navY)navTarget='#atlas';
+    topLinks.forEach(function(l){
+      var active=l.getAttribute('href')===navTarget;
+      l.classList.toggle('on',active);
+      if(active)l.setAttribute('aria-current','location');
+      else l.removeAttribute('aria-current');
+    });
   }
   window.addEventListener('scroll',onScroll,{passive:true});
 
