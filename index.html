@@ -190,10 +190,12 @@ section.case:nth-of-type(even){background:rgba(247,249,252,.9);}
 .haptic-collage{position:relative;padding:14px;background:#e9edf2;}
 .haptic-collage .haptic-ui{width:86%!important;height:100%!important;object-fit:cover!important;object-position:top left;border-radius:11px;box-shadow:0 12px 26px rgba(16,24,40,.18);filter:none!important;}
 .haptic-collage .haptic-imu{position:absolute;right:14px;bottom:14px;width:34%!important;height:46%!important;object-fit:cover!important;object-position:center;border:5px solid #fff;border-radius:10px;box-shadow:0 12px 28px rgba(16,24,40,.24);filter:none!important;}
-.digital-collage{display:grid;grid-template-columns:1.5fr .8fr;gap:10px;padding:14px;background:#e9edf2;}
-.digital-collage img{width:100%!important;height:100%!important;border-radius:10px;box-shadow:0 9px 22px rgba(16,24,40,.14);filter:none!important;}
-.digital-collage .digital-board{object-fit:cover!important;object-position:left top;}
-.digital-collage .digital-structure{object-fit:cover!important;object-position:center;}
+.digital-collage{position:relative;padding:14px;background:#e9edf2;}
+.digital-collage .digital-site{width:86%!important;height:100%!important;object-fit:contain!important;object-position:center;
+  border-radius:11px;box-shadow:0 12px 26px rgba(16,24,40,.18);filter:none!important;background:#fff;}
+.digital-collage .digital-board{position:absolute;right:14px;bottom:14px;width:44%!important;height:46%!important;
+  object-fit:cover!important;object-position:left top;border:5px solid #fff;border-radius:10px;
+  box-shadow:0 12px 28px rgba(16,24,40,.24);filter:none!important;}
 
 .project-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
   background:rgba(17,24,39,.58);backdrop-filter:blur(8px);}
@@ -214,7 +216,11 @@ section.case:nth-of-type(even){background:rgba(247,249,252,.9);}
 .modal-role{margin-top:24px;padding:17px 18px;border-radius:11px;background:var(--surface-subtle);color:var(--text-secondary);font-size:13.5px;}
 .modal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .modal-primary{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--action-dark);color:#fff;text-decoration:none;font-weight:600;font-size:13px;}
+.modal-live{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--current-hover);color:#fff;text-decoration:none;font-weight:600;font-size:13px;}
 .modal-secondary{padding:11px 15px;border:1px solid var(--rule);border-radius:9px;color:var(--text-secondary);font-size:13px;}
+.case-live-link{display:inline-flex;width:max-content;margin-top:4px;padding:10px 13px;border:1px solid var(--rule-strong);
+  border-radius:9px;color:var(--current-hover);background:var(--surface);text-decoration:none;font:600 12px/1 var(--mono);}
+.case-live-link:hover{border-color:var(--current);background:var(--current-soft);}
 body.modal-open{overflow:hidden;}
 section,footer{scroll-margin-top:68px;}
 @media(min-width:760px){
@@ -228,7 +234,9 @@ section,footer{scroll-margin-top:68px;}
   .topbar{padding-left:16px;padding-right:16px;}
   .phone-strip{gap:7px;padding:16px;}
   .haptic-collage .haptic-ui{width:90%!important;}
-  .digital-collage{grid-template-columns:1.35fr .75fr;padding:10px;gap:7px;}
+  .digital-collage{padding:10px;}
+  .digital-collage .digital-site{width:90%!important;}
+  .digital-collage .digital-board{right:10px;bottom:10px;width:46%!important;height:44%!important;}
   .project-dialog{padding:16px;}
   .modal-stage{height:46vh;}
   .modal-stage img{max-height:46vh;}
@@ -491,12 +499,12 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-gallery="assets/attention-board-synthetic.png|assets/digital-me-structure-live.png|assets/agent-avatars.png">
+      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-gallery="assets/attention-board-synthetic.png|assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
-        <div class="project-thumb digital-collage"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"><img class="digital-structure" src="assets/digital-me-structure-live.png" alt="Digital Me 从捕获到交付的四层结构"></div>
+        <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
         <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
         <p><span data-zh>让个人 AI 的主动判断保持可见、可纠正、可撤销，并把 Attention Board 作为真实日常使用中的界面模块。</span><span data-en>Keeping proactive AI judgment visible, correctable, and reversible, with Attention Board as an interface module used in daily life.</span></p>
-        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a></details>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a><a class="project-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a></details>
         <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
       </article>
 
@@ -572,6 +580,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     <div class="modal-role" id="modal-role"></div>
     <div class="modal-actions">
       <a class="modal-primary" id="modal-primary" href="#atlas"><span data-zh>直接进入案例</span><span data-en>Open case directly</span></a>
+      <a class="modal-live" id="modal-live" href="#" target="_blank" rel="noopener noreferrer" hidden><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a>
       <button class="modal-secondary" id="modal-secondary"><span data-zh>返回项目地图</span><span data-en>Back to project map</span></button>
     </div>
   </div>
@@ -716,6 +725,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <span class="tag" data-zh>AI 产品</span><span class="tag" data-en>AI product</span>
         <span class="tag alt" data-zh>语音 · 多模态输入</span><span class="tag alt" data-en>Voice &amp; multimodal input</span>
       </div>
+      <a class="case-live-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>查看公开的 Digital Me 网站 ↗</span><span data-en>Visit the public Digital Me site ↗</span></a>
     </div>
 
     <div class="label" data-zh>七个智能体 — 悬停看它的行为边界</div>
@@ -970,6 +980,7 @@ html[lang="en"] [data-zh]{display:none!important;}
   var projectClose=document.getElementById('project-close');
   var modalSecondary=document.getElementById('modal-secondary');
   var modalPrimary=document.getElementById('modal-primary');
+  var modalLive=document.getElementById('modal-live');
   var modalImage=document.getElementById('modal-image');
   var modalPrev=document.getElementById('modal-prev');
   var modalNext=document.getElementById('modal-next');
@@ -994,6 +1005,9 @@ html[lang="en"] [data-zh]{display:none!important;}
     var target=card.getAttribute('data-target');
     modalPrimary.hidden=!target;
     if(target)modalPrimary.setAttribute('href',target);
+    var liveUrl=card.getAttribute('data-live-url');
+    modalLive.hidden=!liveUrl;
+    if(liveUrl)modalLive.setAttribute('href',liveUrl);
     activeGallery=(card.getAttribute('data-gallery')||'').split('|').filter(Boolean);
     if(activeGalleryIndex>=activeGallery.length)activeGalleryIndex=0;
     renderModalImage();
