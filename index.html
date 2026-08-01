@@ -95,13 +95,24 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .scroll-hint::after{display:none;}
 
 /* ---------- rail ---------- */
-.rail{display:none;}
+.rail{position:fixed;right:16px;top:50%;z-index:42;display:none;flex-direction:column;gap:11px;
+  padding:14px 12px;border:1px solid var(--rule);border-radius:16px;background:rgba(255,255,255,.84);
+  box-shadow:var(--shadow-md);backdrop-filter:blur(14px);transform:translateY(-50%);}
 .rail a{display:flex;align-items:center;gap:10px;font:500 11.5px/1 var(--mono);
         color:var(--text-muted);text-decoration:none;transition:.22s ease;}
 .rail a::before{content:"";width:14px;height:1.5px;border-radius:1px;background:var(--rule-strong);transition:.22s ease;}
 .rail a:hover{color:var(--text-secondary);}
 .rail a.on{color:var(--current);}
 .rail a.on::before{width:28px;background:var(--current);}
+@media(min-width:1040px){.rail{display:flex;}}
+@media(min-width:1040px) and (max-width:1199px){
+  .rail{right:10px;padding:12px 8px;gap:9px;}
+  .rail a{width:30px;min-height:20px;gap:0;}
+  .rail a span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  .rail a.on{width:auto;gap:8px;}
+  .rail a.on span{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;white-space:nowrap;}
+}
 
 /* ---------- section ---------- */
 section.case{padding:92px 0;border-top:1px solid rgba(207,213,222,.72);
@@ -447,13 +458,13 @@ html[lang="en"] [data-zh]{display:none!important;}
   <span data-zh>回到顶部</span><span data-en>Back to top</span>
 </button>
 
-<nav class="rail" id="rail">
-  <a href="#atlas"><span data-zh>项目地图</span><span data-en>Atlas</span></a>
-  <a href="#c1"><span data-zh>触觉信号</span><span data-en>Haptics</span></a>
-  <a href="#c2"><span data-zh>信任设计</span><span data-en>Trust</span></a>
-  <a href="#c3"><span data-zh>角色感</span><span data-en>Character</span></a>
-  <a href="#c4"><span data-zh>假设观察</span><span data-en>Assumptions</span></a>
-  <a href="#c5"><span data-zh>系统原则</span><span data-en>System principles</span></a>
+<nav class="rail" id="rail" aria-label="Page position">
+  <a href="#atlas"><span data-zh>项目概览</span><span data-en>Projects</span></a>
+  <a href="#c1"><span data-zh>触觉研究</span><span data-en>Haptics</span></a>
+  <a href="#c2"><span data-zh>工区安全</span><span data-en>Work-zone</span></a>
+  <a href="#c3"><span data-zh>Digital Me</span><span data-en>Digital Me</span></a>
+  <a href="#c4"><span data-zh>假设观察</span><span data-en>Observatory</span></a>
+  <a href="#c5"><span data-zh>设计原则</span><span data-en>Principles</span></a>
 </nav>
 
 <header class="hero" id="hero" role="link" tabindex="0" aria-label="查看项目">
@@ -493,6 +504,15 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
 
     <div class="atlas-grid" id="atlas-grid">
+      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
+        <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
+        <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
+        <p><span data-zh>让个人 AI 的主动判断保持可见、可纠正、可撤销，并把 Attention Board 作为真实日常使用中的界面模块。</span><span data-en>Keeping proactive AI judgment visible, correctable, and reversible, with Attention Board as an interface module used in daily life.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a><a class="project-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a></details>
+        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
+      </article>
+
       <article class="project-card featured" data-kind="featured product" data-target="#c5" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
         <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
@@ -518,15 +538,6 @@ html[lang="en"] [data-zh]{display:none!important;}
         <p><span data-zh>把工人端的情境输入、实时定位与管理端的工区划定、风险可视化和事件复盘连接成一条双角色流程。</span><span data-en>Connecting worker context and location with manager-side work-zone definition, risk visualization, and incident review.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品经理兼交互设计负责人；主导需求定义、交互模型、利益相关者协调与 MVP 规划，工程实现由团队协作完成。</span><span data-en>Product Manager &amp; Interaction Design Lead; led requirements, interaction model, stakeholder coordination, and MVP planning while engineering was delivered collaboratively.</span></p><a class="project-link" href="#c2"><span data-zh>查看案例入口 →</span><span data-en>Open the case entry →</span></a></details>
         <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
-      </article>
-
-      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
-        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
-        <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
-        <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
-        <p><span data-zh>让个人 AI 的主动判断保持可见、可纠正、可撤销，并把 Attention Board 作为真实日常使用中的界面模块。</span><span data-en>Keeping proactive AI judgment visible, correctable, and reversible, with Attention Board as an interface module used in daily life.</span></p>
-        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a><a class="project-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a></details>
-        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="product" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
@@ -1188,7 +1199,12 @@ html[lang="en"] [data-zh]{display:none!important;}
     else backToTop.setAttribute('tabindex','-1');
     var y=window.scrollY+window.innerHeight*0.35,cur=-1;
     secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i;});
-    links.forEach(function(l,i){l.classList.toggle('on',i===cur);});
+    links.forEach(function(l,i){
+      var active=i===cur;
+      l.classList.toggle('on',active);
+      if(active)l.setAttribute('aria-current','location');
+      else l.removeAttribute('aria-current');
+    });
     var navTarget='#atlas';
     var navY=window.scrollY+topbar.offsetHeight+28;
     var nearPageEnd=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-4;
