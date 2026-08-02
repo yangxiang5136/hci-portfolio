@@ -87,13 +87,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .hero h1{margin:12px 0 0;font-size:clamp(27px,3.7vw,40px);line-height:1.12;}
 .hero h1 em{font-style:normal;color:var(--current);}
 .hero .lede{margin:12px auto 0;max-width:580px;color:var(--text-secondary);font-size:clamp(14px,1.4vw,16px);}
-.hero .stats{margin:16px auto 0;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:680px;}
-.stat{border:1px solid var(--rule);border-radius:999px;padding:7px 11px;background:var(--surface);
-      color:var(--text-secondary);font:500 11.5px/1 var(--mono);box-shadow:var(--shadow-sm);}
-.scroll-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:2;
-             font:500 10.5px/1 var(--mono);letter-spacing:.18em;color:var(--text-muted);}
-.scroll-hint::after{display:none;}
-
+.hero .stats{margin:18px auto 0;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:center;max-width:760px;}
+.stat{padding:2px 0;color:var(--text-secondary);font:600 11.5px/1.35 var(--mono);letter-spacing:.035em;}
 /* ---------- rail ---------- */
 .rail{position:fixed;right:16px;top:50%;z-index:42;display:none;flex-direction:column;gap:11px;
   padding:14px 12px;border:1px solid var(--rule);border-radius:16px;background:rgba(255,255,255,.84);
@@ -481,15 +476,13 @@ html[lang="en"] [data-zh]{display:none!important;}
       <span data-en>I turn ambiguous human-machine problems into experiences that can be understood, tested, and corrected.</span>
     </p>
     <div class="stats">
-      <div class="stat"><span data-zh>研究</span><span data-en>Research</span></div>
-      <div class="stat"><span data-zh>产品定义</span><span data-en>Product definition</span></div>
+      <div class="stat"><span data-zh>人因研究</span><span data-en>Human factors research</span></div>
+      <div class="stat"><span data-zh>产品策略</span><span data-en>Product strategy</span></div>
       <div class="stat"><span data-zh>交互设计</span><span data-en>Interaction design</span></div>
       <div class="stat"><span data-zh>原型构建</span><span data-en>Prototyping</span></div>
-      <div class="stat"><span data-zh>证据驱动迭代</span><span data-en>Evidence-led iteration</span></div>
+      <div class="stat"><span data-zh>体验量化</span><span data-en>Experience measurement</span></div>
     </div>
   </div>
-  <div class="scroll-hint" data-zh>点击进入项目</div>
-  <div class="scroll-hint" data-en>TAP FOR PROJECTS</div>
 </header>
 
 <main>
