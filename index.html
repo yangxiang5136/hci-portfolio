@@ -62,7 +62,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
   transition:color .18s ease,background-color .18s ease,box-shadow .18s ease;}
 .topnav a:hover{color:var(--current-hover);background:var(--surface-subtle);}
 .topnav a.on{color:var(--current-hover);background:var(--current-soft);box-shadow:inset 0 0 0 1px rgba(0,149,255,.12);}
-@media(min-width:760px) and (max-width:1379.98px){.topnav{display:flex;}}
+@media(min-width:760px){body{zoom:1.25;}}
+@media(min-width:760px) and (max-width:1724.98px){.topnav{display:flex;}}
 .langtoggle{display:flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);}
 .langtoggle button{min-height:44px;font:500 13px/1 var(--mono);padding:0 13px;border-radius:999px;
                    color:var(--text-muted);transition:.18s ease;}
@@ -91,7 +92,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .stat{padding:2px 0;color:var(--text-secondary);font:600 11.5px/1.35 var(--mono);letter-spacing:.035em;}
 /* ---------- rail ---------- */
 .rail{position:fixed;right:18px;top:50%;z-index:42;display:none;width:176px;padding:10px 8px;
-  transform:translateY(-50%);opacity:.78;border:1px solid rgba(207,213,222,.88);border-radius:18px;
+  transform:translateY(-50%);opacity:.78;border-radius:18px;
   background:rgba(251,252,254,.9);box-shadow:0 10px 30px rgba(16,24,40,.1);backdrop-filter:blur(14px);
   transition:opacity .18s ease,box-shadow .18s ease;}
 .rail::after{content:"";position:absolute;right:19px;top:31px;bottom:31px;width:1px;background:rgba(0,149,255,.25);}
@@ -109,11 +110,11 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .rail a.on span{padding:9px 13px;border:1px solid rgba(0,149,255,.22);border-radius:999px;
   background:rgba(255,255,255,.92);box-shadow:0 4px 18px rgba(16,24,40,.09);}
 .rail:hover a.on span,.rail:focus-within a.on span{background:var(--current-soft);}
-@media(min-width:1380px){
+@media(min-width:1725px){
   .rail{display:block;}
   .wrap{width:min(calc(100% - 48px),var(--maxw));max-width:var(--maxw);margin-left:auto;margin-right:auto;}
 }
-@media(pointer:coarse) and (min-width:1380px){.rail{opacity:1}.rail a span{max-width:132px;opacity:1;transform:none;}}
+@media(pointer:coarse) and (min-width:1725px){.rail{opacity:1}.rail a span{max-width:132px;opacity:1;transform:none;}}
 
 /* ---------- section ---------- */
 section.case{padding:92px 0;border-top:1px solid rgba(207,213,222,.72);
