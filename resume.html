@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="杨翔的人因工程、交互设计与产品经历简历。">
+  <title>杨翔 · 简历</title>
+  <style>
+    :root{
+      --canvas:#f6f8fb;
+      --surface:#fff;
+      --text:#111827;
+      --text-secondary:#4b5563;
+      --rule:#dfe4ec;
+      --current:#2563eb;
+      --current-soft:#eef4ff;
+      --shadow:0 18px 60px rgba(15,23,42,.12);
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{display:flex;flex-direction:column;overflow:hidden;background:var(--canvas);color:var(--text);font-family:var(--sans)}
+    a,button{font:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid rgba(37,99,235,.25);outline-offset:3px}
+    .topbar{position:sticky;top:0;z-index:2;flex:none;border-bottom:1px solid var(--rule);background:rgba(255,255,255,.92);backdrop-filter:blur(16px)}
+    .topbar-inner{min-height:68px;display:flex;align-items:center;gap:18px;width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .brand{color:var(--text);font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap}
+    .page-title{color:var(--text-secondary);font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+    .actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .action,.lang-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:38px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);color:var(--text-secondary);font:500 12px/1 var(--mono);text-decoration:none;transition:.18s ease}
+    .action{padding:0 13px}
+    .action:hover,.lang-toggle button:hover{border-color:var(--current);color:var(--current)}
+    .action.primary{border-color:var(--current);background:var(--current-soft);color:var(--current)}
+    .lang-toggle{overflow:hidden}
+    .lang-toggle button{min-width:42px;height:36px;border:0;background:transparent;color:var(--text-secondary);cursor:pointer}
+    .lang-toggle button[aria-pressed="true"]{background:var(--current-soft);color:var(--current);font-weight:700}
+    .viewer-shell{flex:1;min-height:0;width:min(1240px,calc(100% - 40px));margin:20px auto}
+    .viewer{display:block;width:100%;height:100%;min-height:0;border:1px solid var(--rule);border-radius:16px;background:var(--surface);box-shadow:var(--shadow)}
+    .mobile-note{display:none;margin:0;padding:18px;color:var(--text-secondary);font-size:14px;line-height:1.6}
+    html[lang="zh-CN"] [data-en]{display:none!important}
+    html[lang="en"] [data-zh]{display:none!important}
+    @media(max-width:720px){
+      .topbar-inner{width:min(100% - 24px,1180px);padding:11px 0;flex-wrap:wrap;gap:9px 12px}
+      .brand{font-size:14px}.page-title{font-size:10px}.actions{width:100%;margin-left:0}
+      .action{flex:1;padding:0 8px}.lang-toggle{flex:none}
+      .viewer-shell{width:100%;margin:0}.viewer{height:100%;min-height:0;border:0;border-radius:0;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html#contact"><span data-zh>杨翔 · 人机交互体验设计</span><span data-en>Xiang Yang · Human-Machine Interaction Design</span></a>
+      <span class="page-title"><span data-zh>简历</span><span data-en>Résumé</span></span>
+      <div class="actions">
+        <a class="action" href="index.html#contact"><span data-zh>返回作品集</span><span data-en>Back to portfolio</span></a>
+        <a class="action primary" href="assets/resume.pdf" target="_blank" rel="noopener"><span data-zh>打开原 PDF ↗</span><span data-en>Open original PDF ↗</span></a>
+        <div class="lang-toggle" aria-label="语言切换">
+          <button id="btn-zh" type="button" aria-pressed="true">中文</button>
+          <button id="btn-en" type="button" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="viewer-shell">
+    <iframe class="viewer" src="assets/resume.pdf#view=FitH" title="杨翔的简历"></iframe>
+    <p class="mobile-note"><span data-zh>如果浏览器无法内嵌显示 PDF，请使用上方“打开原 PDF”。</span><span data-en>If your browser cannot display the PDF here, use “Open original PDF” above.</span></p>
+  </main>
+  <script>
+    (function(){
+      var zh=document.getElementById('btn-zh'),en=document.getElementById('btn-en'),viewer=document.querySelector('.viewer');
+      function setLang(lang){
+        var isEn=lang==='en';
+        document.documentElement.lang=isEn?'en':'zh-CN';
+        document.title=isEn?'Xiang Yang · Résumé':'杨翔 · 简历';
+        zh.setAttribute('aria-pressed',String(!isEn));
+        en.setAttribute('aria-pressed',String(isEn));
+        viewer.title=isEn?"Xiang Yang's résumé":'杨翔的简历';
+        try{localStorage.setItem('pf-lang',isEn?'en':'zh-CN')}catch(error){}
+      }
+      zh.addEventListener('click',function(){setLang('zh-CN')});
+      en.addEventListener('click',function(){setLang('en')});
+      var saved=null;try{saved=localStorage.getItem('pf-lang')}catch(error){}
+      setLang(saved==='en'?'en':'zh-CN');
+    })();
+  </script>
+</body>
+</html>
