@@ -52,17 +52,29 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
         padding:13px 24px;background:rgba(251,252,254,.86);backdrop-filter:blur(14px);
         border-bottom:1px solid transparent;transition:border-color .3s ease,box-shadow .3s ease;}
 .topbar.scrolled{border-bottom-color:var(--rule);box-shadow:0 1px 0 rgba(16,24,40,.02);}
-.topbar .who{font-size:13.5px;color:var(--text-secondary);}
+.topbar .who{font-size:15px;color:var(--text-secondary);}
 .topbar .who b{color:var(--text);font-weight:600;}
-.top-actions{display:flex;align-items:center;gap:18px;}
-.topnav{display:none;align-items:center;gap:16px;}
-.topnav a{font:500 11.5px/1 var(--mono);color:var(--text-muted);text-decoration:none;}
-.topnav a:hover{color:var(--current-hover);}
-@media(min-width:760px){.topnav{display:flex;}}
+.top-actions{display:flex;align-items:center;gap:12px;}
+.topnav{display:none;align-items:center;gap:2px;padding:3px;border:1px solid var(--rule);
+  border-radius:999px;background:rgba(255,255,255,.86);box-shadow:var(--shadow-sm);}
+.topnav a{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 13px;
+  border-radius:999px;font:600 13px/1 var(--mono);color:var(--text-muted);text-decoration:none;
+  transition:color .18s ease,background-color .18s ease,box-shadow .18s ease;}
+.topnav a:hover{color:var(--current-hover);background:var(--surface-subtle);}
+.topnav a.on{color:var(--current-hover);background:var(--current-soft);box-shadow:inset 0 0 0 1px rgba(0,149,255,.12);}
+@media(min-width:760px) and (max-width:1039.98px){.topnav{display:flex;}}
 .langtoggle{display:flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface);}
-.langtoggle button{font:500 11.5px/1 var(--mono);padding:6px 13px;border-radius:999px;
+.langtoggle button{min-height:44px;font:500 13px/1 var(--mono);padding:0 13px;border-radius:999px;
                    color:var(--text-muted);transition:.18s ease;}
 .langtoggle button[aria-pressed="true"]{background:var(--current-soft);color:var(--current-hover);}
+.back-to-top{position:fixed;right:24px;bottom:24px;z-index:45;display:flex;align-items:center;justify-content:center;
+  min-width:132px;min-height:48px;padding:0 18px;border:1px solid rgba(255,255,255,.22);border-radius:999px;
+  background:rgba(23,26,31,.94);color:#fff;box-shadow:0 12px 34px rgba(16,24,40,.24);
+  font:600 12px/1 var(--mono);letter-spacing:.02em;opacity:0;transform:translateY(12px);
+  pointer-events:none;transition:opacity .2s ease,transform .2s ease,background-color .2s ease;}
+.back-to-top.on{opacity:1;transform:translateY(0);pointer-events:auto;}
+.back-to-top:hover{background:var(--current-hover);}
+.back-to-top:focus-visible{outline:3px solid rgba(0,149,255,.36);outline-offset:3px;}
 
 /* ---------- hero ---------- */
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -75,21 +87,31 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .hero h1{margin:12px 0 0;font-size:clamp(27px,3.7vw,40px);line-height:1.12;}
 .hero h1 em{font-style:normal;color:var(--current);}
 .hero .lede{margin:12px auto 0;max-width:580px;color:var(--text-secondary);font-size:clamp(14px,1.4vw,16px);}
-.hero .stats{margin:16px auto 0;display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:680px;}
-.stat{border:1px solid var(--rule);border-radius:999px;padding:7px 11px;background:var(--surface);
-      color:var(--text-secondary);font:500 11.5px/1 var(--mono);box-shadow:var(--shadow-sm);}
-.scroll-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:2;
-             font:500 10.5px/1 var(--mono);letter-spacing:.18em;color:var(--text-muted);}
-.scroll-hint::after{display:none;}
-
+.hero .stats{margin:18px auto 0;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:center;max-width:760px;}
+.stat{padding:2px 0;color:var(--text-secondary);font:600 11.5px/1.35 var(--mono);letter-spacing:.035em;}
 /* ---------- rail ---------- */
-.rail{display:none;}
-.rail a{display:flex;align-items:center;gap:10px;font:500 11.5px/1 var(--mono);
-        color:var(--text-muted);text-decoration:none;transition:.22s ease;}
-.rail a::before{content:"";width:14px;height:1.5px;border-radius:1px;background:var(--rule-strong);transition:.22s ease;}
-.rail a:hover{color:var(--text-secondary);}
-.rail a.on{color:var(--current);}
-.rail a.on::before{width:28px;background:var(--current);}
+.rail{position:fixed;right:18px;top:50%;z-index:42;display:none;width:168px;padding:12px 0;
+  transform:translateY(-50%);opacity:.58;transition:opacity .18s ease;}
+.rail::after{content:"";position:absolute;right:9px;top:31px;bottom:31px;width:1px;background:rgba(0,149,255,.25);}
+.rail:hover,.rail:focus-within{opacity:1;}
+.rail a{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-end;min-height:42px;
+  padding:0 27px 0 10px;color:var(--text-muted);font:600 13.5px/1.15 var(--sans);text-decoration:none;white-space:nowrap;}
+.rail a::after{content:"";position:absolute;right:4px;width:11px;height:11px;border:2px solid #fff;border-radius:50%;
+  background:#C7D1DD;box-shadow:0 0 0 1px var(--rule-strong);}
+.rail a:hover{color:var(--current-hover);}
+.rail a span{max-width:0;overflow:hidden;opacity:0;transform:translateX(7px);
+  transition:max-width .2s ease,opacity .18s ease,transform .18s ease;}
+.rail a.on{color:var(--current-hover);}
+.rail a.on::after{background:var(--current);box-shadow:0 0 0 4px rgba(0,149,255,.12);}
+.rail a.on span,.rail:hover a span,.rail:focus-within a span{max-width:132px;opacity:1;transform:none;}
+.rail a.on span{padding:9px 13px;border:1px solid rgba(0,149,255,.22);border-radius:999px;
+  background:rgba(255,255,255,.92);box-shadow:0 4px 18px rgba(16,24,40,.09);}
+.rail:hover a.on span,.rail:focus-within a.on span{background:var(--current-soft);}
+@media(min-width:1040px){
+  .rail{display:block;}
+  .wrap{width:calc(100% - 230px);max-width:var(--maxw);margin-left:max(24px,calc((100vw - 1240px)/2));margin-right:auto;}
+}
+@media(pointer:coarse) and (min-width:1040px){.rail{opacity:1}.rail a span{max-width:132px;opacity:1;transform:none;}}
 
 /* ---------- section ---------- */
 section.case{padding:92px 0;border-top:1px solid rgba(207,213,222,.72);
@@ -232,7 +254,10 @@ section,footer{scroll-margin-top:68px;}
 }
 @media(max-width:759px){
   .topbar .who{display:none;}
-  .topnav{display:flex;gap:12px;}
+  .top-actions{width:100%;justify-content:space-between;gap:8px;}
+  .topnav{display:flex;gap:1px;}
+  .topnav a{min-height:30px;padding:0 9px;font-size:10.5px;}
+  .langtoggle button{padding-left:10px;padding-right:10px;}
   .topbar{padding-left:16px;padding-right:16px;}
   .phone-strip{gap:7px;padding:16px;}
   .haptic-collage .haptic-ui{width:90%!important;}
@@ -244,6 +269,8 @@ section,footer{scroll-margin-top:68px;}
   .modal-stage img{max-height:46vh;}
 }
 @media(max-width:520px){
+  .back-to-top{left:50%;right:auto;bottom:16px;min-width:156px;transform:translate(-50%,12px);}
+  .back-to-top.on{transform:translate(-50%,0);}
   .hero{padding:72px 18px 28px;}
   .hero h1{font-size:26px;line-height:1.1;}
   .hero .lede{font-size:13.5px;line-height:1.55;}
@@ -391,7 +418,7 @@ html[lang="zh-CN"] [data-en]{display:none!important;}
 html[lang="en"] [data-zh]{display:none!important;}
 
 @media print{
-  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media{display:none!important;}
+  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media,.back-to-top{display:none!important;}
   body{background:#fff;}
   section.case{padding:24px 0;page-break-inside:avoid;}
   .sig-body{max-height:none!important;}
@@ -428,13 +455,19 @@ html[lang="en"] [data-zh]{display:none!important;}
   </div>
 </div>
 
-<nav class="rail" id="rail">
-  <a href="#atlas"><span data-zh>项目地图</span><span data-en>Atlas</span></a>
-  <a href="#c1"><span data-zh>触觉信号</span><span data-en>Haptics</span></a>
-  <a href="#c2"><span data-zh>信任设计</span><span data-en>Trust</span></a>
-  <a href="#c3"><span data-zh>角色感</span><span data-en>Character</span></a>
-  <a href="#c4"><span data-zh>假设观察</span><span data-en>Assumptions</span></a>
-  <a href="#c5"><span data-zh>系统原则</span><span data-en>System principles</span></a>
+<button class="back-to-top" id="back-to-top" type="button" aria-label="回到顶部" aria-hidden="true" tabindex="-1">
+  <span data-zh>回到顶部</span><span data-en>Back to top</span>
+</button>
+
+<nav class="rail" id="rail" aria-label="Page position">
+  <a href="#hero"><span data-zh>开始</span><span data-en>Intro</span></a>
+  <a href="#atlas"><span data-zh>项目概览</span><span data-en>Projects</span></a>
+  <a href="#c1"><span data-zh>触觉研究</span><span data-en>Haptics</span></a>
+  <a href="#c2"><span data-zh>工区安全</span><span data-en>Work-zone</span></a>
+  <a href="#c3"><span data-zh>Digital Me</span><span data-en>Digital Me</span></a>
+  <a href="#c4"><span data-zh>假设观察</span><span data-en>Observatory</span></a>
+  <a href="#c5"><span data-zh>设计原则</span><span data-en>Principles</span></a>
+  <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
 </nav>
 
 <header class="hero" id="hero" role="link" tabindex="0" aria-label="查看项目">
@@ -451,15 +484,13 @@ html[lang="en"] [data-zh]{display:none!important;}
       <span data-en>I turn ambiguous human-machine problems into experiences that can be understood, tested, and corrected.</span>
     </p>
     <div class="stats">
-      <div class="stat"><span data-zh>研究</span><span data-en>Research</span></div>
-      <div class="stat"><span data-zh>产品定义</span><span data-en>Product definition</span></div>
+      <div class="stat"><span data-zh>人因研究</span><span data-en>Human factors research</span></div>
+      <div class="stat"><span data-zh>产品策略</span><span data-en>Product strategy</span></div>
       <div class="stat"><span data-zh>交互设计</span><span data-en>Interaction design</span></div>
       <div class="stat"><span data-zh>原型构建</span><span data-en>Prototyping</span></div>
-      <div class="stat"><span data-zh>证据驱动迭代</span><span data-en>Evidence-led iteration</span></div>
+      <div class="stat"><span data-zh>体验量化</span><span data-en>Experience measurement</span></div>
     </div>
   </div>
-  <div class="scroll-hint" data-zh>点击进入项目</div>
-  <div class="scroll-hint" data-en>TAP FOR PROJECTS</div>
 </header>
 
 <main>
@@ -474,6 +505,15 @@ html[lang="en"] [data-zh]{display:none!important;}
     </div>
 
     <div class="atlas-grid" id="atlas-grid">
+      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-demo-url="https://attention-board-demo.yangxiang5136.chatgpt.site/?lang=zh" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
+        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
+        <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
+        <h3><span data-zh>Digital Me · 从已知出发，找到下一步</span><span data-en>Digital Me · Exploring from the Edge of What You Know</span></h3>
+        <p><span data-zh>先梳理我已经知道的，再找到紧挨着这些信息、值得继续追问的问题，避免 AI 一次给出跨度过大的答案。</span><span data-en>Helping people see what they know, locate the boundary, and take one adjacent step into the unknown—without letting AI leap too far ahead.</span></p>
+        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看它如何找到下一步 →</span><span data-en>See the boundary-led design →</span></a><a class="project-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a></details>
+        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
+      </article>
+
       <article class="project-card featured" data-kind="featured product" data-target="#c5" data-live-url="https://blacksburg-secondhand-production.up.railway.app/" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
         <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
@@ -499,15 +539,6 @@ html[lang="en"] [data-zh]{display:none!important;}
         <p><span data-zh>把工人端的情境输入、实时定位与管理端的工区划定、风险可视化和事件复盘连接成一条双角色流程。</span><span data-en>Connecting worker context and location with manager-side work-zone definition, risk visualization, and incident review.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品经理兼交互设计负责人；主导需求定义、交互模型、利益相关者协调与 MVP 规划，工程实现由团队协作完成。</span><span data-en>Product Manager &amp; Interaction Design Lead; led requirements, interaction model, stakeholder coordination, and MVP planning while engineering was delivered collaboratively.</span></p><a class="project-link" href="#c2"><span data-zh>查看案例入口 →</span><span data-en>Open the case entry →</span></a></details>
         <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
-      </article>
-
-      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-live-url="https://digital-me-dashboard.vercel.app/" data-demo-url="https://attention-board-demo.yangxiang5136.chatgpt.site/?lang=zh" data-gallery="assets/attention-board-synthetic.png|assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg">
-        <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
-        <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
-        <h3><span data-zh>Digital Me · 可纠正的个人 AI</span><span data-en>Digital Me · Correctable Personal AI</span></h3>
-        <p><span data-zh>让个人 AI 的主动判断保持可见、可纠正、可撤销，并把 Attention Board 作为真实日常使用中的界面模块。</span><span data-en>Keeping proactive AI judgment visible, correctable, and reversible, with Attention Board as an interface module used in daily life.</span></p>
-        <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p><a class="project-link" href="#c3"><span data-zh>查看行为契约 →</span><span data-en>See the behavior contract →</span></a><a class="project-link" href="https://digital-me-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer"><span data-zh>打开真实网站 ↗</span><span data-en>Open the live site ↗</span></a></details>
-        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="product" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
@@ -717,14 +748,14 @@ html[lang="en"] [data-zh]{display:none!important;}
     <div class="case-head">
       <div class="label" data-zh>案例 03 · 产品与体验架构 · 长期 n=1 设计探索</div>
       <div class="label" data-en>CASE 03 · Product &amp; experience architecture · Long-running n=1 inquiry</div>
-      <h2><span data-zh>角色感不是起个名字，是每个状态下的行为都自洽</span><span data-en>Character is not a name. It is behaving consistently in every state.</span></h2>
+      <h2><span data-zh>不是替我跳到答案，而是帮我找到下一步</span><span data-en>See the edge of what you know, then explore outward from it.</span></h2>
       <p class="sub">
-        <span data-zh>我持续构建并使用一套个人 AI 系统，通过不同角色处理记忆、策略、情报与学习。角色感不只停在头像上，而是落在可读可改的自然语言行为契约里：什么时候说话、什么时候保持安静、失败时怎样让用户仍然拥有决定权。</span>
-        <span data-en>I continue to build and use a personal AI system whose roles support memory, strategy, intelligence, and learning. Character does not stop at an avatar; it lives in readable, editable behavior contracts that define when to speak, when to stay quiet, and how to preserve user decision ownership when the system fails.</span>
+        <span data-zh>我持续构建并使用一套个人 AI 系统。它先帮我梳理已经掌握的内容，指出还有哪些地方没有想清楚，再找到一个我能够理解和验证的下一步。不同角色、记忆与行为规则，都是为了让探索保持连续：不替我越过思考过程，也允许我随时纠正或退回。</span>
+        <span data-en>I continue to build and use a personal AI system not to make bigger leaps for me, but to organize what I already know, surface what I do not yet understand, and find the next step near that boundary. Its roles, memory, and behavior contracts support this gradual path: each step remains understandable, testable, and open to correction or reversal.</span>
       </p>
       <div class="tags">
-        <span class="tag" data-zh>角色与人格设计</span><span class="tag" data-en>Character design</span>
-        <span class="tag" data-zh>行为逻辑文档</span><span class="tag" data-en>Behavior documentation</span>
+        <span class="tag" data-zh>梳理已知与未知</span><span class="tag" data-en>Cognitive boundary mapping</span>
+        <span class="tag" data-zh>循序探索</span><span class="tag" data-en>Stepwise exploration</span>
         <span class="tag" data-zh>AI 产品</span><span class="tag" data-en>AI product</span>
         <span class="tag alt" data-zh>语音 · 多模态输入</span><span class="tag alt" data-en>Voice &amp; multimodal input</span>
       </div>
@@ -849,7 +880,7 @@ html[lang="en"] [data-zh]{display:none!important;}
       <a href="mailto:xiangyang@vt.edu">xiangyang@vt.edu</a>
       <a href="https://github.com/yangxiang5136" target="_blank" rel="noopener">github.com/yangxiang5136</a>
       <a href="https://github.com/xiangyangvt" target="_blank" rel="noopener">github.com/xiangyangvt</a>
-      <a href="assets/resume.pdf"><span data-zh>简历 PDF</span><span data-en>Résumé PDF</span></a>
+      <a href="resume.html" target="_blank" rel="noopener"><span data-zh>查看简历</span><span data-en>View résumé</span></a>
       <a href="assets/portfolio.pdf"><span data-zh>作品集 PDF</span><span data-en>Portfolio PDF</span></a>
     </div>
     <p class="foot-note">
@@ -866,7 +897,7 @@ html[lang="en"] [data-zh]{display:none!important;}
   "use strict";
 
   /* ---------- language ---------- */
-  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero');
+  var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero'),backToTop=document.getElementById('back-to-top');
   function setLang(l){
     var currentAnchor=null,currentOffset=0;
     document.querySelectorAll('header[id],section[id]').forEach(function(section){
@@ -877,6 +908,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     btnZh.setAttribute('aria-pressed',String(l==='zh-CN'));
     btnEn.setAttribute('aria-pressed',String(l==='en'));
     heroJump.setAttribute('aria-label',l==='en'?'View selected projects':'查看精选项目');
+    backToTop.setAttribute('aria-label',l==='en'?'Back to top':'回到顶部');
     try{localStorage.setItem('pf-lang',l);}catch(e){}
     render();
     if(currentAnchor){window.scrollBy({top:currentAnchor.getBoundingClientRect().top-currentOffset,behavior:'auto'});}
@@ -892,6 +924,10 @@ html[lang="en"] [data-zh]{display:none!important;}
   });
   heroJump.addEventListener('keydown',function(e){
     if(e.key==='Enter'||e.key===' '){e.preventDefault();jumpToProjects();}
+  });
+  backToTop.addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'auto'});
+    if(window.location.hash)history.replaceState(null,'',window.location.pathname+window.location.search);
   });
 
   /* ---------- data ---------- */
@@ -1158,14 +1194,38 @@ html[lang="en"] [data-zh]{display:none!important;}
   }
 
   /* ---------- rail + topbar ---------- */
-  var rail=document.getElementById('rail'),topbar=document.getElementById('topbar');
+  var rail=document.getElementById('rail'),topbar=document.getElementById('topbar'),topnav=document.querySelector('.topnav');
   var links=Array.prototype.slice.call(rail.querySelectorAll('a'));
   var secs=links.map(function(l){return document.querySelector(l.getAttribute('href'));});
+  var topLinks=Array.prototype.slice.call(topnav.querySelectorAll('a'));
+  var atlasSection=document.getElementById('atlas'),firstCase=document.getElementById('c1'),contactSection=document.getElementById('contact');
   function onScroll(){
     topbar.classList.toggle('scrolled',window.scrollY>40);
+    var showBackToTop=window.scrollY>Math.max(360,window.innerHeight*.7);
+    backToTop.classList.toggle('on',showBackToTop);
+    backToTop.setAttribute('aria-hidden',String(!showBackToTop));
+    if(showBackToTop)backToTop.removeAttribute('tabindex');
+    else backToTop.setAttribute('tabindex','-1');
     var y=window.scrollY+window.innerHeight*0.35,cur=-1;
     secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i;});
-    links.forEach(function(l,i){l.classList.toggle('on',i===cur);});
+    links.forEach(function(l,i){
+      var active=i===cur;
+      l.classList.toggle('on',active);
+      if(active)l.setAttribute('aria-current','location');
+      else l.removeAttribute('aria-current');
+    });
+    var navTarget='#atlas';
+    var navY=window.scrollY+topbar.offsetHeight+28;
+    var nearPageEnd=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-4;
+    if(contactSection&&(contactSection.offsetTop<=navY||nearPageEnd))navTarget='#contact';
+    else if(firstCase&&firstCase.offsetTop<=navY)navTarget='#c1';
+    else if(atlasSection&&atlasSection.offsetTop<=navY)navTarget='#atlas';
+    topLinks.forEach(function(l){
+      var active=l.getAttribute('href')===navTarget;
+      l.classList.toggle('on',active);
+      if(active)l.setAttribute('aria-current','location');
+      else l.removeAttribute('aria-current');
+    });
   }
   window.addEventListener('scroll',onScroll,{passive:true});
 
