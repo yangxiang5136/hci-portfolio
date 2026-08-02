@@ -92,9 +92,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .stat{padding:2px 0;color:var(--text-secondary);font:600 11.5px/1.35 var(--mono);letter-spacing:.035em;}
 /* ---------- rail ---------- */
 .rail{position:fixed;right:18px;top:50%;z-index:42;display:none;width:176px;padding:10px 8px;
-  transform:translateY(-50%);opacity:.78;border-radius:18px;
-  background:rgba(251,252,254,.9);box-shadow:0 10px 30px rgba(16,24,40,.1);backdrop-filter:blur(14px);
-  transition:opacity .18s ease,box-shadow .18s ease;}
+  transform:translateY(-50%);opacity:.62;background:transparent;box-shadow:none;backdrop-filter:none;
+  transition:opacity .18s ease;}
 .rail::after{content:"";position:absolute;right:19px;top:31px;bottom:31px;width:1px;background:rgba(0,149,255,.25);}
 .rail:hover,.rail:focus-within{opacity:1;}
 .rail a{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-end;min-height:42px;
@@ -107,9 +106,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .rail a.on{color:var(--current-hover);}
 .rail a.on::after{background:var(--current);box-shadow:0 0 0 4px rgba(0,149,255,.12);}
 .rail a.on span,.rail:hover a span,.rail:focus-within a span{max-width:132px;opacity:1;transform:none;}
-.rail a.on span{padding:9px 13px;border:1px solid rgba(0,149,255,.22);border-radius:999px;
-  background:rgba(255,255,255,.92);box-shadow:0 4px 18px rgba(16,24,40,.09);}
-.rail:hover a.on span,.rail:focus-within a.on span{background:var(--current-soft);}
+.rail a.on span{padding:0;border:0;background:transparent;box-shadow:none;}
 @media(min-width:1725px){
   .rail{display:block;}
   .wrap{width:min(calc(100% - 48px),var(--maxw));max-width:var(--maxw);margin-left:auto;margin-right:auto;}
@@ -120,6 +117,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 section.case{padding:92px 0;border-top:1px solid rgba(207,213,222,.72);
   background:rgba(251,252,254,.91);backdrop-filter:blur(16px);}
 section.case:nth-of-type(even){background:rgba(247,249,252,.9);}
+main>section.case{display:none;}
 .case-head{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
 .case-head h2{font-size:clamp(25px,3.4vw,38px);}
 .case-head .sub{color:var(--text-secondary);max-width:640px;font-size:15.5px;}
@@ -179,6 +177,19 @@ section.case:nth-of-type(even){background:rgba(247,249,252,.9);}
 .project-card .project-role{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--text-muted);}
 .atlas-note{margin:24px 0 0;color:var(--text-muted);font-size:12.5px;}
 @media(min-width:860px){.project-card.featured{min-height:285px}.atlas-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- project families + design philosophy ---------- */
+.philosophy{padding:72px 0 82px;border-top:1px solid rgba(207,213,222,.72);
+  background:rgba(247,249,252,.92);backdrop-filter:blur(16px);}
+.philosophy-head{display:grid;gap:12px;max-width:720px;margin-bottom:28px;}
+.philosophy-head h2{font-size:clamp(25px,3.4vw,36px);}
+.philosophy-head p{margin:0;color:var(--text-secondary);font-size:15.5px;line-height:1.75;}
+.philosophy-grid{display:grid;gap:14px;}
+.philosophy-card{padding:22px;border-top:2px solid var(--current);background:rgba(255,255,255,.74);}
+.philosophy-card h3{font-size:18px;margin-bottom:8px;}
+.philosophy-card p{margin:0;color:var(--text-secondary);font-size:13.5px;line-height:1.7;}
+.philosophy-card .projects{display:block;margin-top:12px;color:var(--text-muted);font:500 10.5px/1.55 var(--mono);}
+@media(min-width:760px){.philosophy-grid{grid-template-columns:repeat(3,1fr);}}
 
 /* ---------- atlas scan layer ---------- */
 .atlas-controls{display:none;}
@@ -448,8 +459,9 @@ html[lang="en"] [data-zh]{display:none!important;}
   <div class="who"><b>杨翔</b> <span data-zh>· 人机交互体验设计</span><span data-en>· Human-Machine Interaction Design</span></div>
   <div class="top-actions">
     <nav class="topnav" aria-label="Primary">
+      <a href="#hero"><span data-zh>开始</span><span data-en>Intro</span></a>
       <a href="#atlas"><span data-zh>项目</span><span data-en>Projects</span></a>
-      <a href="#c1"><span data-zh>案例</span><span data-en>Cases</span></a>
+      <a href="#philosophy"><span data-zh>设计取向</span><span data-en>Approach</span></a>
       <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
     </nav>
     <div class="langtoggle">
@@ -466,15 +478,11 @@ html[lang="en"] [data-zh]{display:none!important;}
 <nav class="rail" id="rail" aria-label="Page position">
   <a href="#hero"><span data-zh>开始</span><span data-en>Intro</span></a>
   <a href="#atlas"><span data-zh>项目概览</span><span data-en>Projects</span></a>
-  <a href="#c1"><span data-zh>触觉研究</span><span data-en>Haptics</span></a>
-  <a href="#c2"><span data-zh>工区安全</span><span data-en>Work-zone</span></a>
-  <a href="#c3"><span data-zh>Digital Me</span><span data-en>Digital Me</span></a>
-  <a href="#c4"><span data-zh>假设观察</span><span data-en>Observatory</span></a>
-  <a href="#c5"><span data-zh>设计原则</span><span data-en>Principles</span></a>
+  <a href="#philosophy"><span data-zh>设计取向</span><span data-en>Approach</span></a>
   <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
 </nav>
 
-<header class="hero" id="hero" role="link" tabindex="0" aria-label="查看项目">
+<header class="hero" id="hero" data-page-section role="link" tabindex="0" aria-label="查看项目">
   <div class="hero-field" id="field"></div>
   <div class="hero-inner">
     <div class="label gold" data-zh>人因工程博士 · 弗吉尼亚理工</div>
@@ -500,16 +508,16 @@ html[lang="en"] [data-zh]{display:none!important;}
 <main>
 
 <!-- ============ PROJECT ATLAS ============ -->
-<section class="atlas" id="atlas">
+<section class="atlas" id="atlas" data-page-section>
   <div class="wrap">
     <div class="atlas-head">
       <div class="label gold"><span data-zh>精选项目</span><span data-en>Selected work</span></div>
       <h2><span data-zh>我做过的产品、研究和小工具</span><span data-en>Products, research, and tools I’ve built</span></h2>
-      <p><span data-zh>从社区产品、施工安全到个人 AI。先看界面，再决定要不要继续往下看。</span><span data-en>From community products and work-zone safety to personal AI. Start with the interface, then open the projects that interest you.</span></p>
+      <p><span data-zh>从社区产品、施工安全到个人 AI。点开项目可以查看界面、角色边界和当前真实可用的入口。</span><span data-en>From community products and work-zone safety to personal AI. Open a project to see its interface, role boundary, and any destination that is actually available today.</span></p>
     </div>
 
     <div class="atlas-grid" id="atlas-grid">
-      <article class="project-card featured" data-kind="featured ai product" data-target="#c3" data-experience-url="https://digital-me-dashboard.vercel.app/" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
+      <article class="project-card featured" data-kind="featured ai product" data-experience-url="https://digital-me-dashboard.vercel.app/" data-action-zh="了解更多 ↗" data-action-en="Learn more ↗" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
         <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
         <h3><span data-zh>Digital Me · 从已知出发，找到下一步</span><span data-en>Digital Me · Exploring from the Edge of What You Know</span></h3>
@@ -518,7 +526,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product" data-target="#c5" data-experience-url="https://blacksburg-secondhand-production.up.railway.app/" data-github-url="https://github.com/yangxiang5136/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
+      <article class="project-card featured" data-kind="featured product" data-experience-url="https://blacksburg-secondhand-production.up.railway.app/" data-action-zh="查看网站 ↗" data-action-en="Visit website ↗" data-github-url="https://github.com/yangxiang5136/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
         <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
         <h3><span data-zh>本地华人生活服务社区站</span><span data-en>Local Chinese Community Hub</span></h3>
@@ -527,7 +535,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Local Chinese Community Hub"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured research" data-target="#c1" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
+      <article class="project-card featured" data-kind="featured research" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>博士研究平台</span><span data-en>Doctoral research platform</span></span></div>
         <div class="project-thumb haptic-collage"><img class="haptic-ui" src="assets/vibrotactile-controller-redraw-4k.png" alt="基于真实运行界面高清重绘的 Python 触觉实验控制器"><img class="haptic-imu" src="assets/vibrotactile-imu-redraw-hd.png" alt="高清重绘的 IMU 实时姿态放大视图"></div>
         <h3><span data-zh>可穿戴触觉预警系统</span><span data-en>Vibrotactile Warning System</span></h3>
@@ -536,7 +544,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Vibrotactile Warning System"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product research" data-target="#c2" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
+      <article class="project-card featured" data-kind="featured product research" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>匿名产业合作</span><span data-en>Anonymized industry collaboration</span></span></div>
         <div class="project-thumb phone-strip"><img src="assets/workzone-manager-home.png" alt="安全经理首页"><img src="assets/workzone-worker-context.png" alt="工人作业情境输入"><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"></div>
         <h3><span data-zh>智慧工区安全平台</span><span data-en>Smart Work-Zone Safety Platform</span></h3>
@@ -563,7 +571,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: TaskFlow Workflow and Time Tracking"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="ai tools" data-experience-url="https://recovery-palette-demo.yangxiang5136.chatgpt.site/?lang=zh" data-gallery="assets/branch-return-path-redraw-hd.png|assets/branch-compass-portfolio.png">
+      <article class="project-card" data-kind="ai tools" data-experience-url="https://recovery-palette-demo.yangxiang5136.chatgpt.site/?lang=zh" data-action-zh="体验 Demo ↗" data-action-en="Try the demo ↗" data-gallery="assets/branch-return-path-redraw-hd.png|assets/branch-compass-portfolio.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>方法探索 · 高清重绘</span><span data-en>Design inquiry · HD reconstruction</span></span></div>
         <div class="project-thumb"><img src="assets/branch-return-path-redraw-hd.png" alt="标出主任务、当前分支和返回位置的高清重绘界面"></div>
         <h3><span data-zh>中断恢复工作流</span><span data-en>Interruption Recovery Workflow</span></h3>
@@ -590,7 +598,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Handy Voice Input Without Leaving the Task"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="research tools" data-target="#c4" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/virtual-user-reaction-lab-redraw-hd.png|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
+      <article class="project-card" data-kind="research tools" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/virtual-user-reaction-lab-redraw-hd.png|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
         <div class="project-thumb"><img src="assets/virtual-user-reaction-lab-redraw-hd.png" alt="同一产品概念被八类合成角色理解并汇总为反应模式的高清重绘界面"></div>
         <h3><span data-zh>产品假设观察站</span><span data-en>Product Assumption Observatory</span></h3>
@@ -600,6 +608,36 @@ html[lang="en"] [data-zh]{display:none!important;}
       </article>
     </div>
     <p class="atlas-note"><span data-zh>状态标签描述的是今天可以被证据支持的范围，不是项目质量评分。</span><span data-en>Status labels describe what today's evidence supports; they are not quality scores.</span></p>
+  </div>
+</section>
+
+<section class="philosophy" id="philosophy" data-page-section>
+  <div class="wrap">
+    <div class="philosophy-head">
+      <div class="label gold"><span data-zh>我的设计取向</span><span data-en>How I approach design</span></div>
+      <h2><span data-zh>从人的判断、感知与工作连续性出发</span><span data-en>Starting from human judgment, perception, and continuity</span></h2>
+      <p>
+        <span data-zh>我不从功能清单开始，而是先找出人在哪一步看不见、接不上，或需要重新建立上下文。研究帮助我找到边界，原型把判断变成可以体验的东西，产品再把它带回真实工作流。</span>
+        <span data-en>I do not start with a feature list. I start where people lose visibility, continuity, or context. Research locates the boundary, prototypes make the judgment tangible, and products return it to a real workflow.</span>
+      </p>
+    </div>
+    <div class="philosophy-grid">
+      <article class="philosophy-card">
+        <h3><span data-zh>拓展判断的边界</span><span data-en>Extend the edge of judgment</span></h3>
+        <p><span data-zh>AI 不替人跨到答案，而是帮助人看清自己知道什么、还缺什么，以及下一步值得探索什么。</span><span data-en>AI should not leap to the answer for people; it should clarify what they know, what is missing, and which adjacent step is worth exploring.</span></p>
+        <span class="projects">Digital Me · Product Assumption Observatory</span>
+      </article>
+      <article class="philosophy-card">
+        <h3><span data-zh>让身体更早理解风险</span><span data-en>Help the body understand risk sooner</span></h3>
+        <p><span data-zh>当视觉和听觉已经很忙，交互需要顺着人的感知规律，把方向、距离和紧迫度变成更直接的信号。</span><span data-en>When vision and hearing are already busy, interaction should follow human perception and translate direction, distance, and urgency into more immediate signals.</span></p>
+        <span class="projects">Vibrotactile Warning · Smart Work-Zone Safety</span>
+      </article>
+      <article class="philosophy-card">
+        <h3><span data-zh>让工作保持连续</span><span data-en>Keep work continuous</span></h3>
+        <p><span data-zh>好的工具不增加新的管理负担；它应该保留任务的来路、当前状态和返回位置，让人更容易接着做下去。</span><span data-en>A good tool should not create more management work. It should preserve where a task came from, where it stands, and how to resume it.</span></p>
+        <span class="projects">TaskFlow · Recovery Palette · Local File Finder · Handy</span>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -616,7 +654,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     <p class="modal-summary" id="modal-summary"></p>
     <div class="modal-role" id="modal-role"></div>
     <div class="modal-actions">
-      <a class="modal-primary" id="modal-primary" href="#atlas"><span data-zh>直接体验 Demo ↗</span><span data-en>Try the demo ↗</span></a>
+      <a class="modal-primary" id="modal-primary" href="#atlas"><span data-zh>了解更多 ↗</span><span data-en>Learn more ↗</span></a>
       <a class="modal-github" id="modal-github" href="#" target="_blank" rel="noopener noreferrer" hidden>GitHub ↗</a>
       <button class="modal-secondary" id="modal-secondary"><span data-zh>返回项目地图</span><span data-en>Back to project map</span></button>
     </div>
@@ -871,7 +909,7 @@ html[lang="en"] [data-zh]{display:none!important;}
 
 </main>
 
-<footer id="contact">
+<footer id="contact" data-page-section>
   <div class="wrap">
     <div class="label gold" data-zh>联系</div>
     <div class="label gold" data-en>Contact</div>
@@ -903,7 +941,7 @@ html[lang="en"] [data-zh]{display:none!important;}
   var btnZh=document.getElementById('btn-zh'),btnEn=document.getElementById('btn-en'),heroJump=document.getElementById('hero'),backToTop=document.getElementById('back-to-top');
   function setLang(l){
     var currentAnchor=null,currentOffset=0;
-    document.querySelectorAll('header[id],section[id]').forEach(function(section){
+    document.querySelectorAll('[data-page-section]').forEach(function(section){
       var top=section.getBoundingClientRect().top;
       if(top<=72){currentAnchor=section;currentOffset=top;}
     });
@@ -1052,6 +1090,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     modalPrimary.hidden=!experienceUrl;
     if(experienceUrl){
       modalPrimary.setAttribute('href',experienceUrl);
+      modalPrimary.querySelector('[data-zh]').textContent=card.getAttribute('data-action-zh')||'了解更多 ↗';
+      modalPrimary.querySelector('[data-en]').textContent=card.getAttribute('data-action-en')||'Learn more ↗';
       if(isExternal){modalPrimary.setAttribute('target','_blank');modalPrimary.setAttribute('rel','noopener noreferrer');}
       else{modalPrimary.removeAttribute('target');modalPrimary.removeAttribute('rel');}
     }
@@ -1202,7 +1242,6 @@ html[lang="en"] [data-zh]{display:none!important;}
   var links=Array.prototype.slice.call(rail.querySelectorAll('a'));
   var secs=links.map(function(l){return document.querySelector(l.getAttribute('href'));});
   var topLinks=Array.prototype.slice.call(topnav.querySelectorAll('a'));
-  var atlasSection=document.getElementById('atlas'),firstCase=document.getElementById('c1'),contactSection=document.getElementById('contact');
   function onScroll(){
     topbar.classList.toggle('scrolled',window.scrollY>40);
     var showBackToTop=window.scrollY>Math.max(360,window.innerHeight*.7);
@@ -1218,12 +1257,9 @@ html[lang="en"] [data-zh]{display:none!important;}
       if(active)l.setAttribute('aria-current','location');
       else l.removeAttribute('aria-current');
     });
-    var navTarget='#atlas';
-    var navY=window.scrollY+topbar.offsetHeight+28;
+    var navTarget=cur>=0?links[cur].getAttribute('href'):'#hero';
     var nearPageEnd=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-4;
-    if(contactSection&&(contactSection.offsetTop<=navY||nearPageEnd))navTarget='#contact';
-    else if(firstCase&&firstCase.offsetTop<=navY)navTarget='#c1';
-    else if(atlasSection&&atlasSection.offsetTop<=navY)navTarget='#atlas';
+    if(nearPageEnd)navTarget='#contact';
     topLinks.forEach(function(l){
       var active=l.getAttribute('href')===navTarget;
       l.classList.toggle('on',active);
