@@ -55,7 +55,7 @@
       <span class="page-title"><span data-zh>简历</span><span data-en>Résumé</span></span>
       <div class="actions">
         <a class="action" href="index.html#contact"><span data-zh>返回作品集</span><span data-en>Back to portfolio</span></a>
-        <a class="action primary" href="assets/resume.pdf" target="_blank" rel="noopener"><span data-zh>打开原 PDF ↗</span><span data-en>Open original PDF ↗</span></a>
+        <a class="action primary" id="pdf-link" href="assets/resume.pdf" target="_blank" rel="noopener"><span data-zh>打开原 PDF ↗</span><span data-en>Open original PDF ↗</span></a>
         <div class="lang-toggle" aria-label="语言切换">
           <button id="btn-zh" type="button" aria-pressed="true">中文</button>
           <button id="btn-en" type="button" aria-pressed="false">EN</button>
@@ -69,14 +69,17 @@
   </main>
   <script>
     (function(){
-      var zh=document.getElementById('btn-zh'),en=document.getElementById('btn-en'),viewer=document.querySelector('.viewer');
+      var zh=document.getElementById('btn-zh'),en=document.getElementById('btn-en'),viewer=document.querySelector('.viewer'),pdfLink=document.getElementById('pdf-link');
       function setLang(lang){
         var isEn=lang==='en';
+        var pdfPath=isEn?'assets/resume-en.pdf':'assets/resume.pdf';
         document.documentElement.lang=isEn?'en':'zh-CN';
         document.title=isEn?'Xiang Yang · Résumé':'杨翔 · 简历';
         zh.setAttribute('aria-pressed',String(!isEn));
         en.setAttribute('aria-pressed',String(isEn));
         viewer.title=isEn?"Xiang Yang's résumé":'杨翔的简历';
+        if(viewer.getAttribute('src')!==pdfPath+'#view=FitH') viewer.setAttribute('src',pdfPath+'#view=FitH');
+        pdfLink.setAttribute('href',pdfPath);
         try{localStorage.setItem('pf-lang',isEn?'en':'zh-CN')}catch(error){}
       }
       zh.addEventListener('click',function(){setLang('zh-CN')});
