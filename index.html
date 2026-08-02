@@ -94,7 +94,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .rail{position:fixed;right:18px;top:50%;z-index:42;display:none;width:176px;padding:10px 8px;
   transform:translateY(-50%);opacity:.62;background:transparent;box-shadow:none;backdrop-filter:none;
   transition:opacity .18s ease;}
-.rail::after{content:"";position:absolute;right:19px;top:31px;bottom:31px;width:1px;background:rgba(0,149,255,.25);}
+.rail::after{content:"";position:absolute;right:17px;top:31px;bottom:31px;width:1px;background:rgba(0,149,255,.25);}
 .rail:hover,.rail:focus-within{opacity:1;}
 .rail a{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-end;min-height:42px;
   padding:0 37px 0 8px;color:var(--text-muted);font:600 13.5px/1.15 var(--body-font);text-decoration:none;white-space:nowrap;}
@@ -178,19 +178,6 @@ main>section.case{display:none;}
 .atlas-note{margin:24px 0 0;color:var(--text-muted);font-size:12.5px;}
 @media(min-width:860px){.project-card.featured{min-height:285px}.atlas-grid{grid-template-columns:repeat(3,1fr)}}
 
-/* ---------- project families + design philosophy ---------- */
-.philosophy{padding:72px 0 82px;border-top:1px solid rgba(207,213,222,.72);
-  background:rgba(247,249,252,.92);backdrop-filter:blur(16px);}
-.philosophy-head{display:grid;gap:12px;max-width:720px;margin-bottom:28px;}
-.philosophy-head h2{font-size:clamp(25px,3.4vw,36px);}
-.philosophy-head p{margin:0;color:var(--text-secondary);font-size:15.5px;line-height:1.75;}
-.philosophy-grid{display:grid;gap:14px;}
-.philosophy-card{padding:22px;border-top:2px solid var(--current);background:rgba(255,255,255,.74);}
-.philosophy-card h3{font-size:18px;margin-bottom:8px;}
-.philosophy-card p{margin:0;color:var(--text-secondary);font-size:13.5px;line-height:1.7;}
-.philosophy-card .projects{display:block;margin-top:12px;color:var(--text-muted);font:500 10.5px/1.55 var(--mono);}
-@media(min-width:760px){.philosophy-grid{grid-template-columns:repeat(3,1fr);}}
-
 /* ---------- atlas scan layer ---------- */
 .atlas-controls{display:none;}
 .atlas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
@@ -252,6 +239,7 @@ main>section.case{display:none;}
 .modal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .modal-primary{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--action-dark);color:#fff;text-decoration:none;font-weight:600;font-size:13px;}
 .modal-github{display:inline-flex;padding:11px 15px;border:1px solid var(--rule-strong);border-radius:9px;color:var(--text-primary);background:var(--surface);text-decoration:none;font-weight:600;font-size:13px;}
+.modal-primary[hidden],.modal-github[hidden]{display:none!important;}
 .modal-github:hover{border-color:var(--current);color:var(--current-hover);background:var(--current-soft);}
 .modal-secondary{padding:11px 15px;border:1px solid var(--rule);border-radius:9px;color:var(--text-secondary);font-size:13px;}
 .case-live-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
@@ -459,9 +447,7 @@ html[lang="en"] [data-zh]{display:none!important;}
   <div class="who"><b>杨翔</b> <span data-zh>· 人机交互体验设计</span><span data-en>· Human-Machine Interaction Design</span></div>
   <div class="top-actions">
     <nav class="topnav" aria-label="Primary">
-      <a href="#hero"><span data-zh>开始</span><span data-en>Intro</span></a>
       <a href="#atlas"><span data-zh>项目</span><span data-en>Projects</span></a>
-      <a href="#philosophy"><span data-zh>设计取向</span><span data-en>Approach</span></a>
       <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
     </nav>
     <div class="langtoggle">
@@ -476,9 +462,7 @@ html[lang="en"] [data-zh]{display:none!important;}
 </button>
 
 <nav class="rail" id="rail" aria-label="Page position">
-  <a href="#hero"><span data-zh>开始</span><span data-en>Intro</span></a>
   <a href="#atlas"><span data-zh>项目概览</span><span data-en>Projects</span></a>
-  <a href="#philosophy"><span data-zh>设计取向</span><span data-en>Approach</span></a>
   <a href="#contact"><span data-zh>联系</span><span data-en>Contact</span></a>
 </nav>
 
@@ -608,36 +592,6 @@ html[lang="en"] [data-zh]{display:none!important;}
       </article>
     </div>
     <p class="atlas-note"><span data-zh>状态标签描述的是今天可以被证据支持的范围，不是项目质量评分。</span><span data-en>Status labels describe what today's evidence supports; they are not quality scores.</span></p>
-  </div>
-</section>
-
-<section class="philosophy" id="philosophy" data-page-section>
-  <div class="wrap">
-    <div class="philosophy-head">
-      <div class="label gold"><span data-zh>我的设计取向</span><span data-en>How I approach design</span></div>
-      <h2><span data-zh>从人的判断、感知与工作连续性出发</span><span data-en>Starting from human judgment, perception, and continuity</span></h2>
-      <p>
-        <span data-zh>我不从功能清单开始，而是先找出人在哪一步看不见、接不上，或需要重新建立上下文。研究帮助我找到边界，原型把判断变成可以体验的东西，产品再把它带回真实工作流。</span>
-        <span data-en>I do not start with a feature list. I start where people lose visibility, continuity, or context. Research locates the boundary, prototypes make the judgment tangible, and products return it to a real workflow.</span>
-      </p>
-    </div>
-    <div class="philosophy-grid">
-      <article class="philosophy-card">
-        <h3><span data-zh>拓展判断的边界</span><span data-en>Extend the edge of judgment</span></h3>
-        <p><span data-zh>AI 不替人跨到答案，而是帮助人看清自己知道什么、还缺什么，以及下一步值得探索什么。</span><span data-en>AI should not leap to the answer for people; it should clarify what they know, what is missing, and which adjacent step is worth exploring.</span></p>
-        <span class="projects">Digital Me · Product Assumption Observatory</span>
-      </article>
-      <article class="philosophy-card">
-        <h3><span data-zh>让身体更早理解风险</span><span data-en>Help the body understand risk sooner</span></h3>
-        <p><span data-zh>当视觉和听觉已经很忙，交互需要顺着人的感知规律，把方向、距离和紧迫度变成更直接的信号。</span><span data-en>When vision and hearing are already busy, interaction should follow human perception and translate direction, distance, and urgency into more immediate signals.</span></p>
-        <span class="projects">Vibrotactile Warning · Smart Work-Zone Safety</span>
-      </article>
-      <article class="philosophy-card">
-        <h3><span data-zh>让工作保持连续</span><span data-en>Keep work continuous</span></h3>
-        <p><span data-zh>好的工具不增加新的管理负担；它应该保留任务的来路、当前状态和返回位置，让人更容易接着做下去。</span><span data-en>A good tool should not create more management work. It should preserve where a task came from, where it stands, and how to resume it.</span></p>
-        <span class="projects">TaskFlow · Recovery Palette · Local File Finder · Handy</span>
-      </article>
-    </div>
   </div>
 </section>
 
@@ -1094,10 +1048,15 @@ html[lang="en"] [data-zh]{display:none!important;}
       modalPrimary.querySelector('[data-en]').textContent=card.getAttribute('data-action-en')||'Learn more ↗';
       if(isExternal){modalPrimary.setAttribute('target','_blank');modalPrimary.setAttribute('rel','noopener noreferrer');}
       else{modalPrimary.removeAttribute('target');modalPrimary.removeAttribute('rel');}
+    }else{
+      modalPrimary.removeAttribute('href');
+      modalPrimary.removeAttribute('target');
+      modalPrimary.removeAttribute('rel');
     }
     var githubUrl=card.getAttribute('data-github-url');
     modalGithub.hidden=!githubUrl;
     if(githubUrl)modalGithub.setAttribute('href',githubUrl);
+    else modalGithub.removeAttribute('href');
     activeGallery=(card.getAttribute('data-gallery')||'').split('|').filter(Boolean);
     if(activeGalleryIndex>=activeGallery.length)activeGalleryIndex=0;
     renderModalImage();
@@ -1257,7 +1216,7 @@ html[lang="en"] [data-zh]{display:none!important;}
       if(active)l.setAttribute('aria-current','location');
       else l.removeAttribute('aria-current');
     });
-    var navTarget=cur>=0?links[cur].getAttribute('href'):'#hero';
+    var navTarget=cur>=0?links[cur].getAttribute('href'):'#atlas';
     var nearPageEnd=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-4;
     if(nearPageEnd)navTarget='#contact';
     topLinks.forEach(function(l){
