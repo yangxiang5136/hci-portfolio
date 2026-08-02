@@ -27,7 +27,7 @@
 *{box-sizing:border-box;}
 html{scroll-behavior:auto;background:#f3f6fa;}
 body{position:relative;isolation:isolate;margin:0;background:transparent;color:var(--text);font-family:var(--body-font);
-     font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+     font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;zoom:1.5;}
 img,video{max-width:100%;display:block;}
 button{font:inherit;border:0;background:none;color:inherit;cursor:pointer;}
 a{color:inherit;}
@@ -1044,8 +1044,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     document.getElementById('modal-title').textContent=title;
     document.getElementById('modal-summary').textContent=localizedText(card.querySelector(':scope > p'));
     document.getElementById('modal-role').textContent=localizedText(card.querySelector('.project-role'));
-    var target=card.getAttribute('data-target');
-    var experienceUrl=card.getAttribute('data-experience-url')||target;
+    var experienceUrl=card.getAttribute('data-experience-url');
     var isExternal=/^https?:\/\//i.test(experienceUrl||'');
     modalPrimary.hidden=!experienceUrl;
     if(experienceUrl){
