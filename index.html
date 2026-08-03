@@ -211,6 +211,9 @@ main>section.case{display:none;}
 .project-card.video-feature .project-thumb img{filter:saturate(.92) brightness(.78);}
 .project-card.video-feature:hover .project-thumb img{transform:scale(1.012);filter:saturate(1) brightness(.86);}
 .project-card.video-feature h3{margin:0;padding:17px 62px 19px 20px;color:#fff;font-size:clamp(18px,2.2vw,24px);}
+.project-card.video-feature .concept-chip{position:absolute;left:18px;top:18px;z-index:3;padding:7px 10px;border-radius:999px;
+  background:rgba(255,255,255,.9);color:#283447;box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);
+  font:600 10.5px/1 var(--mono);letter-spacing:.06em;}
 .project-card.video-feature .project-open .play-icon{left:50%;right:auto;top:50%;bottom:auto;width:68px;height:68px;
   transform:translate(-50%,-58%);background:rgba(255,255,255,.94);color:#0b111a;font-size:25px;
   box-shadow:0 18px 44px rgba(0,0,0,.34);transition:transform .2s ease,background .2s ease;}
@@ -592,13 +595,13 @@ html[lang="en"] [data-zh]{display:none!important;}
       <article class="project-card video-feature" data-kind="research tools" data-video-url="assets/spatial-orbit-v0.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
         <div class="project-thumb"><img src="assets/observatory-concept.jpg" alt="合成城市中的人物、事件与关系路径概念画面"></div>
+        <div class="concept-chip"><span data-zh>概念项目</span><span data-en>Concept Project</span></div>
         <h3><span data-zh>Synthetic Society · 合成社会实验场</span><span data-en>Synthetic Society Lab</span></h3>
         <p><span data-zh>把事件放进一座合成城市，观察不同人物如何重新理解它，以及这些理解如何改变选择、关系与后续影响。</span><span data-en>Placing an event into a synthetic city to explore how different people reinterpret it and how those meanings reshape choices, relationships, and later consequences.</span></p>
         <details><summary><span data-zh>项目边界</span><span data-en>Project boundary</span></summary><p class="project-role"><span data-zh>概念、产品模型与信息可视化；所有人物、事件与结果均为合成内容。</span><span data-en>Concept, product model, and information visualization; all people, events, and outcomes are synthetic.</span></p></details>
         <button class="project-open" aria-label="播放合成社会实验场概念动画"><span class="play-icon" aria-hidden="true"></span></button>
       </article>
     </div>
-    <p class="atlas-note"><span data-zh>状态标签描述的是今天可以被证据支持的范围，不是项目质量评分。</span><span data-en>Status labels describe what today's evidence supports; they are not quality scores.</span></p>
   </div>
 </section>
 
