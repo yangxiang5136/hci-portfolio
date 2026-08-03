@@ -268,7 +268,8 @@ section,footer{scroll-margin-top:68px;}
 @media(min-width:760px){
   .atlas-grid{grid-template-columns:repeat(6,minmax(0,1fr));}
   .project-card.featured{grid-column:span 3;}
-  .project-card:not(.featured){grid-column:span 2;}
+  .project-card:not(.featured){grid-column:span 3;}
+  .project-card.video-feature{grid-column:1/-1;}
 }
 @media(max-width:759px){
   .topbar .who{display:none;}
@@ -577,15 +578,6 @@ html[lang="en"] [data-zh]{display:none!important;}
         <p><span data-zh>保留主任务、临时分支和准确的返回位置，帮助人在被打断后快速恢复工作流，减少重新理解上下文的时间。</span><span data-en>Preserving the main task, temporary branch, and exact return point so people can resume a workflow without rebuilding its context.</span></p>
         <details><summary><span data-zh>当前结论</span><span data-en>Current learning</span></summary><p class="project-role"><span data-zh>不同工具能缓解不同断裂点，但目前没有一个方法能胜任所有工作连续性问题。</span><span data-en>Different tools relieve different breaks in continuity; no single method currently handles the full problem.</span></p></details>
         <button class="project-open" aria-label="Quick view: Workflow Continuity and Interruption Recovery System"><span>↗</span></button>
-      </article>
-
-      <article class="project-card" data-kind="tools product" data-gallery="assets/local-private-search-redraw-hd.png|assets/local-file-finder-ui.png">
-        <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>严格本地概念试点</span><span data-en>Strict-local concept pilot</span></span></div>
-        <div class="project-thumb"><img src="assets/local-private-search-redraw-hd.png" alt="明确标出文件留在本机、不上传云端的本地搜索高清重绘界面"></div>
-        <h3><span data-zh>严格本地文件检索系统</span><span data-en>Strict-Local File Retrieval System</span></h3>
-        <p><span data-zh>在用户选定的文件夹中按文件名、相对路径、年份和格式建立本地索引；无需迁移资料，也不把文件或索引上传云端。</span><span data-en>Building a local index over names, relative paths, years, and formats inside a user-selected folder—without migrating files or uploading content or the index.</span></p>
-        <details><summary><span data-zh>证据边界</span><span data-en>Evidence boundary</span></summary><p class="project-role"><span data-zh>本地优先边界、检索交互与评估协议已有；真实文件夹试点和目标机器验证仍待完成。</span><span data-en>The local-first boundary, retrieval interaction, and evaluation protocol exist; real-folder pilot and target-machine validation remain pending.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Strict-Local File Retrieval System"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="tools ai" data-gallery="assets/handy-voice-input-workflow-hd.png">
