@@ -206,6 +206,17 @@ main>section.case{display:none;}
 .project-card:not(.featured) .project-category{align-self:flex-start;padding:6px 8px;border-radius:7px;
   background:var(--current-soft);color:var(--current-hover);font:600 10px/1 var(--mono);letter-spacing:.06em;margin-bottom:18px;}
 .project-card:not(.featured) .project-open span{background:var(--action-dark);color:#fff;width:28px;height:28px;right:14px;bottom:14px;font-size:15px;}
+.project-card.video-feature{grid-column:1/-1;min-height:0;background:#090d14;color:#fff;}
+.project-card.video-feature .project-thumb{height:clamp(260px,42vw,470px);border-bottom-color:rgba(255,255,255,.12);background:#090d14;}
+.project-card.video-feature .project-thumb img{filter:saturate(.92) brightness(.78);}
+.project-card.video-feature:hover .project-thumb img{transform:scale(1.012);filter:saturate(1) brightness(.86);}
+.project-card.video-feature h3{margin:0;padding:17px 62px 19px 20px;color:#fff;font-size:clamp(18px,2.2vw,24px);}
+.project-card.video-feature .project-open .play-icon{left:50%;right:auto;top:50%;bottom:auto;width:68px;height:68px;
+  transform:translate(-50%,-58%);background:rgba(255,255,255,.94);color:#0b111a;font-size:25px;
+  box-shadow:0 18px 44px rgba(0,0,0,.34);transition:transform .2s ease,background .2s ease;}
+.project-card.video-feature:hover .project-open .play-icon{transform:translate(-50%,-58%) scale(1.06);background:#fff;}
+.project-card.video-feature .project-open .play-icon::before{content:"";display:block;margin-left:4px;width:0;height:0;
+  border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:14px solid currentColor;}
 .phone-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:100%;padding:18px 34px;background:linear-gradient(135deg,#171a1f,#262b32 60%,#403a18);}
 .phone-strip img{height:100%!important;object-fit:contain!important;border-radius:12px;box-shadow:0 14px 32px rgba(0,0,0,.3);filter:none!important;}
 .project-card.featured .project-thumb img.fit-contain{object-fit:contain;padding:14px;background:#f2f5f8;filter:none;}
@@ -233,6 +244,9 @@ main>section.case{display:none;}
 .modal-gallery{position:relative;margin:18px 0 20px;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:#eef2f6;}
 .modal-stage{height:min(50vh,430px);display:grid;place-items:center;}
 .modal-stage img{width:auto;max-width:100%;height:auto;max-height:min(50vh,430px);object-fit:contain;}
+.modal-stage video{display:block;width:100%;height:100%;max-height:min(50vh,430px);object-fit:contain;background:#05070a;}
+.modal-stage img[hidden],.modal-stage video[hidden]{display:none;}
+.modal-gallery.video-mode{background:#05070a;}
 .modal-gallery-nav{position:absolute;left:12px;right:12px;top:50%;display:flex;justify-content:space-between;pointer-events:none;transform:translateY(-50%);}
 .modal-gallery-nav button{pointer-events:auto;width:38px;height:38px;border-radius:50%;background:rgba(17,24,39,.8);color:#fff;font-size:20px;box-shadow:var(--shadow-sm);}
 .modal-counter{position:absolute;right:12px;bottom:12px;padding:6px 9px;border-radius:999px;background:rgba(17,24,39,.78);color:#fff;font:500 10.5px/1 var(--mono);}
@@ -532,19 +546,19 @@ html[lang="en"] [data-zh]{display:none!important;}
       <article class="project-card featured" data-kind="featured product research" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>匿名产业合作</span><span data-en>Anonymized industry collaboration</span></span></div>
         <div class="project-thumb phone-strip"><img src="assets/workzone-manager-home.png" alt="安全经理首页"><img src="assets/workzone-worker-context.png" alt="工人作业情境输入"><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"></div>
-        <h3><span data-zh>智慧工区安全平台</span><span data-en>Smart Work-Zone Safety Platform</span></h3>
+        <h3><span data-zh>智慧工区 SaaS 安全平台</span><span data-en>Smart Work-Zone Safety SaaS Platform</span></h3>
         <p><span data-zh>把工人端的情境输入、实时定位与管理端的工区划定、风险可视化和事件复盘连接成一条双角色流程。</span><span data-en>Connecting worker context and location with manager-side work-zone definition, risk visualization, and incident review.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品经理兼交互设计负责人；主导需求定义、交互模型、利益相关者协调与 MVP 规划，工程实现由团队协作完成。</span><span data-en>Product Manager &amp; Interaction Design Lead; led requirements, interaction model, stakeholder coordination, and MVP planning while engineering was delivered collaboratively.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety Platform"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety SaaS Platform"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="product" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>精选项目</span><span data-en>Selected</span></span><span class="project-status"><span data-zh>公开重绘 · 小群体服务</span><span data-en>Public reconstruction · small-group service</span></span></div>
         <div class="project-thumb"><img src="assets/household-care-coordination-redraw-hd.png" alt="家庭今日待办、责任人和完成记录的高清重绘界面"></div>
-        <h3><span data-zh>家庭任务与照料协作</span><span data-en>Household Tasks &amp; Care Coordination</span></h3>
+        <h3><span data-zh>家庭任务与照料协作微型平台</span><span data-en>Household Tasks &amp; Care Coordination Micro-Platform</span></h3>
         <p><span data-zh>把今天谁需要做什么、谁正在负责、什么已经完成，放进一个安静的家庭共用界面里。</span><span data-en>A calm shared view of what needs attention today, who is responsible, and what has already been completed.</span></p>
         <details><summary><span data-zh>设计重点</span><span data-en>Design focus</span></summary><p class="project-role"><span data-zh>界面强调异常优先、低提醒密度和责任连续性；首图依据现有原型高清重绘，真实使用叙事仍需参与者同意后公开。</span><span data-en>The interface prioritizes exceptions, low notification density, and continuity of responsibility. The lead visual is an HD reconstruction grounded in the existing prototype; real-use narratives still require participant consent.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination Micro-Platform"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="product tools" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
@@ -559,19 +573,19 @@ html[lang="en"] [data-zh]{display:none!important;}
       <article class="project-card" data-kind="ai tools" data-experience-url="https://recovery-palette-demo.yangxiang5136.chatgpt.site/?lang=zh" data-action-zh="体验 Demo ↗" data-action-en="Try the demo ↗" data-gallery="assets/recovery-palette-demo-latest.png|assets/branch-compass-portfolio.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>方法探索 · 可交互 Demo</span><span data-en>Design inquiry · interactive demo</span></span></div>
         <div class="project-thumb"><img src="assets/recovery-palette-demo-latest.png" alt="Recovery Palette 当前可交互 Demo 的主任务、临时分支与返回锚点界面"></div>
-        <h3><span data-zh>中断恢复工作流</span><span data-en>Interruption Recovery Workflow</span></h3>
+        <h3><span data-zh>工作流续接与中断恢复系统</span><span data-en>Workflow Continuity &amp; Interruption Recovery System</span></h3>
         <p><span data-zh>保留主任务、临时分支和准确的返回位置，帮助人在被打断后快速恢复工作流，减少重新理解上下文的时间。</span><span data-en>Preserving the main task, temporary branch, and exact return point so people can resume a workflow without rebuilding its context.</span></p>
         <details><summary><span data-zh>当前结论</span><span data-en>Current learning</span></summary><p class="project-role"><span data-zh>不同工具能缓解不同断裂点，但目前没有一个方法能胜任所有工作连续性问题。</span><span data-en>Different tools relieve different breaks in continuity; no single method currently handles the full problem.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Interruption Recovery Workflow"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Workflow Continuity and Interruption Recovery System"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="tools product" data-gallery="assets/local-private-search-redraw-hd.png|assets/local-file-finder-ui.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>严格本地概念试点</span><span data-en>Strict-local concept pilot</span></span></div>
         <div class="project-thumb"><img src="assets/local-private-search-redraw-hd.png" alt="明确标出文件留在本机、不上传云端的本地搜索高清重绘界面"></div>
-        <h3><span data-zh>本地优先文件检索工作流</span><span data-en>Local-First File Retrieval Workflow</span></h3>
-        <p><span data-zh>把自然语言检索嵌入现有文件工作流；无需迁移资料，索引和结果留在本机，敏感内容不上传云端。</span><span data-en>Adding natural-language retrieval to the existing file workflow without migration, while keeping the index, results, and sensitive content on the computer.</span></p>
+        <h3><span data-zh>严格本地文件检索系统</span><span data-en>Strict-Local File Retrieval System</span></h3>
+        <p><span data-zh>在用户选定的文件夹中按文件名、相对路径、年份和格式建立本地索引；无需迁移资料，也不把文件或索引上传云端。</span><span data-en>Building a local index over names, relative paths, years, and formats inside a user-selected folder—without migrating files or uploading content or the index.</span></p>
         <details><summary><span data-zh>证据边界</span><span data-en>Evidence boundary</span></summary><p class="project-role"><span data-zh>本地优先边界、检索交互与评估协议已有；真实文件夹试点和目标机器验证仍待完成。</span><span data-en>The local-first boundary, retrieval interaction, and evaluation protocol exist; real-folder pilot and target-machine validation remain pending.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Local-First File Retrieval Workflow"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Strict-Local File Retrieval System"><span>↗</span></button>
       </article>
 
       <article class="project-card" data-kind="tools ai" data-gallery="assets/handy-voice-input-workflow-hd.png">
@@ -583,13 +597,13 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Handy Voice Input Without Leaving the Task"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="research tools" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/virtual-user-reaction-lab-redraw-hd.png|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
+      <article class="project-card video-feature" data-kind="research tools" data-video-url="assets/spatial-orbit-v0.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
-        <div class="project-thumb"><img src="assets/virtual-user-reaction-lab-redraw-hd.png" alt="同一产品概念被八类合成角色理解并汇总为反应模式的高清重绘界面"></div>
-        <h3><span data-zh>产品假设观察站</span><span data-en>Product Assumption Observatory</span></h3>
-        <p><span data-zh>把团队对用户反应的默认想象放进不同生活情境，比较同一项变化如何被重新理解，以及这些理解会带来什么后续选择。</span><span data-en>Placing a team's assumptions about user response into different life contexts to compare how the same change is reinterpreted and what choices may follow.</span></p>
+        <div class="project-thumb"><img src="assets/observatory-concept.jpg" alt="合成城市中的人物、事件与关系路径概念画面"></div>
+        <h3><span data-zh>Synthetic Society · 合成社会实验场</span><span data-en>Synthetic Society Lab</span></h3>
+        <p><span data-zh>把事件放进一座合成城市，观察不同人物如何重新理解它，以及这些理解如何改变选择、关系与后续影响。</span><span data-en>Placing an event into a synthetic city to explore how different people reinterpret it and how those meanings reshape choices, relationships, and later consequences.</span></p>
         <details><summary><span data-zh>项目边界</span><span data-en>Project boundary</span></summary><p class="project-role"><span data-zh>概念、产品模型与信息可视化；所有人物、事件与结果均为合成内容。</span><span data-en>Concept, product model, and information visualization; all people, events, and outcomes are synthetic.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Product Assumption Observatory"><span>↗</span></button>
+        <button class="project-open" aria-label="播放合成社会实验场概念动画"><span class="play-icon" aria-hidden="true"></span></button>
       </article>
     </div>
     <p class="atlas-note"><span data-zh>状态标签描述的是今天可以被证据支持的范围，不是项目质量评分。</span><span data-en>Status labels describe what today's evidence supports; they are not quality scores.</span></p>
@@ -602,7 +616,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     <div class="modal-kicker" id="modal-kicker"></div>
     <h2 id="modal-title"></h2>
     <div class="modal-gallery" id="modal-gallery">
-      <div class="modal-stage"><img id="modal-image" alt=""></div>
+      <div class="modal-stage"><img id="modal-image" alt=""><video id="modal-video" controls playsinline preload="metadata" hidden></video></div>
       <div class="modal-gallery-nav"><button id="modal-prev" aria-label="Previous image">‹</button><button id="modal-next" aria-label="Next image">›</button></div>
       <div class="modal-counter" id="modal-counter"></div>
     </div>
@@ -684,7 +698,7 @@ html[lang="en"] [data-zh]{display:none!important;}
     <div class="case-head">
       <div class="label" data-zh>案例 02 · 产品经理兼交互设计负责人 · 匿名产业合作</div>
       <div class="label" data-en>CASE 02 · Product Manager &amp; Interaction Design Lead · Anonymized industry collaboration</div>
-      <h2><span data-zh>智慧工区安全平台</span><span data-en>Smart Work-Zone Safety Platform</span></h2>
+      <h2><span data-zh>智慧工区 SaaS 安全平台</span><span data-en>Smart Work-Zone Safety SaaS Platform</span></h2>
       <p class="sub">
         <span data-zh>面向施工现场的双角色安全工作流：工人端提供实时定位与作业情境，管理端划定工区、查看风险分布并复盘事件。我主导需求定义、交互模型、利益相关者协调与 MVP 规划；工程实现由跨学科团队协作完成。</span>
         <span data-en>A two-sided safety workflow for construction sites: workers provide location and task context while managers define work zones, inspect risk patterns, and review events. I led requirements, interaction modeling, stakeholder coordination, and MVP planning; engineering was delivered collaboratively by a cross-disciplinary team.</span>
@@ -795,12 +809,12 @@ html[lang="en"] [data-zh]{display:none!important;}
 <section class="case" id="c4">
   <div class="wrap">
     <div class="case-head">
-      <div class="label" data-zh>案例 04 · 概念探索 · 公开项目</div>
-      <div class="label" data-en>CASE 04 · Concept exploration · Open project</div>
+      <div class="label" data-zh>案例 04 · 合成社会实验场 · 概念探索</div>
+      <div class="label" data-en>CASE 04 · Synthetic Society Lab · Concept exploration</div>
       <h2><span data-zh>同一项变化，为什么会被不同的人理解成不同的事？</span><span data-en>Why does the same change become something different to each person?</span></h2>
       <p class="sub">
-        <span data-zh>这是一个用合成人物外化产品假设的观察工具：把同一项新功能、规则或事件放进不同生活情境，比较人们如何根据自身需要重新理解它，以及这些理解如何改变后续选择与关系。它不是预测模型，而是一种在上线前发现盲点、讨论分歧的设计方法。</span>
-        <span data-en>An observatory for externalizing product assumptions through synthetic people. It places the same feature, rule, or event into different life contexts, then compares how people reinterpret it through their own needs and how those interpretations may shape later choices and relationships. It is not a prediction model; it is a design method for finding blind spots and debating differences before launch.</span>
+        <span data-zh>这是一座用于外化产品假设的合成城市：把同一项新功能、规则或事件放进不同人物与生活情境，比较人们如何根据自身需要重新理解它，以及这些理解如何改变后续选择与关系。它不是预测模型，而是一种在上线前发现盲点、讨论分歧的设计方法。</span>
+        <span data-en>A synthetic city for externalizing product assumptions. It places the same feature, rule, or event into different lives, then compares how people reinterpret it through their own needs and how those meanings may shape later choices and relationships. It is not a prediction model; it is a design method for finding blind spots and debating differences before launch.</span>
       </p>
       <div class="tags">
         <span class="tag" data-zh>设计假设可视化</span><span class="tag" data-en>Assumption visualization</span>
@@ -1019,7 +1033,9 @@ html[lang="en"] [data-zh]{display:none!important;}
   var modalSecondary=document.getElementById('modal-secondary');
   var modalPrimary=document.getElementById('modal-primary');
   var modalGithub=document.getElementById('modal-github');
+  var modalGallery=document.getElementById('modal-gallery');
   var modalImage=document.getElementById('modal-image');
+  var modalVideo=document.getElementById('modal-video');
   var modalPrev=document.getElementById('modal-prev');
   var modalNext=document.getElementById('modal-next');
   var modalCounter=document.getElementById('modal-counter');
@@ -1063,19 +1079,33 @@ html[lang="en"] [data-zh]{display:none!important;}
     renderModalImage();
   }
   function renderModalImage(){
+    var videoUrl=activeProjectCard&&activeProjectCard.getAttribute('data-video-url');
+    if(videoUrl){
+      modalGallery.hidden=false;modalGallery.classList.add('video-mode');
+      modalImage.hidden=true;modalVideo.hidden=false;
+      if(modalVideo.getAttribute('src')!==videoUrl)modalVideo.setAttribute('src',videoUrl);
+      var poster=activeProjectCard.getAttribute('data-video-poster');
+      if(poster)modalVideo.setAttribute('poster',poster);else modalVideo.removeAttribute('poster');
+      modalCounter.hidden=true;modalPrev.hidden=true;modalNext.hidden=true;
+      return;
+    }
+    modalGallery.classList.remove('video-mode');modalVideo.pause();modalVideo.hidden=true;modalImage.hidden=false;
     var hasImages=activeGallery.length>0;
-    document.getElementById('modal-gallery').hidden=!hasImages;
+    modalGallery.hidden=!hasImages;
     if(!hasImages)return;
     modalImage.src=activeGallery[activeGalleryIndex];
     modalImage.alt=localizedText(activeProjectCard.querySelector('h3'))+' · '+(activeGalleryIndex+1);
+    modalCounter.hidden=false;
     modalCounter.textContent=(activeGalleryIndex+1)+' / '+activeGallery.length;
     modalPrev.hidden=activeGallery.length<2;modalNext.hidden=activeGallery.length<2;
   }
   function openProjectModal(card,trigger){
     activeProjectCard=card;projectTrigger=trigger;activeGalleryIndex=0;fillProjectModal(card);
     projectModal.classList.add('on');document.body.classList.add('modal-open');projectClose.focus();
+    if(card.hasAttribute('data-video-url'))requestAnimationFrame(function(){modalVideo.play().catch(function(){});});
   }
   function closeProjectModal(){
+    modalVideo.pause();modalVideo.currentTime=0;
     projectModal.classList.remove('on');document.body.classList.remove('modal-open');activeProjectCard=null;
     if(projectTrigger)projectTrigger.focus();
   }
