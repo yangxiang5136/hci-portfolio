@@ -10,6 +10,6 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `worker/index.mjs` — static asset handler with an `index.html` fallback
 - `scripts/build-sites-static.sh` — assembles the deployable `dist/` package
 - `scripts/export-portfolio-pdf.sh` — exports the PDF linked from the site footer
-- `.openai/hosting.json` — the hosting project that `dist/` is deployed to
+- `.openai/hosting.json` — identifies the Sites hosting project behind the public custom domain `xiangyang.work`
 
 Design system: Branch Compass v0.7 tokens (light).
