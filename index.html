@@ -81,9 +81,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--current);outline-of
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
       text-align:center;padding:84px 24px 38px;overflow:hidden;cursor:pointer;background:rgba(251,252,254,.08);}
 .hero:focus-visible{outline:2px solid var(--current);outline-offset:-4px;}
-.hero-field{display:none;position:absolute;inset:0;z-index:0;pointer-events:none;}
-.hero-field span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--current);
-                 opacity:0;transform:translate(-50%,-50%);}
 .hero-inner{position:relative;z-index:2;max-width:800px;}
 .hero h1{margin:12px 0 0;font-size:clamp(27px,3.7vw,40px);line-height:1.12;}
 .hero h1 em{font-style:normal;color:var(--current);}
@@ -153,7 +150,6 @@ main>section.case{display:none;}
 .atlas-head{display:grid;gap:11px;margin-bottom:20px;}
 .atlas-head h2{font-size:clamp(25px,3.4vw,36px);max-width:720px;}
 .atlas-head p{margin:0;max-width:680px;color:var(--text-secondary);font-size:15px;}
-.atlas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
 .project-card{display:flex;flex-direction:column;min-height:250px;border:1px solid var(--rule);border-radius:16px;
   padding:22px;background:var(--canvas);box-shadow:var(--shadow-sm);transition:.2s ease;}
 .project-card:hover{border-color:var(--rule-strong);box-shadow:var(--shadow-md);transform:translateY(-2px);}
@@ -171,7 +167,6 @@ main>section.case{display:none;}
 .project-card details[open] summary::after{content:" −";}
 .project-card .project-role{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);font-size:14px;color:var(--text-muted);}
 .atlas-note{margin:24px 0 0;color:var(--text-muted);font-size:13px;}
-@media(min-width:860px){.project-card.featured{min-height:285px}.atlas-grid{grid-template-columns:repeat(3,1fr)}}
 
 /* ---------- atlas scan layer ---------- */
 .atlas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
@@ -298,7 +293,6 @@ section,footer{scroll-margin-top:68px;}
   .hero h1{font-size:26px;line-height:1.1;}
   .hero .lede{font-size:13.5px;line-height:1.55;}
   .hero .stats{display:none;}
-  .scroll-hint{bottom:9px;letter-spacing:.12em;}
   .atlas{padding-top:27px;}
   .atlas-head{margin-bottom:14px;}
   .atlas-head p{display:none;}
@@ -402,7 +396,7 @@ html[lang="zh-CN"] [data-en]{display:none!important;}
 html[lang="en"] [data-zh]{display:none!important;}
 
 @media print{
-  .topbar,.rail,.scroll-hint,.lightbox,.hero-field,.ambient-media,.back-to-top{display:none!important;}
+  .topbar,.rail,.lightbox,.ambient-media,.back-to-top{display:none!important;}
   body{background:#fff;}
   section.case{padding:24px 0;page-break-inside:avoid;}
   .sig-body{max-height:none!important;}
@@ -452,7 +446,6 @@ html[lang="en"] [data-zh]{display:none!important;}
 </nav>
 
 <header class="hero" id="hero" data-page-section role="link" tabindex="0" aria-label="查看项目">
-  <div class="hero-field" id="field"></div>
   <div class="hero-inner">
     <div class="label gold" data-zh>人因工程博士 · 弗吉尼亚理工</div>
     <div class="label gold" data-en>PhD, Human Factors Engineering · Virginia Tech</div>

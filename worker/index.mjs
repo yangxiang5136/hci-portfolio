@@ -13,7 +13,15 @@ const worker = {
     }
 
     const fallbackUrl = new URL("/index.html", request.url);
-    return env.ASSETS.fetch(new Request(fallbackUrl, request));
+    const fallback = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+    if (!fallback.ok) {
+      return fallback;
+    }
+    return new Response(fallback.body, {
+      status: 404,
+      statusText: "Not Found",
+      headers: fallback.headers,
+    });
   },
 };
 
