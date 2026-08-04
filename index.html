@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>杨翔 · 人机交互体验设计作品集</title>
 <meta name="description" content="人因工程博士 · 把模糊的体验拆成可测量、可验收的设计">
 <style>
@@ -271,7 +271,7 @@ section,footer{scroll-margin-top:68px;}
   .topnav{display:flex;gap:1px;}
   .topnav a{min-height:32px;padding:0 8px;font-size:12px;}
   .langtoggle button{padding-left:10px;padding-right:10px;}
-  .topbar{padding-left:16px;padding-right:16px;}
+  .topbar{padding-top:calc(13px + env(safe-area-inset-top));padding-left:16px;padding-right:16px;}
   .phone-strip{gap:7px;padding:16px;}
   .haptic-collage .haptic-ui{width:90%!important;}
   .digital-collage{padding:10px;}
@@ -289,7 +289,7 @@ section,footer{scroll-margin-top:68px;}
   .atlas-group-heading>span{display:none;}
   .back-to-top{left:50%;right:auto;bottom:16px;min-width:156px;transform:translate(-50%,12px);}
   .back-to-top.on{transform:translate(-50%,0);}
-  .hero{padding:72px 18px 28px;}
+  .hero{padding:calc(96px + env(safe-area-inset-top)) 18px 28px;}
   .hero h1{font-size:26px;line-height:1.1;}
   .hero .lede{font-size:13.5px;line-height:1.55;}
   .hero .stats{display:none;}
@@ -483,7 +483,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <h3><span data-zh>代表项目</span><span data-en>Featured Projects</span></h3>
         <span><span data-zh>完整的产品、平台与研究实践</span><span data-en>End-to-end products, platforms, and research</span></span>
       </div>
-      <article class="project-card featured" data-kind="featured ai product" data-experience-url="https://digital-me-dashboard.vercel.app/" data-action-zh="了解更多 ↗" data-action-en="Learn more ↗" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
+      <article class="project-card featured" data-kind="featured ai product" data-experience-url="/projects/digital-me/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
         <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
         <h3><span data-zh>Digital Me · 个人 AI 元认知系统</span><span data-en>Digital Me · Personal AI Metacognition System</span></h3>
@@ -492,7 +492,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product" data-experience-url="https://blacksburg-secondhand-production.up.railway.app/" data-action-zh="查看网站 ↗" data-action-en="Visit website ↗" data-github-url="https://github.com/yangxiang5136/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
+      <article class="project-card featured" data-kind="featured product" data-experience-url="/projects/community-hub/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-github-url="https://github.com/yangxiang5136/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
         <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
         <h3><span data-zh>本地华人生活服务社区站</span><span data-en>Local Chinese Community Hub</span></h3>
@@ -501,7 +501,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Local Chinese Community Hub"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured research" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
+      <article class="project-card featured" data-kind="featured research" data-experience-url="/projects/vibrotactile-platform/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>博士研究平台</span><span data-en>Doctoral research platform</span></span></div>
         <div class="project-thumb haptic-collage"><img class="haptic-ui" src="assets/vibrotactile-controller-redraw-4k.png" alt="基于真实运行界面高清重绘的 Python 触觉实验控制器"><img class="haptic-imu" src="assets/vibrotactile-imu-redraw-hd.png" alt="高清重绘的 IMU 实时姿态放大视图"></div>
         <h3><span data-zh>可穿戴触觉预警测试平台</span><span data-en>Vibrotactile Warning Testing Platform</span></h3>
@@ -510,7 +510,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Vibrotactile Warning Testing Platform"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product research" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
+      <article class="project-card featured" data-kind="featured product research" data-experience-url="/projects/workzone-safety/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>匿名产业合作</span><span data-en>Anonymized industry collaboration</span></span></div>
         <div class="project-thumb phone-strip"><img src="assets/workzone-manager-home.png" alt="安全经理首页"><img src="assets/workzone-worker-context.png" alt="工人作业情境输入"><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"></div>
         <h3><span data-zh>智慧工区 SaaS 安全平台</span><span data-en>Smart Work-Zone Safety SaaS Platform</span></h3>
@@ -523,7 +523,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <h3><span data-zh>工具项目</span><span data-en>Tools</span></h3>
         <span><span data-zh>聚焦单一问题的轻量工具</span><span data-en>Focused tools for bounded problems</span></span>
       </div>
-      <article class="project-card" data-kind="product" data-experience-url="https://household-care-demo.yangxiang5136.chatgpt.site/?lang=zh" data-action-zh="体验 Demo ↗" data-action-en="Try the demo ↗" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
+      <article class="project-card" data-kind="product" data-experience-url="/tools/household-care/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>精选项目</span><span data-en>Selected</span></span><span class="project-status"><span data-zh>公开重绘 · 小群体服务</span><span data-en>Public reconstruction · small-group service</span></span></div>
         <div class="project-thumb"><img src="assets/household-care-coordination-redraw-hd.png" alt="家庭今日待办、责任人和完成记录的高清重绘界面"></div>
         <h3><span data-zh>家庭任务与照料协作微型平台</span><span data-en>Household Tasks &amp; Care Coordination Micro-Platform</span></h3>
@@ -532,7 +532,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination Micro-Platform"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="product tools" data-experience-url="https://taskflow-focus-demo.yangxiang5136.chatgpt.site/?lang=zh" data-action-zh="体验 Demo ↗" data-action-en="Try the demo ↗" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
+      <article class="project-card" data-kind="product tools" data-experience-url="/tools/taskflow/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>历史原型 · 高清重绘</span><span data-en>Historical prototype · HD reconstruction</span></span></div>
         <div class="project-thumb"><img src="assets/taskflow-single-task-timer-redraw-hd.png" alt="把当前工作、任务队列、持续时长和完成记录放在一起的 TaskFlow 高清重绘界面"></div>
         <h3><span data-zh>TaskFlow · 工作流与时长记录</span><span data-en>TaskFlow · Workflow &amp; Time Tracking</span></h3>
@@ -541,7 +541,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: TaskFlow Workflow and Time Tracking"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="ai tools" data-experience-url="https://recovery-palette-demo.yangxiang5136.chatgpt.site/?lang=zh" data-action-zh="体验 Demo ↗" data-action-en="Try the demo ↗" data-gallery="assets/recovery-palette-demo-latest.png|assets/branch-compass-portfolio.png">
+      <article class="project-card" data-kind="ai tools" data-experience-url="/tools/workflow-recovery/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/recovery-palette-demo-latest.png|assets/branch-compass-portfolio.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>方法探索 · 可交互 Demo</span><span data-en>Design inquiry · interactive demo</span></span></div>
         <div class="project-thumb"><img src="assets/recovery-palette-demo-latest.png" alt="Recovery Palette 当前可交互 Demo 的主任务、临时分支与返回锚点界面"></div>
         <h3><span data-zh>工作流续接与中断恢复系统</span><span data-en>Workflow Continuity &amp; Interruption Recovery System</span></h3>
@@ -550,7 +550,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <button class="project-open" aria-label="Quick view: Workflow Continuity and Interruption Recovery System"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="tools ai" data-gallery="assets/handy-voice-input-workflow-hd.png">
+      <article class="project-card" data-kind="tools ai" data-experience-url="/tools/structured-voice-input/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/handy-voice-input-workflow-hd.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>输入工作流</span><span data-en>Input workflow</span></span><span class="project-status"><span data-zh>日用改造 · 开源 Handy</span><span data-en>Daily adaptation · open-source Handy</span></span></div>
         <div class="project-thumb"><img src="assets/handy-voice-input-workflow-hd.png" alt="从快捷键录音、本地转录到结构化文字回到当前光标的 Handy 工作流"></div>
         <h3><span data-zh>结构化语音输入软件</span><span data-en>Structured Voice Input Software</span></h3>
@@ -563,7 +563,7 @@ html[lang="en"] [data-zh]{display:none!important;}
         <h3><span data-zh>概念项目</span><span data-en>Concept Projects</span></h3>
         <span><span data-zh>面向未来情境的产品探索</span><span data-en>Product explorations for future contexts</span></span>
       </div>
-      <article class="project-card video-feature" data-kind="research tools" data-video-url="assets/synthetic-observatory-18s.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
+      <article class="project-card video-feature" data-kind="research tools" data-experience-url="/concepts/synthetic-society/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-video-url="assets/synthetic-observatory-18s.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
         <div class="project-thumb"><img src="assets/observatory-concept.jpg" alt="合成城市中的人物、事件与关系路径概念画面"></div>
         <h3><span data-zh>Synthetic Society · 合成社会实验场</span><span data-en>Synthetic Society Lab</span></h3>

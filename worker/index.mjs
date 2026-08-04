@@ -3,8 +3,38 @@ const worker = {
     const url = new URL(request.url);
     const assetUrl = new URL(url);
 
+    const projectRoutes = new Set([
+      "/projects/digital-me/",
+      "/projects/community-hub/",
+      "/projects/vibrotactile-platform/",
+      "/projects/workzone-safety/",
+      "/tools/household-care/",
+      "/tools/taskflow/",
+      "/tools/workflow-recovery/",
+      "/tools/structured-voice-input/",
+      "/concepts/synthetic-society/",
+    ]);
+    const demoRoutes = new Set([
+      "/tools/household-care/demo/",
+      "/tools/taskflow/demo/",
+      "/tools/workflow-recovery/demo/",
+    ]);
+
+    if (url.pathname !== "/" && !url.pathname.endsWith("/")) {
+      const slashPath = `${url.pathname}/`;
+      if (projectRoutes.has(slashPath) || demoRoutes.has(slashPath)) {
+        const canonicalUrl = new URL(url);
+        canonicalUrl.pathname = slashPath;
+        return Response.redirect(canonicalUrl.toString(), 308);
+      }
+    }
+
     if (assetUrl.pathname === "/") {
       assetUrl.pathname = "/index.html";
+    } else if (projectRoutes.has(assetUrl.pathname)) {
+      assetUrl.pathname = "/project.html";
+    } else if (demoRoutes.has(assetUrl.pathname)) {
+      assetUrl.pathname = `${assetUrl.pathname}index.html`;
     }
 
     const response = await env.ASSETS.fetch(new Request(assetUrl, request));
