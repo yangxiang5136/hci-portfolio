@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>杨翔 · 人机交互体验设计作品集</title>
+<style>
+:root{
+  --ink:#101828;
+  --muted:#5f6b7a;
+  --soft:#8a96a6;
+  --line:#dbe2ea;
+  --paper:#f7f9fc;
+  --white:#fff;
+  --blue:#0b84ff;
+  --blue-dark:#0066d6;
+  --blue-soft:#eaf4ff;
+  --navy:#08111f;
+  --green:#16865b;
+  --orange:#c76b12;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#dfe5ec;color:var(--ink);font-family:"PingFang SC","Helvetica Neue",Arial,sans-serif}
+body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+a{color:inherit;text-decoration:none}
+.page{
+  position:relative;width:13.333in;height:7.5in;margin:18px auto;overflow:hidden;
+  background:var(--paper);page-break-after:always;break-after:page;
+}
+.page:last-child{page-break-after:auto;break-after:auto}
+.page-inner{position:relative;z-index:2;height:100%;padding:44px 54px 42px}
+.page-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.eyebrow{font:600 11px/1.2 Menlo,Monaco,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.page-no{flex:0 0 auto;margin-left:auto;font:500 11px/1.2 Menlo,Monaco,monospace;color:var(--soft)}
+h1,h2,h3,p{margin:0}
+h1{font-size:43px;line-height:1.13;letter-spacing:-.035em}
+h2{font-size:30px;line-height:1.2;letter-spacing:-.025em}
+h3{font-size:17px;line-height:1.35;letter-spacing:-.012em}
+p{font-size:13px;line-height:1.7;color:var(--muted)}
+.lead{font-size:16px;line-height:1.65;color:#344054}
+.small{font-size:11px;line-height:1.55;color:var(--soft)}
+.blue{color:var(--blue)}
+.rule{height:1px;background:var(--line)}
+.footer{
+  position:absolute;z-index:4;left:54px;right:54px;bottom:18px;display:flex;justify-content:space-between;
+  font:500 9.5px/1.2 Menlo,Monaco,monospace;color:#8290a2;letter-spacing:.04em;
+}
+.footer a{color:var(--blue-dark)}
+.pill-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+.pill{padding:6px 9px;border:1px solid #cfe4fb;border-radius:999px;background:#f3f9ff;font-size:10.5px;line-height:1;color:#1769aa}
+.status{display:inline-flex;align-items:center;gap:6px;font:600 10px/1.2 Menlo,Monaco,monospace;color:#3e4b5d}
+.status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(22,134,91,.11)}
+.visual{overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--white);box-shadow:0 12px 30px rgba(16,24,40,.08)}
+.visual img{display:block;width:100%;height:100%;object-fit:cover}
+.visual img.contain{object-fit:contain;background:#f4f7fa}
+.project-head{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:end;margin-bottom:22px}
+.project-head .lead{margin-top:10px;max-width:640px}
+.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fact{padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.82)}
+.fact b{display:block;margin-bottom:5px;font-size:11px;color:var(--ink)}
+.fact span{display:block;font-size:10.5px;line-height:1.45;color:var(--muted)}
+.link-chip{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 11px;border-radius:9px;background:var(--navy);color:#fff;font:600 10px/1 Menlo,Monaco,monospace}
+.link-chip.light{background:var(--blue-soft);color:var(--blue-dark)}
+.note{padding:14px 16px;border-left:3px solid var(--blue);border-radius:0 10px 10px 0;background:var(--blue-soft);font-size:11px;line-height:1.58;color:#344054}
+
+/* Cover */
+.cover{background:var(--navy);color:#fff}
+.cover:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,17,31,.98) 0%,rgba(8,17,31,.93) 46%,rgba(8,17,31,.32) 100%);z-index:1}
+.cover-bg{position:absolute;inset:0 0 0 48%;width:52%;height:100%;object-fit:cover;filter:saturate(.8) contrast(1.04)}
+.cover .page-inner{display:flex;flex-direction:column;justify-content:center;width:61%;padding-left:66px}
+.cover .eyebrow{color:#6eb9ff;margin-bottom:24px}
+.cover h1{font-size:48px;max-width:640px}
+.cover .cover-sub{margin-top:20px;max-width:560px;font-size:17px;line-height:1.7;color:#c8d2de}
+.cover .cover-sub b{color:#fff;font-weight:600}
+.cover-bottom{display:flex;align-items:flex-end;gap:20px;margin-top:40px}
+.qr-wrap{display:flex;align-items:center;gap:12px;padding:10px 13px 10px 10px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.07)}
+.qr-wrap img{width:62px;height:62px;border-radius:6px;background:#fff}
+.qr-wrap b{display:block;font:600 12px/1.3 Menlo,Monaco,monospace;color:#fff}
+.qr-wrap span{display:block;margin-top:5px;font-size:10px;color:#9fb0c3}
+.cover .footer{color:#77869a}
+
+/* Atlas */
+.atlas-title{display:grid;grid-template-columns:1.2fr .8fr;gap:42px;align-items:end;margin-bottom:24px}
+.atlas-title .lead{margin-top:10px}
+.category-grid{display:grid;grid-template-columns:1.1fr 1fr .9fr;gap:14px}
+.category{height:348px;padding:22px;border:1px solid var(--line);border-radius:16px;background:#fff;display:flex;flex-direction:column}
+.category.featured{border-top:4px solid var(--blue)}
+.category.tools{border-top:4px solid #7157c8}
+.category.concept{border-top:4px solid #171f2d;background:linear-gradient(160deg,#fff 20%,#edf2f8)}
+.category .count{font:700 28px/1 Menlo,Monaco,monospace;color:#cad2dd;margin-bottom:15px}
+.category h3{font-size:19px;margin-bottom:8px}
+.category>p{font-size:11.5px;min-height:56px}
+.category ul{list-style:none;margin:17px 0 0;padding:15px 0 0;border-top:1px solid var(--line)}
+.category li{padding:7px 0;font-size:11px;line-height:1.35;color:#344054}
+.capability-strip{display:flex;gap:8px;margin-top:14px}
+.capability-strip span{flex:1;padding:10px 12px;border-radius:10px;background:#eef2f7;font-size:10.5px;color:#425268;text-align:center}
+
+/* Project layouts */
+.media-two{display:grid;grid-template-columns:1.45fr .75fr;gap:14px;height:334px}
+.media-two .side{display:grid;grid-template-rows:1fr 1fr;gap:14px}
+.project-bottom{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-top:15px}
+.project-bottom .fact-grid{grid-template-columns:repeat(3,1fr)}
+.community-media{display:grid;grid-template-columns:1.55fr .45fr;gap:14px;height:335px}
+.phone-stack{display:grid;grid-template-columns:1fr;gap:10px}
+.phone-stack .visual{min-height:0}
+.tactile-media{display:grid;grid-template-columns:1.3fr .7fr;grid-template-rows:1fr 1fr;gap:14px;height:333px}
+.tactile-media .main{grid-row:1/3}
+.workzone-body{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;height:350px}
+.phone-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px;height:100%}
+.phone-strip img{object-fit:contain;background:#f4f7fa;border-radius:9px}
+.flow-panel{display:flex;flex-direction:column;gap:10px}
+.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.flow .node{padding:12px 9px;border-radius:9px;background:#f0f5fa;text-align:center;font-size:10.5px;line-height:1.45;color:#344054}
+.flow .arrow{color:var(--blue);font-size:18px}
+
+/* Tools */
+.tools-title{display:grid;grid-template-columns:1fr .8fr;gap:32px;align-items:end;margin-bottom:20px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-card{height:208px;display:grid;grid-template-columns:42% 58%;overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#fff}
+.tool-card img{width:100%;height:100%;object-fit:cover;border-right:1px solid var(--line)}
+.tool-card img.contain{object-fit:contain;padding:7px;background:#f4f7fa}
+.tool-copy{padding:16px 16px 14px;display:flex;flex-direction:column}
+.tool-copy .tool-type{font:600 9px/1.2 Menlo,Monaco,monospace;color:#7157c8;letter-spacing:.08em;margin-bottom:8px}
+.tool-copy h3{font-size:15px}
+.tool-copy p{font-size:10.5px;line-height:1.55;margin-top:7px}
+.tool-copy a{margin-top:auto;font:600 9.5px/1 Menlo,Monaco,monospace;color:var(--blue-dark)}
+
+/* Concept */
+.concept-page{background:#090d14;color:#fff}
+.concept-page .page-inner{padding-bottom:36px}
+.concept-page .eyebrow{color:#6eb9ff}
+.concept-page .page-no{color:#718097}
+.concept-page .project-head .lead{color:#bac6d5}
+.concept-grid{display:grid;grid-template-columns:1.48fr .52fr;gap:14px;height:395px}
+.concept-hero{position:relative;border-color:#273244;background:#05080d}
+.concept-hero img{filter:saturate(.92) brightness(.86)}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 14px 35px rgba(0,0,0,.38)}
+.play:after{content:"";position:absolute;left:31px;top:24px;border-left:23px solid #101828;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.concept-side{display:grid;grid-template-rows:1fr 1fr auto;gap:11px}
+.concept-side .visual{border-color:#273244;background:#0f1621}
+.concept-note{padding:12px 14px;border:1px solid #273244;border-radius:12px;background:#101722;font-size:10.5px;line-height:1.55;color:#aebdce}
+.concept-note b{color:#fff}
+.concept-page .footer{color:#718097}
+.concept-page .footer a{color:#73baff}
+
+/* Contact */
+.contact-page{background:linear-gradient(145deg,#f7f9fc 0%,#fff 58%,#eaf4ff 100%)}
+.contact-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;height:calc(100% - 50px);align-items:center}
+.contact-page h1{font-size:42px}
+.contact-page .lead{margin-top:18px;max-width:590px}
+.contact-list{display:grid;gap:10px;margin-top:26px}
+.contact-item{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:11px}
+.contact-item b{font:600 10px/1 Menlo,Monaco,monospace;color:var(--soft)}
+.contact-item span{color:var(--blue-dark)}
+.closing-card{padding:28px;border-radius:20px;background:var(--navy);color:#fff;box-shadow:0 20px 44px rgba(16,24,40,.2)}
+.closing-card .qr-large{width:130px;height:130px;padding:8px;border-radius:14px;background:#fff}
+.closing-card h3{font-size:22px;margin-top:22px}
+.closing-card p{margin-top:10px;color:#aebdce}
+.closing-card .url{display:inline-block;margin-top:18px;font:600 13px/1 Menlo,Monaco,monospace;color:#73baff}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:24px}
+.principle{padding:12px;border-radius:10px;background:#eef3f8;font-size:10px;line-height:1.45;color:#425268}
+.principle b{display:block;margin-bottom:5px;color:var(--ink)}
+
+@media print{
+  html,body{background:#fff}
+  .page{margin:0}
+}
+@page{size:13.333in 7.5in;margin:0}
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <img class="cover-bg" src="assets/pdf/observatory-concept.jpg" alt="合成社会实验场概念图">
+  <div class="page-inner">
+    <div class="eyebrow">Human Factors · Interaction Design · Product Systems</div>
+    <h1>把复杂的人机体验，<br>拆成<span class="blue">可理解、可验证、可交付</span>的系统</h1>
+    <p class="cover-sub"><b>杨翔</b> · 人因工程博士研究者、产品与交互设计实践者。关注人在高负荷、复杂决策和智能系统中的感知、信任与行动。</p>
+    <div class="cover-bottom">
+      <a class="qr-wrap" href="https://xiangyang.work">
+        <img src="assets/xiangyang-work-qr.png" alt="xiangyang.work 二维码">
+        <span><b>xiangyang.work</b><span>扫描或点击进入完整网站与 Demo</span></span>
+      </a>
+    </div>
+  </div>
+  <div class="footer"><span>杨翔 · 作品集 2026</span><span>01 / 09</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Project Atlas</span><span class="page-no">02 / 09</span></div>
+    <div class="atlas-title">
+      <div><h2>三种项目，同一条能力主线</h2><p class="lead">从完整产品与研究实践，到聚焦单一问题的工具，再到面向未来情境的概念探索。</p></div>
+      <p>这里不按技术栈陈列，而按项目成熟度和阅读方式分组。每个项目都说明我的角色、公开边界和当前可验证入口。</p>
+    </div>
+    <div class="category-grid">
+      <div class="category featured">
+        <div class="count">04</div><h3>代表项目</h3><p>完整的产品、平台与研究实践。每个项目独立展开一页。</p>
+        <ul><li>Digital Me · 个人 AI 元认知系统</li><li>本地华人生活服务社区站</li><li>可穿戴触觉预警测试平台</li><li>智慧工区 SaaS 安全平台</li></ul>
+      </div>
+      <div class="category tools">
+        <div class="count">04</div><h3>工具项目</h3><p>围绕一个明确断裂点构建的轻量、可交互工具。</p>
+        <ul><li>家庭任务与照料协作微型平台</li><li>TaskFlow · 工作流与时长记录</li><li>工作流续接与中断恢复系统</li><li>结构化语音输入软件</li></ul>
+      </div>
+      <div class="category concept">
+        <div class="count">01</div><h3>概念项目</h3><p>用可视化和交互原型探索尚未被充分定义的未来情境。</p>
+        <ul><li>Synthetic Society<br>合成社会实验场</li></ul>
+      </div>
+    </div>
+    <div class="capability-strip"><span>人因研究与实验设计</span><span>产品定义与系统建模</span><span>交互原型与信息架构</span><span>跨团队沟通与落地</span></div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>项目地图</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Featured Project 01 · AI Product System</span><span class="page-no">03 / 09</span></div>
+    <div class="project-head">
+      <div><h2>Digital Me · 个人 AI 元认知系统</h2><p class="lead">帮助人先看清自己已经知道什么，再找到紧挨着认知边界、值得继续追问的问题。</p></div>
+      <div><span class="status">持续使用中的 n=1 系统</span><div class="pill-row"><span class="pill">本地优先</span><span class="pill">行为契约</span><span class="pill">合成公开视图</span></div></div>
+    </div>
+    <div class="media-two">
+      <div class="visual"><img src="assets/pdf/digital-me-public-overview.jpg" alt="Digital Me 公开网站视图"></div>
+      <div class="side"><div class="visual"><img src="assets/pdf/digital-me-public-structure.jpg" alt="Digital Me 公开结构视图"></div><div class="visual"><img src="assets/pdf/attention-board-synthetic.jpg" alt="合成数据 Attention Board"></div></div>
+    </div>
+    <div class="project-bottom">
+      <div class="fact-grid"><div class="fact"><b>人的问题</b><span>信息积累并不会自动转化为更好的判断与下一步行动。</span></div><div class="fact"><b>我的工作</b><span>产品与体验架构、行为规则、个人研究和持续使用。</span></div><div class="fact"><b>公开边界</b><span>公开视图使用合成数据，不暴露私人消息，也不把 n=1 经验当规模化证明。</span></div></div>
+      <div><p class="small">公开网站展示问题框架、系统结构和合成界面；更完整的个人运行面保持私有。</p><a class="link-chip" href="https://digital-me-dashboard.vercel.app/">查看公开项目 ↗</a></div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>代表项目 01</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Featured Project 02 · Community Product</span><span class="page-no">04 / 09</span></div>
+    <div class="project-head">
+      <div><h2>本地华人生活服务社区站</h2><p class="lead">在不引入沉重账户体系的前提下，为本地社区建立足够的身份连续性、信任与联系方式交换。</p></div>
+      <div><span class="status">可公开访问的社区产品</span><div class="pill-row"><span class="pill">社区服务</span><span class="pill">轻量身份</span><span class="pill">移动端流程</span></div></div>
+    </div>
+    <div class="community-media">
+      <div class="visual"><img src="assets/pdf/blacksburg-home-portfolio.jpg" alt="本地华人生活服务社区站首页"></div>
+      <div class="phone-stack"><div class="visual"><img class="contain" src="assets/pdf/blacksburg-publish-mobile.jpg" alt="移动端发布流程"></div><div class="visual"><img class="contain" src="assets/pdf/blacksburg-roommates-mobile.jpg" alt="室友信息页面"></div></div>
+    </div>
+    <div class="project-bottom">
+      <div class="fact-grid"><div class="fact"><b>核心约束</b><span>低门槛不能以牺牲社区信任和联系方式安全为代价。</span></div><div class="fact"><b>我的角色</b><span>产品与体验主导；实现过程中使用 AI 辅助。</span></div><div class="fact"><b>证据状态</b><span>公开产品可访问；流量与采用情况需要按日期另行核验。</span></div></div>
+      <div><p class="small">首页图根据真实页面重新排版并脱敏；其余功能图来自公开站点。</p><a class="link-chip" href="https://blacksburg-secondhand-production.up.railway.app/">访问网站 ↗</a></div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>代表项目 02</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Featured Project 03 · Doctoral Research Platform</span><span class="page-no">05 / 09</span></div>
+    <div class="project-head">
+      <div><h2>可穿戴触觉预警测试平台</h2><p class="lead">探索在视觉或听觉负荷很高时，有限的触觉通道如何清楚表达方向与紧迫度。</p></div>
+      <div><span class="status">研究平台 · 结果按证据门槛公开</span><div class="pill-row"><span class="pill">心理物理</span><span class="pill">Python 控制器</span><span class="pill">IMU 并行采集</span></div></div>
+    </div>
+    <div class="tactile-media">
+      <div class="visual main"><img class="contain" src="assets/pdf/vibrotactile-controller-redraw-4k.jpg" alt="触觉实验控制器"></div>
+      <div class="visual"><img class="contain" src="assets/pdf/vibrotactile-imu-redraw-hd.jpg" alt="IMU 实时姿态视图"></div>
+      <div class="visual"><img class="contain" src="assets/pdf/signal-waveforms.jpg" alt="触觉信号波形规范"></div>
+    </div>
+    <div class="project-bottom">
+      <div class="fact-grid"><div class="fact"><b>研究问题</b><span>触觉信号怎样表达方向和紧迫度，同时控制个体差异与注意负荷。</span></div><div class="fact"><b>我的工作</b><span>研究设计、实验流程、信号规范与 Python 实验系统构建。</span></div><div class="fact"><b>公开边界</b><span>界面基于真实运行重绘并替换识别信息；量化结果在来源核验前不公开。</span></div></div>
+      <div><p class="small">平台连接可穿戴触觉阵列、实验控制、双时间戳和 IMU 数据采集。</p><a class="link-chip light" href="https://xiangyang.work">网站查看完整图集 ↗</a></div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>代表项目 03</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Featured Project 04 · Product &amp; Industry Collaboration</span><span class="page-no">06 / 09</span></div>
+    <div class="project-head">
+      <div><h2>智慧工区 SaaS 安全平台</h2><p class="lead">把工人端情境输入、实时定位与管理端工区划定、风险可视化和事件复盘连接成双角色流程。</p></div>
+      <div><span class="status">匿名产业合作</span><div class="pill-row"><span class="pill">双角色体验</span><span class="pill">风险可视化</span><span class="pill">MVP 规划</span></div></div>
+    </div>
+    <div class="workzone-body">
+      <div class="visual"><div class="phone-strip"><img src="assets/pdf/workzone-manager-home.jpg" alt="安全经理首页"><img src="assets/pdf/workzone-worker-context.jpg" alt="工人作业情境输入"><img src="assets/pdf/workzone-manager-dashboard.jpg" alt="风险管理看板"></div></div>
+      <div class="flow-panel">
+        <div class="flow"><div class="node"><b>工人端</b><br>情境与位置输入</div><div class="arrow">→</div><div class="node"><b>管理端</b><br>工区与风险判断</div></div>
+        <div class="fact-grid"><div class="fact"><b>体验目标</b><span>让输入服务于风险判断，而不是增加现场负担。</span></div><div class="fact"><b>我的角色</b><span>产品经理兼交互设计负责人。</span></div><div class="fact"><b>交付范围</b><span>需求定义、交互模型、利益相关者协调与 MVP 规划。</span></div></div>
+        <div class="note"><b>合作边界：</b>工程实现由团队协作完成；公开材料只保留问题类型、个人贡献和脱敏界面，不呈现合作方商业核心。</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>代表项目 04</span></div>
+</section>
+
+<section class="page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Tools · Focused Systems</span><span class="page-no">07 / 09</span></div>
+    <div class="tools-title"><div><h2>工具项目</h2><p class="lead">每个工具只解决一个明确断裂点，并保留可验证的使用入口或角色边界。</p></div><p>四个项目统一为相同阅读尺度：一张界面、一句话价值、一个当前状态。</p></div>
+    <div class="tool-grid">
+      <div class="tool-card"><img src="assets/pdf/household-care-coordination-redraw-hd.jpg" alt="家庭任务与照料协作界面"><div class="tool-copy"><span class="tool-type">MICRO-PLATFORM</span><h3>家庭任务与照料协作微型平台</h3><p>让家庭成员安静地看见今天谁需要做什么、谁正在负责、什么已经完成。</p><a href="https://household-care-demo.yangxiang5136.chatgpt.site/?lang=zh">体验 Demo ↗</a></div></div>
+      <div class="tool-card"><img src="assets/pdf/taskflow-single-task-timer-redraw-hd.jpg" alt="TaskFlow 工作流与时长记录"><div class="tool-copy"><span class="tool-type">WORKFLOW TOOL</span><h3>TaskFlow · 工作流与时长记录</h3><p>把任务队列、当前工作、持续时长和完成历史放进同一条工作流。</p><a href="https://taskflow-focus-demo.yangxiang5136.chatgpt.site/?lang=zh">体验 Demo ↗</a></div></div>
+      <div class="tool-card"><img src="assets/pdf/recovery-palette-demo-latest.jpg" alt="工作流续接与中断恢复系统"><div class="tool-copy"><span class="tool-type">CONTINUITY SYSTEM</span><h3>工作流续接与中断恢复系统</h3><p>保留主任务、临时分支和返回位置，降低中断后重建上下文的成本。</p><a href="https://recovery-palette-demo.yangxiang5136.chatgpt.site/?lang=zh">体验 Demo ↗</a></div></div>
+      <div class="tool-card"><img class="contain" src="assets/pdf/handy-voice-input-workflow-hd.jpg" alt="结构化语音输入软件工作流"><div class="tool-copy"><span class="tool-type">VOICE INPUT</span><h3>结构化语音输入软件</h3><p>本地转录后保守整理语义，再把文字送回当前应用，同时保留原文。</p><a href="https://xiangyang.work">查看项目说明 ↗</a></div></div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>工具项目</span></div>
+</section>
+
+<section class="page concept-page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Concept Project · Synthetic City Simulation</span><span class="page-no">08 / 09</span></div>
+    <div class="project-head">
+      <div><h2>Synthetic Society · 合成社会实验场</h2><p class="lead">把一个事件放进合成城市，观察不同人物如何重新理解它，以及这些理解如何改变选择、关系与后续影响。</p></div>
+      <div><div class="pill-row"><span class="pill">合成角色</span><span class="pill">城市模拟</span><span class="pill">概念原型</span></div><a class="link-chip" href="https://xiangyang.work">播放概念动画 ↗</a></div>
+    </div>
+    <div class="concept-grid">
+      <a class="visual concept-hero" href="https://xiangyang.work"><img src="assets/pdf/observatory-concept.jpg" alt="合成社会实验场概念城市"><span class="play" aria-hidden="true"></span></a>
+      <div class="concept-side">
+        <div class="visual"><img src="assets/pdf/observatory-overview.jpg" alt="合成社会实验场总览"></div>
+        <div class="visual"><img src="assets/pdf/observatory-linked-state.jpg" alt="合成社会状态联动"></div>
+        <div class="concept-note"><b>项目边界</b><br>这是概念项目。所有人物、事件和结果均为合成内容；当前产出用于探索产品模型、信息可视化和未来情境，不代表真实社会预测。</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><a href="https://xiangyang.work">xiangyang.work</a><span>概念项目</span></div>
+</section>
+
+<section class="page contact-page">
+  <div class="page-inner">
+    <div class="page-top"><span class="eyebrow">Contact · Full Portfolio Online</span><span class="page-no">09 / 09</span></div>
+    <div class="contact-wrap">
+      <div>
+        <h1>很乐意聊聊，<br>这些方法如何进入你的产品。</h1>
+        <p class="lead">我关注的不是给界面增加更多功能，而是让复杂系统在关键时刻更容易被理解、信任和正确使用。</p>
+        <div class="principles"><div class="principle"><b>从人的限制出发</b>把感知、认知和情境约束写进产品定义。</div><div class="principle"><b>让设计可以验证</b>把模糊体验转成流程、状态、指标和测试。</div><div class="principle"><b>把边界说清楚</b>区分真实运行、公开演示、研究证据与未来概念。</div></div>
+        <div class="contact-list">
+          <a class="contact-item" href="mailto:xiangyang@vt.edu"><b>EMAIL</b><span>xiangyang@vt.edu</span></a>
+          <a class="contact-item" href="https://xiangyang.work"><b>PORTFOLIO</b><span>xiangyang.work</span></a>
+          <a class="contact-item" href="https://github.com/yangxiang5136"><b>GITHUB</b><span>github.com/yangxiang5136</span></a>
+        </div>
+      </div>
+      <a class="closing-card" href="https://xiangyang.work">
+        <img class="qr-large" src="assets/xiangyang-work-qr.png" alt="xiangyang.work 二维码">
+        <h3>完整图片、视频和可交互 Demo<br>都在网站里。</h3>
+        <p>PDF 用于快速理解项目结构；网站用于继续深入具体界面与当前可用入口。</p>
+        <span class="url">xiangyang.work ↗</span>
+      </a>
+    </div>
+  </div>
+  <div class="footer"><span>杨翔 · 人机交互体验设计作品集</span><span>谢谢阅读</span></div>
+</section>
+
+</body>
+</html>
