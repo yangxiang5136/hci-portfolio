@@ -76,12 +76,22 @@ if count == 0:
 print(count)
 PY
 
+server_ready=0
 for _ in {1..30}; do
-  curl -fsS "http://127.0.0.1:$port/portfolio-pdf.html" >/dev/null 2>&1 && break
+  if curl -fsS "http://127.0.0.1:$port/portfolio-pdf.html" >/dev/null 2>&1; then
+    server_ready=1
+    break
+  fi
   sleep 0.1
 done
 
-curl -fsS "http://127.0.0.1:$port/portfolio-pdf.html" >/dev/null
+test "$server_ready" -eq 1 || {
+  printf 'Preview server never served http://127.0.0.1:%s/portfolio-pdf.html\n' "$port" >&2
+  printf -- '--- preview server log ---\n' >&2
+  cat "$server_log" >&2
+  printf -- '--- end preview server log ---\n' >&2
+  exit 2
+}
 "$chrome_bin" \
   --headless=new \
   --disable-gpu \

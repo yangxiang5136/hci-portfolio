@@ -153,11 +153,6 @@ main>section.case{display:none;}
 .atlas-head{display:grid;gap:11px;margin-bottom:20px;}
 .atlas-head h2{font-size:clamp(25px,3.4vw,36px);max-width:720px;}
 .atlas-head p{margin:0;max-width:680px;color:var(--text-secondary);font-size:15px;}
-.atlas-controls{display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 24px;}
-.atlas-controls button{border:1px solid var(--rule);border-radius:999px;padding:8px 13px;
-  color:var(--text-muted);background:var(--canvas);font:500 12px/1 var(--mono);transition:.18s ease;}
-.atlas-controls button:hover{border-color:var(--rule-strong);color:var(--text);}
-.atlas-controls button[aria-pressed="true"]{background:var(--action-dark);border-color:var(--action-dark);color:#fff;}
 .atlas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
 .project-card{display:flex;flex-direction:column;min-height:250px;border:1px solid var(--rule);border-radius:16px;
   padding:22px;background:var(--canvas);box-shadow:var(--shadow-sm);transition:.2s ease;}
@@ -179,7 +174,6 @@ main>section.case{display:none;}
 @media(min-width:860px){.project-card.featured{min-height:285px}.atlas-grid{grid-template-columns:repeat(3,1fr)}}
 
 /* ---------- atlas scan layer ---------- */
-.atlas-controls{display:none;}
 .atlas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
 .atlas-group-heading{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:14px;
   padding:4px 2px 0;scroll-margin-top:82px;}
@@ -350,45 +344,6 @@ section,footer{scroll-margin-top:68px;}
 .ba-verdict.good{background:var(--success-soft);color:var(--success-dark);border-color:var(--success-border);}
 
 /* ---------- work-zone reconstruction ---------- */
-.wz-demo{margin:28px 0;border:1px solid var(--rule);border-radius:18px;background:var(--surface);
-  overflow:hidden;box-shadow:var(--shadow-md);}
-.wz-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;
-  border-bottom:1px solid var(--rule);background:var(--surface-subtle);}
-.wz-top strong{font-size:13.5px;}.wz-step{font:500 11px/1 var(--mono);color:var(--text-muted);}
-.wz-layout{display:grid;min-height:440px;}
-.wz-map{position:relative;min-height:300px;overflow:hidden;background:
-  linear-gradient(112deg,transparent 0 33%,#e7ebef 33% 52%,transparent 52%),
-  linear-gradient(22deg,#edf3e8 0 48%,#dfe9d9 48% 100%);}
-.wz-road{position:absolute;left:-12%;top:43%;width:125%;height:88px;transform:rotate(-12deg);
-  background:#c8ced5;border-top:3px solid #fff;border-bottom:3px solid #fff;box-shadow:0 0 0 10px rgba(103,115,132,.12);}
-.wz-road::after{content:"";position:absolute;left:0;right:0;top:41px;border-top:3px dashed rgba(255,255,255,.8);}
-.wz-zone{position:absolute;left:50%;top:49%;width:164px;height:164px;border:3px solid var(--waiting);
-  border-radius:50%;background:rgba(232,135,0,.13);transform:translate(-50%,-50%) scale(.15);opacity:.18;
-  transition:transform .5s ease,opacity .3s ease,border-color .3s ease;}
-.wz-demo[data-stage="1"] .wz-zone,.wz-demo[data-stage="2"] .wz-zone,.wz-demo[data-stage="3"] .wz-zone{transform:translate(-50%,-50%) scale(1);opacity:1;}
-.wz-worker{position:absolute;left:17%;top:67%;width:34px;height:34px;border-radius:50%;background:var(--action-dark);
-  color:#fff;display:grid;place-items:center;font:600 12px/1 var(--mono);box-shadow:0 0 0 7px rgba(17,24,39,.12);
-  transition:left 1.2s cubic-bezier(.2,.7,.2,1),top 1.2s cubic-bezier(.2,.7,.2,1),background .3s ease;}
-.wz-demo[data-stage="2"] .wz-worker,.wz-demo[data-stage="3"] .wz-worker{left:43%;top:54%;background:var(--waiting-dark);}
-.wz-site-label{position:absolute;right:18px;top:18px;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,.9);
-  font:500 10.5px/1 var(--mono);color:var(--text-secondary);box-shadow:var(--shadow-sm);}
-.wz-panel{padding:24px;display:flex;flex-direction:column;gap:18px;}
-.wz-panel h3{font-size:20px;}.wz-panel p{margin:0;color:var(--text-secondary);font-size:14px;}
-.wz-options{display:flex;flex-wrap:wrap;gap:8px;}
-.wz-options button{padding:9px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--surface-subtle);
-  color:var(--text-secondary);font-size:13px;}
-.wz-options button[aria-pressed="true"]{border-color:var(--current);background:var(--current-soft);color:var(--current-hover);}
-.wz-range{display:grid;gap:8px;}.wz-range label{font:500 11px/1 var(--mono);color:var(--text-muted);}
-.wz-range input{width:100%;accent-color:var(--waiting);}
-.wz-event{display:none;border-left:3px solid var(--waiting);padding:13px 15px;background:var(--waiting-soft);
-  color:var(--waiting-dark);font-size:13px;border-radius:0 8px 8px 0;}
-.wz-demo[data-stage="3"] .wz-event{display:block;}
-.wz-actions{display:flex;align-items:center;gap:10px;margin-top:auto;}
-.wz-next{padding:11px 15px;border-radius:9px;background:var(--action-dark);color:#fff;font-weight:600;font-size:13px;}
-.wz-reset{padding:10px;color:var(--text-muted);font:500 11px/1 var(--mono);}
-.wz-disclosure{padding:12px 18px;border-top:1px solid var(--rule);color:var(--text-muted);font-size:11.5px;background:var(--surface-subtle);}
-@media(min-width:760px){.wz-layout{grid-template-columns:1.18fr .82fr}.wz-map{min-height:440px}}
-@media(prefers-reduced-motion:reduce){.wz-zone,.wz-worker{transition:none;}}
 .wz-screens{display:grid;gap:14px;margin:28px 0;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
 .wz-screens figure{margin:0;border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:#16191d;box-shadow:var(--shadow-md);}
 .wz-screens img{width:100%;aspect-ratio:9/18.5;object-fit:cover;object-position:top;}
@@ -1001,8 +956,6 @@ html[lang="en"] [data-zh]{display:none!important;}
      en:'Still a sketch. The system leaves room for things not yet figured out.'}
   ];
 
-  var wzState={stage:0,context:'foot',radius:30};
-
   /* ---------- render language-dependent widgets ---------- */
   function isEn(){return document.documentElement.lang==='en';}
 
@@ -1039,7 +992,6 @@ html[lang="en"] [data-zh]{display:none!important;}
                    '<div class="persona">'+(en?a.en:a.zh)+'</div>';
       av.appendChild(el);
     });
-    renderWorkZone();
     if(activeProjectCard)fillProjectModal(activeProjectCard);
   }
 
@@ -1140,68 +1092,6 @@ html[lang="en"] [data-zh]{display:none!important;}
     modalPrimary.addEventListener('click',closeProjectModal);
     projectModal.addEventListener('click',function(e){if(e.target===projectModal)closeProjectModal();});
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&projectModal.classList.contains('on'))closeProjectModal();});
-  }
-
-  /* ---------- anonymized work-zone reconstruction ---------- */
-  var wzDemo=document.getElementById('wz-demo');
-  var wzOptions=document.getElementById('wz-options');
-  var wzRange=document.getElementById('wz-range');
-  var wzNext=document.getElementById('wz-next');
-  var wzReset=document.getElementById('wz-reset');
-  var zoneSize=document.getElementById('zone-size');
-  var zoneOutput=document.getElementById('zone-output');
-  function wzText(zh,en){return isEn()?en:zh;}
-  function renderWorkZone(){
-    if(!wzDemo)return;
-    var stages=[
-      {
-        role:['工人端','Worker view'],
-        title:['先说清今天的作业情境','Start with today\'s task context'],
-        copy:['同一段距离在步行、驾驶和重型机械作业中不代表同一种风险。','The same distance does not mean the same risk when walking, driving, or operating heavy equipment.'],
-        action:['交给安全经理','Hand off to safety manager']
-      },
-      {
-        role:['安全经理端','Safety manager view'],
-        title:['为这次作业定义警戒边界','Define a boundary for this task'],
-        copy:['边界是一条可复盘的产品决策，不是地图上永远不变的圆。','A boundary is a reviewable product decision, not a permanent circle on a map.'],
-        action:['模拟人员接近','Simulate approach']
-      },
-      {
-        role:['系统状态','System state'],
-        title:['情境与距离共同触发提醒','Context and distance trigger together'],
-        copy:['人员进入边界时，系统保留作业情境，而不是只留下一个失去上下文的告警。','When someone enters the boundary, the system preserves task context instead of leaving a context-free alert.'],
-        action:['记录并复盘','Record and review']
-      },
-      {
-        role:['事件复盘','Event review'],
-        title:['把一次提醒送回产品回路','Return one alert to the product loop'],
-        copy:['安全经理可以结合当时情境判断边界是否合理，并把误报或漏报变成下一轮调整依据。','The safety manager can judge the boundary against its context and turn false or missed alerts into the next adjustment.'],
-        action:['再体验一次','Run again']
-      }
-    ];
-    var item=stages[wzState.stage];
-    wzDemo.setAttribute('data-stage',String(wzState.stage));
-    document.getElementById('wz-step').textContent=(wzState.stage+1)+' / 4';
-    document.getElementById('wz-role').textContent=wzText(item.role[0],item.role[1]);
-    document.getElementById('wz-title').textContent=wzText(item.title[0],item.title[1]);
-    document.getElementById('wz-copy').textContent=wzText(item.copy[0],item.copy[1]);
-    wzNext.textContent=wzText(item.action[0],item.action[1]);
-    wzOptions.hidden=wzState.stage!==0;
-    wzRange.hidden=wzState.stage!==1;
-    zoneOutput.textContent=wzState.radius+' m';
-    var zone=wzDemo.querySelector('.wz-zone');
-    var diameter=116+wzState.radius*1.6;
-    zone.style.width=diameter+'px';zone.style.height=diameter+'px';
-  }
-  if(wzDemo){
-    wzOptions.addEventListener('click',function(e){
-      var button=e.target.closest('button[data-context]');if(!button)return;
-      wzState.context=button.getAttribute('data-context');
-      wzOptions.querySelectorAll('button').forEach(function(item){item.setAttribute('aria-pressed',String(item===button));});
-    });
-    zoneSize.addEventListener('input',function(){wzState.radius=Number(zoneSize.value);renderWorkZone();});
-    wzNext.addEventListener('click',function(){wzState.stage=wzState.stage===3?0:wzState.stage+1;renderWorkZone();});
-    wzReset.addEventListener('click',function(){wzState={stage:0,context:'foot',radius:30};zoneSize.value='30';wzOptions.querySelectorAll('button').forEach(function(item,i){item.setAttribute('aria-pressed',String(i===0));});renderWorkZone();});
   }
 
   /* ---------- before/after ---------- */
