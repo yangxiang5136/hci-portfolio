@@ -12,6 +12,8 @@ const worker = {
       return response;
     }
 
+    // Serve the portfolio shell for unmatched HTML routes, but keep the 404 status so
+    // crawlers and monitoring do not record a missing page as a successful one.
     const fallbackUrl = new URL("/index.html", request.url);
     const fallback = await env.ASSETS.fetch(new Request(fallbackUrl, request));
     if (!fallback.ok) {

@@ -5,11 +5,11 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `index.html` — the portfolio page
 - `resume.html` — the résumé viewer, linked from the site footer
 - `portfolio-pdf.html` — the digital-first 16:9 Chinese portfolio source
-- `assets/` — figures, screenshots, video, résumé PDFs, and the self-contained HTML source for the diagrams that have one
+- `assets/` — figures, screenshots, video, the exported `portfolio.pdf`, résumé PDFs, and the self-contained HTML source for the diagrams that have one
 - `assets/pdf/` — the print-sized image variants used by `portfolio-pdf.html`
-- `worker/index.mjs` — static asset handler with an `index.html` fallback
+- `worker/index.mjs` — static asset handler; an unmatched HTML route serves `index.html` with a 404 status
 - `scripts/build-sites-static.sh` — assembles the deployable `dist/` package
-- `scripts/export-portfolio-pdf.sh` — exports the PDF linked from the site footer
+- `scripts/export-portfolio-pdf.sh` — renders `portfolio-pdf.html` to `assets/portfolio.pdf`
 - `.openai/hosting.json` — identifies the Sites hosting project behind the public custom domain `xiangyang.work`
 
 Design system: Branch Compass v0.7 tokens (light).
