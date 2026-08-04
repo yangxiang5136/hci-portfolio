@@ -8,6 +8,8 @@ output_pdf="$project_dir/assets/portfolio.pdf"
 server_log="$(mktemp /tmp/portfolio-pdf-server.XXXXXX.log)"
 work_dir="$(mktemp -d /tmp/portfolio-pdf-work.XXXXXX)"
 staged_pdf="$work_dir/portfolio.pdf"
+render_timeout="${PORTFOLIO_RENDER_TIMEOUT:-180}"
+chrome_pid=""
 
 test -x "$chrome_bin" || {
   printf 'Chrome executable not found: %s\n' "$chrome_bin" >&2
@@ -17,6 +19,10 @@ test -x "$chrome_bin" || {
 python3 -m http.server "$port" --bind 127.0.0.1 --directory "$project_dir" >"$server_log" 2>&1 &
 server_pid=$!
 cleanup(){
+  if [ -n "$chrome_pid" ]; then
+    kill "$chrome_pid" 2>/dev/null || true
+    wait "$chrome_pid" 2>/dev/null || true
+  fi
   kill "$server_pid" 2>/dev/null || true
   wait "$server_pid" 2>/dev/null || true
   rm -f "$server_log"
@@ -33,12 +39,37 @@ curl -fsS "http://127.0.0.1:$port/portfolio-pdf.html" >/dev/null
 "$chrome_bin" \
   --headless=new \
   --disable-gpu \
+  --no-first-run \
+  --no-default-browser-check \
+  --user-data-dir="$work_dir/chrome-profile" \
   --no-pdf-header-footer \
   --print-to-pdf="$staged_pdf" \
-  "http://127.0.0.1:$port/portfolio-pdf.html"
+  "http://127.0.0.1:$port/portfolio-pdf.html" &
+chrome_pid=$!
+
+staged_size=0
+stable_ticks=0
+for _ in $(seq 1 "$render_timeout"); do
+  if [ -f "$staged_pdf" ]; then
+    current_size="$(wc -c <"$staged_pdf" | tr -d '[:space:]')"
+    if [ "$current_size" -gt 0 ] && [ "$current_size" = "$staged_size" ]; then
+      stable_ticks=$((stable_ticks + 1))
+      [ "$stable_ticks" -ge 3 ] && break
+    else
+      stable_ticks=0
+    fi
+    staged_size="$current_size"
+  fi
+  kill -0 "$chrome_pid" 2>/dev/null || break
+  sleep 1
+done
+
+kill "$chrome_pid" 2>/dev/null || true
+wait "$chrome_pid" 2>/dev/null || true
+chrome_pid=""
 
 test -s "$staged_pdf" || {
-  printf 'Chrome exited without writing a PDF: %s\n' "$staged_pdf" >&2
+  printf 'Chrome wrote no PDF within %ss: %s\n' "$render_timeout" "$staged_pdf" >&2
   exit 3
 }
 
@@ -47,14 +78,37 @@ head -c 5 "$staged_pdf" | grep -q '^%PDF-' || {
   exit 3
 }
 
-expected_pages="$(grep -coE 'class="page( [^"]*)?"' "$project_dir/portfolio-pdf.html")"
-actual_pages="$(python3 -c '
-import re, sys
-data = open(sys.argv[1], "rb").read()
-print(len(re.findall(rb"/Type\s*/Page[^s]", data)))
-' "$staged_pdf")"
+expected_pages="$({ grep -oE 'class="page( [^"]*)?"' "$project_dir/portfolio-pdf.html" || true; } | wc -l | tr -d '[:space:]')"
 
-test "$actual_pages" = "$expected_pages" || {
+test "$expected_pages" -ge 1 || {
+  printf 'Found no page sections in %s; the page markup or class naming changed\n' \
+    "$project_dir/portfolio-pdf.html" >&2
+  exit 3
+}
+
+actual_pages="$(python3 - "$staged_pdf" <<'PY'
+import re, sys, zlib
+
+data = open(sys.argv[1], "rb").read()
+pattern = re.compile(rb"/Type\s*/Page(?![a-zA-Z])")
+count = len(pattern.findall(data))
+
+if count == 0:
+    for match in re.finditer(rb"stream\r?\n", data):
+        start = match.end()
+        end = data.find(b"endstream", start)
+        if end == -1:
+            continue
+        try:
+            count += len(pattern.findall(zlib.decompress(data[start:end])))
+        except zlib.error:
+            continue
+
+print(count)
+PY
+)"
+
+test "$actual_pages" -eq "$expected_pages" || {
   printf 'Rendered PDF has %s page(s) but portfolio-pdf.html declares %s; refusing to replace %s\n' \
     "$actual_pages" "$expected_pages" "$output_pdf" >&2
   exit 3
