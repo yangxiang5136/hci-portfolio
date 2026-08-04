@@ -104,14 +104,18 @@
   const root=document.getElementById("project-root");
   const key=location.pathname.endsWith("/")?location.pathname:location.pathname+"/";
   const project=projects[key];
-  let language=new URLSearchParams(location.search).get("lang")==="en"?"en":null;
+  const requested=(new URLSearchParams(location.search).get("lang")||"").trim().toLowerCase();
+  let language=requested==="en"?"en":(requested==="zh"||requested==="zh-cn")?"zh-CN":null;
   if(!language){try{language=localStorage.getItem("pf-lang")==="en"?"en":"zh-CN"}catch(error){language="zh-CN"}}
   const pick=value=>Array.isArray(value)?value[language==="en"?1:0]:value;
   function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node}
-  function setLanguage(next){
+  function applyLanguage(next){
     language=next;document.documentElement.lang=next;zhButton.setAttribute("aria-pressed",String(next!=="en"));enButton.setAttribute("aria-pressed",String(next==="en"));
-    try{localStorage.setItem("pf-lang",next)}catch(error){}
     render();
+  }
+  function setLanguage(next){
+    try{localStorage.setItem("pf-lang",next)}catch(error){}
+    applyLanguage(next);
   }
   function renderActions(target){
     const actions=element("div","hero-actions");
@@ -134,5 +138,5 @@
     if(project.demo){const demoSection=element("section","demo-section"),head=element("div","demo-head"),headingWrap=element("div");headingWrap.append(element("p","section-label",language==="en"?"Interactive prototype":"交互原型"),element("h2",null,language==="en"?"Try the workflow":"体验完整工作流"));const open=element("a","action",language==="en"?"Open full screen ↗":"全屏打开 ↗");open.href=project.demo+(language==="en"?"?lang=en":"?lang=zh");head.append(headingWrap,open);const frame=element("div","demo-frame"),iframe=document.createElement("iframe");iframe.src=open.href;iframe.loading="lazy";iframe.title=pick(project.title)+(language==="en"?" interactive demo":"交互 Demo");frame.appendChild(iframe);demoSection.append(head,frame);body.appendChild(demoSection)}
     root.appendChild(body);
   }
-  zhButton.addEventListener("click",()=>setLanguage("zh-CN"));enButton.addEventListener("click",()=>setLanguage("en"));setLanguage(language);
+  zhButton.addEventListener("click",()=>setLanguage("zh-CN"));enButton.addEventListener("click",()=>setLanguage("en"));applyLanguage(language);
 })();
