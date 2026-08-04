@@ -6,6 +6,7 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `resume.html` — the résumé viewer, linked from the site footer
 - `portfolio-pdf.html` — the digital-first 16:9 Chinese portfolio source
 - `assets/` — figures, screenshots, and the self-contained HTML source of every diagram
+- `assets/pdf/` — the print-sized image variants used by `portfolio-pdf.html`
 - `worker/index.mjs` — static asset handler with an `index.html` fallback
 - `scripts/build-sites-static.sh` — assembles the deployable `dist/` package
 - `scripts/export-portfolio-pdf.sh` — exports the PDF linked from the site footer
