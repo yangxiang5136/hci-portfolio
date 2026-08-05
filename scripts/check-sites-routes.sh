@@ -48,6 +48,12 @@ if grep -Fq 'chatgpt.site' "$index_body"; then
   printf 'FAIL the homepage at %s/ still contains a chatgpt.site link\n' "$base_url" >&2
   exit 1
 fi
+# The portfolio PDF is not published yet: its source still points demos at the
+# old chatgpt.site host, so linking it would take visitors off the custom domain.
+if grep -Fq 'assets/portfolio.pdf' "$index_body"; then
+  printf 'FAIL the homepage at %s/ links to the unpublished assets/portfolio.pdf\n' "$base_url" >&2
+  exit 1
+fi
 for route in "${project_routes[@]}"; do
   grep -Fq "data-experience-url=\"$route\"" "$index_body" \
     || fail "the homepage at $base_url/ does not link to $route (missing data-experience-url=\"$route\")"
@@ -56,7 +62,6 @@ done
 assets=(
   /assets/project-detail.css
   /assets/project-detail.js
-  /assets/portfolio.pdf
   /tools/household-care/demo/assets/iphone/Bezel.png
   /tools/taskflow/demo/assets/index-DoaGtyQD.js
   /tools/workflow-recovery/demo/assets/index-CWfQJmqD.css
