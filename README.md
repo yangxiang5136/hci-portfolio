@@ -9,7 +9,7 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `assets/` — shared project-page styles and data, figures, screenshots, video, the unpublished `portfolio.pdf`, résumé PDFs, and diagram sources
 - `assets/pdf/` — the print-sized image variants used by `portfolio-pdf.html`
 - `tools/*/demo/` — route-scoped snapshots of the three interactive tool demos; each keeps its own hashed assets
-- `worker/index.mjs` — routes project paths to `project.html`, demo paths to their own entry files, and keeps unmatched HTML routes as 404s
+- `worker/index.mjs` — redirects each route's slashless form to its canonical trailing-slash URL, routes project paths to `project.html`, demo paths to their own entry files, and keeps unmatched HTML routes as 404s
 - `scripts/build-sites-static.sh` — assembles the deployable `dist/` package
 - `scripts/serve-sites-preview.mjs` — runs the real Worker routing against the local package
 - `scripts/check-sites-routes.sh` — checks all project, demo, and critical asset URLs locally or after deployment, and asserts the homepage links neither `chatgpt.site` nor the unpublished portfolio PDF

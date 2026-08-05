@@ -20,6 +20,9 @@ const worker = {
       "/tools/workflow-recovery/demo/",
     ]);
 
+    // Demo entry files reference their hashed assets relatively, so the slashless
+    // form of a route would resolve them against the parent directory. Redirect to
+    // the canonical trailing-slash URL before serving anything.
     if (url.pathname !== "/" && !url.pathname.endsWith("/")) {
       const slashPath = `${url.pathname}/`;
       if (projectRoutes.has(slashPath) || demoRoutes.has(slashPath)) {
