@@ -3,6 +3,7 @@ set -euo pipefail
 
 base_url="${1:-http://127.0.0.1:4177}"
 base_url="${base_url%/}"
+digital_me_url="https://digital-me-dashboard.vercel.app/"
 work_dir="$(mktemp -d "${TMPDIR:-/tmp}/portfolio-route-check.XXXXXX")"
 trap 'rm -rf "$work_dir"' EXIT
 
@@ -54,7 +55,13 @@ if grep -Fq 'assets/portfolio.pdf' "$index_body"; then
   printf 'FAIL the homepage at %s/ links to the unpublished assets/portfolio.pdf\n' "$base_url" >&2
   exit 1
 fi
+grep -Fq "data-experience-url=\"$digital_me_url\"" "$index_body" \
+  || fail "the homepage at $base_url/ does not link Digital Me to $digital_me_url"
+if grep -Fq 'data-experience-url="/projects/digital-me/"' "$index_body"; then
+  fail "the homepage at $base_url/ still links Digital Me to its internal portfolio detail page"
+fi
 for route in "${project_routes[@]}"; do
+  test "$route" = "/projects/digital-me/" && continue
   grep -Fq "data-experience-url=\"$route\"" "$index_body" \
     || fail "the homepage at $base_url/ does not link to $route (missing data-experience-url=\"$route\")"
 done
