@@ -61,6 +61,8 @@ if grep -Fq 'data-experience-url="/projects/digital-me/"' "$index_body"; then
   fail "the homepage at $base_url/ still links Digital Me to its internal portfolio detail page"
 fi
 for route in "${project_routes[@]}"; do
+  # The Digital Me route is still served, but its homepage card deliberately links
+  # to the live site instead, so it is asserted above rather than in this loop.
   test "$route" = "/projects/digital-me/" && continue
   grep -Fq "data-experience-url=\"$route\"" "$index_body" \
     || fail "the homepage at $base_url/ does not link to $route (missing data-experience-url=\"$route\")"
