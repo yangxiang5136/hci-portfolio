@@ -4,6 +4,7 @@ set -euo pipefail
 base_url="${1:-http://127.0.0.1:4177}"
 base_url="${base_url%/}"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+project_dir="$(cd "$script_dir/.." && pwd)"
 work_dir="$(mktemp -d "${TMPDIR:-/tmp}/portfolio-route-check.XXXXXX")"
 trap 'rm -rf "$work_dir"' EXIT
 
@@ -209,11 +210,19 @@ fi
 grep -Fq 'github.com/xiangyangvt/blacksburg-secondhand' "$detail_script" \
   || fail "the retained project detail data is missing the canonical community repository"
 
-destination_module="$work_dir/portfolio-destination.js"
+# The served resolver is only ever compared, never executed: the language
+# assertion runs the trusted repository copy so pointing this script at a
+# deployed URL cannot run that deployment's JavaScript locally.
+local_module="$project_dir/assets/portfolio-destination.js"
+served_module="$work_dir/portfolio-destination.js"
+test -f "$local_module" || fail "$local_module is missing from the repository"
 curl --fail --silent --show-error "$base_url/assets/portfolio-destination.js" \
-  --output "$destination_module" \
+  --output "$served_module" \
   || fail "$base_url/assets/portfolio-destination.js could not be fetched"
-node "$script_dir/check-demo-language.mjs" "$destination_module" "$index_body" \
+cmp -s "$local_module" "$served_module" \
+  || fail "$base_url/assets/portfolio-destination.js differs from the repository copy"
+printf 'ok  /assets/portfolio-destination.js matches the repository copy\n'
+node "$script_dir/check-demo-language.mjs" "$local_module" "$index_body" \
   || fail "the homepage demo cards do not carry the active portfolio language into their demo URL"
 
 if test "${SKIP_EXTERNAL_LINKS:-0}" = "1"; then

@@ -28,8 +28,8 @@ if (typeof resolveDestination !== "function") {
 // The homepage must actually route its card destinations through the shared
 // resolver; otherwise the behaviour below would be asserted on dead code.
 expect(
-  indexSource.includes('<script src="assets/portfolio-destination.js"></script>'),
-  "index.html does not load assets/portfolio-destination.js",
+  indexSource.includes('<script src="/assets/portfolio-destination.js"></script>'),
+  "index.html does not load /assets/portfolio-destination.js from an absolute path, so the resolver is missing on the nested 404 shell",
 );
 expect(
   /resolvePortfolioDestination\(\s*card\.getAttribute\(\s*'data-destination-url'\s*\)\s*,\s*destinationKind\s*,\s*isEn\(\)\s*\?\s*'en'\s*:\s*'zh'\s*,/.test(
