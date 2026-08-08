@@ -10,7 +10,7 @@
       role:["产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。公开图片使用合成演示数据，不公开私人消息。","Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. Public visuals use synthetic demo data and expose no private messages."],
       points:[["以证据与来源支撑建议，而不是隐藏推断。","Ground suggestions in evidence and provenance instead of hiding inference."],["关键行动始终保留人的确认与回退。","Keep human confirmation and rollback around consequential actions."],["把失败、未知和隐私边界作为界面的一部分。","Treat failure, uncertainty, and privacy boundaries as interface elements."]],
       media:[["/assets/digital-me-public-overview.jpg","系统公开概览","Public system overview"],["/assets/digital-me-public-structure.jpg","能力与边界结构","Capability and boundary structure"],["/assets/attention-board-synthetic.png","使用合成数据的 Attention Board","Attention Board with synthetic data"]],
-      links:[{href:"https://digital-me-dashboard.vercel.app/",zh:"体验公开 Demo ↗",en:"Try public demo ↗",primary:true},{href:"https://github.com/yangxiang5136/digital-me-dashboard",zh:"GitHub ↗",en:"GitHub ↗"}]
+      links:[{href:"https://digital-me-dashboard.vercel.app/",zh:"访问公开网站 ↗",en:"Visit public website ↗",primary:true},{href:"https://github.com/yangxiang5136/digital-me-dashboard",zh:"GitHub ↗",en:"GitHub ↗"}]
     },
     "/projects/community-hub/":{
       accent:"#0b7a53",soft:"#e8f6ef",kind:["代表项目","Featured project"],status:["公开产品","Public product"],
@@ -21,7 +21,7 @@
       role:["产品与体验主导；实现包含 AI 辅助。首页视觉依据真实页面重新排版并脱敏，后续功能图来自公开站点。","Product and experience lead; implementation included AI assistance. The homepage visual is a privacy-safe re-layout grounded in the real interface, followed by captures from the public product."],
       points:[["先解决社区任务，再逐步建立身份连续性。","Start with community tasks, then build identity continuity gradually."],["让联系方式交换发生在足够信任之后。","Move contact exchange behind sufficient trust."],["保持发布与浏览流程在手机上足够轻。","Keep posting and browsing lightweight on mobile."]],
       media:[["/assets/blacksburg-home-portfolio.png","脱敏重制的首页","Privacy-safe homepage reconstruction"],["/assets/blacksburg-publish-mobile.png","移动端发布流程","Mobile publishing flow"],["/assets/blacksburg-roommates-mobile.png","室友信息页面","Roommate listings"]],
-      links:[{href:"https://blacksburg-secondhand-production.up.railway.app/",zh:"访问线上产品 ↗",en:"Visit live product ↗",primary:true},{href:"https://github.com/yangxiang5136/blacksburg-secondhand",zh:"GitHub ↗",en:"GitHub ↗"}]
+      links:[{href:"https://blacksburg-secondhand-production.up.railway.app/",zh:"访问线上产品 ↗",en:"Visit live product ↗",primary:true},{href:"https://github.com/xiangyangvt/blacksburg-secondhand",zh:"GitHub ↗",en:"GitHub ↗"}]
     },
     "/projects/vibrotactile-platform/":{
       accent:"#ef6c35",soft:"#fff0e8",kind:["代表项目","Featured project"],status:["博士研究平台","Doctoral research platform"],

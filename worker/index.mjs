@@ -3,16 +3,16 @@ const worker = {
     const url = new URL(request.url);
     const assetUrl = new URL(url);
 
-    const projectRoutes = new Set([
-      "/projects/digital-me/",
-      "/projects/community-hub/",
-      "/projects/vibrotactile-platform/",
-      "/projects/workzone-safety/",
-      "/tools/household-care/",
-      "/tools/taskflow/",
-      "/tools/workflow-recovery/",
-      "/tools/structured-voice-input/",
-      "/concepts/synthetic-society/",
+    const legacyProjectRedirects = new Map([
+      ["/projects/digital-me/", "https://digital-me-dashboard.vercel.app/"],
+      ["/projects/community-hub/", "https://blacksburg-secondhand-production.up.railway.app/"],
+      ["/projects/vibrotactile-platform/", "/#atlas"],
+      ["/projects/workzone-safety/", "/#atlas"],
+      ["/tools/household-care/", "/tools/household-care/demo/?lang=zh"],
+      ["/tools/taskflow/", "/tools/taskflow/demo/?lang=zh"],
+      ["/tools/workflow-recovery/", "/tools/workflow-recovery/demo/?lang=zh"],
+      ["/tools/structured-voice-input/", "/#atlas"],
+      ["/concepts/synthetic-society/", "/#atlas"],
     ]);
     const demoRoutes = new Set([
       "/tools/household-care/demo/",
@@ -20,12 +20,25 @@ const worker = {
       "/tools/workflow-recovery/demo/",
     ]);
 
+    const legacyPath = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
+    const legacyTarget = legacyProjectRedirects.get(legacyPath);
+    if (legacyTarget) {
+      const destination = new URL(legacyTarget, url);
+      if (destination.pathname.includes("/demo/")) {
+        const requestedLanguage = url.searchParams.get("lang");
+        if (requestedLanguage === "en" || requestedLanguage === "zh") {
+          destination.searchParams.set("lang", requestedLanguage);
+        }
+      }
+      return Response.redirect(destination.toString(), 308);
+    }
+
     // Demo entry files reference their hashed assets relatively, so the slashless
     // form of a route would resolve them against the parent directory. Redirect to
     // the canonical trailing-slash URL before serving anything.
     if (url.pathname !== "/" && !url.pathname.endsWith("/")) {
       const slashPath = `${url.pathname}/`;
-      if (projectRoutes.has(slashPath) || demoRoutes.has(slashPath)) {
+      if (demoRoutes.has(slashPath)) {
         const canonicalUrl = new URL(url);
         canonicalUrl.pathname = slashPath;
         return Response.redirect(canonicalUrl.toString(), 308);
@@ -34,8 +47,6 @@ const worker = {
 
     if (assetUrl.pathname === "/") {
       assetUrl.pathname = "/index.html";
-    } else if (projectRoutes.has(assetUrl.pathname)) {
-      assetUrl.pathname = "/project.html";
     } else if (demoRoutes.has(assetUrl.pathname)) {
       assetUrl.pathname = `${assetUrl.pathname}index.html`;
     }

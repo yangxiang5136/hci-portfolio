@@ -248,7 +248,7 @@ main>section.case{display:none;}
 .modal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .modal-primary{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--action-dark);color:#fff;text-decoration:none;font-weight:600;font-size:14px;}
 .modal-github{display:inline-flex;padding:11px 15px;border:1px solid var(--rule-strong);border-radius:9px;color:var(--text-primary);background:var(--surface);text-decoration:none;font-weight:600;font-size:14px;}
-.modal-primary[hidden],.modal-github[hidden]{display:none!important;}
+.modal-primary[hidden],.modal-github[hidden],.modal-secondary[hidden]{display:none!important;}
 .modal-github:hover{border-color:var(--current);color:var(--current-hover);background:var(--current-soft);}
 .modal-secondary{padding:11px 15px;border:1px solid var(--rule);border-radius:9px;color:var(--text-secondary);font-size:14px;}
 .case-live-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
@@ -483,93 +483,93 @@ html[lang="en"] [data-zh]{display:none!important;}
         <h3><span data-zh>代表项目</span><span data-en>Featured Projects</span></h3>
         <span><span data-zh>完整的产品、平台与研究实践</span><span data-en>End-to-end products, platforms, and research</span></span>
       </div>
-      <article class="project-card featured" data-kind="featured ai product" data-experience-url="https://digital-me-dashboard.vercel.app/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
+      <article class="project-card featured" data-project-id="digital-me" data-kind="featured ai product" data-destination-kind="live" data-destination-url="https://digital-me-dashboard.vercel.app/" data-github-url="https://github.com/yangxiang5136/digital-me-dashboard" data-gallery="assets/digital-me-public-overview.jpg|assets/digital-me-public-structure.jpg|assets/attention-board-synthetic.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>本地优先 · n=1</span><span data-en>Local-first · n=1</span></span></div>
         <div class="project-thumb digital-collage"><img class="digital-site" src="assets/digital-me-public-overview.jpg" alt="Digital Me 公开网站完整首页"><img class="digital-board" src="assets/attention-board-synthetic.png" alt="合成数据版 Attention Board"></div>
         <h3><span data-zh>Digital Me · 个人 AI 元认知系统</span><span data-en>Digital Me · Personal AI Metacognition System</span></h3>
         <p><span data-zh>先梳理我已经知道的，再找到紧挨着这些信息、值得继续追问的问题，避免 AI 一次给出跨度过大的答案。</span><span data-en>Helping people see what they know, locate the boundary, and take one adjacent step into the unknown—without letting AI leap too far ahead.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验架构、个人研究和持续使用；实现包含 AI 辅助。Attention Board 图片使用合成演示数据，不公开私人消息，也不以 n=1 经验暗示规模化采用。</span><span data-en>Product and experience architecture, personal inquiry, and ongoing use; implementation included AI assistance. The Attention Board image uses synthetic demo data, exposes no private messages, and the n=1 experience does not imply scaled adoption.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Digital Me"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Digital Me" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product" data-experience-url="/projects/community-hub/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-github-url="https://github.com/yangxiang5136/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
+      <article class="project-card featured" data-project-id="community-hub" data-kind="featured product" data-destination-kind="live" data-destination-url="https://blacksburg-secondhand-production.up.railway.app/" data-github-url="https://github.com/xiangyangvt/blacksburg-secondhand" data-gallery="assets/blacksburg-home-portfolio.png|assets/blacksburg-publish-mobile.png|assets/blacksburg-roommates-mobile.png|assets/blacksburg-localnews-mobile.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>公开产品</span><span data-en>Public product</span></span></div>
         <div class="project-thumb"><img class="focus-top" src="assets/blacksburg-home-portfolio.png" alt="脱敏重制的本地华人生活服务社区站首页"></div>
         <h3><span data-zh>本地华人生活服务社区站</span><span data-en>Local Chinese Community Hub</span></h3>
         <p><span data-zh>在不引入沉重账户体系的前提下，为本地社区建立足够的身份连续性、信任与联系方式交换。</span><span data-en>Building enough identity continuity, trust, and contact exchange for a local community without a heavy account system.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品与体验主导；实现包含 AI 辅助。首页图依据真实页面重新排版并脱敏，后续功能图来自公开站点；当前流量与采用情况需按日期单独核验。</span><span data-en>Product and experience lead; implementation included AI assistance. The homepage visual is a privacy-safe re-layout of the real interface, followed by captures from the public product. Current traffic and adoption require dated verification.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Local Chinese Community Hub"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Local Chinese Community Hub" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured research" data-experience-url="/projects/vibrotactile-platform/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
+      <article class="project-card featured" data-project-id="vibrotactile-platform" data-kind="featured research" data-destination-kind="fallback" data-destination-url="/#atlas" data-gallery="assets/vibrotactile-controller-redraw-4k.png|assets/vibrotactile-imu-redraw-hd.png|assets/smart-helmet-haptic-array-no-caption.svg|assets/smart-vest-haptic-array.png|assets/signal-waveforms.png|assets/trial-flow.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>博士研究平台</span><span data-en>Doctoral research platform</span></span></div>
         <div class="project-thumb haptic-collage"><img class="haptic-ui" src="assets/vibrotactile-controller-redraw-4k.png" alt="基于真实运行界面高清重绘的 Python 触觉实验控制器"><img class="haptic-imu" src="assets/vibrotactile-imu-redraw-hd.png" alt="高清重绘的 IMU 实时姿态放大视图"></div>
         <h3><span data-zh>可穿戴触觉预警测试平台</span><span data-en>Vibrotactile Warning Testing Platform</span></h3>
         <p><span data-zh>探索在视觉或听觉负荷很高时，有限的触觉通道如何清楚表达方向与紧迫度。</span><span data-en>Exploring how a limited tactile channel can communicate direction and urgency under visual or auditory load.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>研究设计与 Python 实验系统构建；首页图基于一次真实运行界面进行高清重绘，参与者与 session 标识已替换为演示值。量化结果在样本、单位和来源核验完成前不公开。</span><span data-en>Research design and Python experiment-system development. The homepage visual is a high-definition reconstruction grounded in a real run, with participant and session identifiers replaced by demo values. Quantitative outcomes remain gated until sample, unit, and source are verified.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Vibrotactile Warning Testing Platform"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Vibrotactile Warning Testing Platform" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card featured" data-kind="featured product research" data-experience-url="/projects/workzone-safety/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
+      <article class="project-card featured" data-project-id="workzone-safety" data-kind="featured product research" data-destination-kind="fallback" data-destination-url="/#atlas" data-gallery="assets/workzone-manager-home.png|assets/workzone-worker-context.png|assets/workzone-manager-dashboard.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>明星项目</span><span data-en>Featured</span></span><span class="project-status"><span data-zh>匿名产业合作</span><span data-en>Anonymized industry collaboration</span></span></div>
         <div class="project-thumb phone-strip"><img src="assets/workzone-manager-home.png" alt="安全经理首页"><img src="assets/workzone-worker-context.png" alt="工人作业情境输入"><img src="assets/workzone-manager-dashboard.png" alt="安全管理看板"></div>
         <h3><span data-zh>智慧工区 SaaS 安全平台</span><span data-en>Smart Work-Zone Safety SaaS Platform</span></h3>
         <p><span data-zh>把工人端的情境输入、实时定位与管理端的工区划定、风险可视化和事件复盘连接成一条双角色流程。</span><span data-en>Connecting worker context and location with manager-side work-zone definition, risk visualization, and incident review.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>产品经理兼交互设计负责人；主导需求定义、交互模型、利益相关者协调与 MVP 规划，工程实现由团队协作完成。</span><span data-en>Product Manager &amp; Interaction Design Lead; led requirements, interaction model, stakeholder coordination, and MVP planning while engineering was delivered collaboratively.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety SaaS Platform"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Smart Work-Zone Safety SaaS Platform" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
       <div class="atlas-group-heading" id="tool-projects">
         <h3><span data-zh>工具项目</span><span data-en>Tools</span></h3>
         <span><span data-zh>聚焦单一问题的轻量工具</span><span data-en>Focused tools for bounded problems</span></span>
       </div>
-      <article class="project-card" data-kind="product" data-experience-url="/tools/household-care/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
+      <article class="project-card" data-project-id="household-care" data-kind="product" data-destination-kind="demo" data-destination-url="/tools/household-care/demo/" data-gallery="assets/household-care-coordination-redraw-hd.png|assets/household-steward-anonymized.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>精选项目</span><span data-en>Selected</span></span><span class="project-status"><span data-zh>公开重绘 · 小群体服务</span><span data-en>Public reconstruction · small-group service</span></span></div>
         <div class="project-thumb"><img src="assets/household-care-coordination-redraw-hd.png" alt="家庭今日待办、责任人和完成记录的高清重绘界面"></div>
         <h3><span data-zh>家庭任务与照料协作微型平台</span><span data-en>Household Tasks &amp; Care Coordination Micro-Platform</span></h3>
         <p><span data-zh>把今天谁需要做什么、谁正在负责、什么已经完成，放进一个安静的家庭共用界面里。</span><span data-en>A calm shared view of what needs attention today, who is responsible, and what has already been completed.</span></p>
         <details><summary><span data-zh>设计重点</span><span data-en>Design focus</span></summary><p class="project-role"><span data-zh>界面强调异常优先、低提醒密度和责任连续性；首图依据现有原型高清重绘，真实使用叙事仍需参与者同意后公开。</span><span data-en>The interface prioritizes exceptions, low notification density, and continuity of responsibility. The lead visual is an HD reconstruction grounded in the existing prototype; real-use narratives still require participant consent.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination Micro-Platform"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Household Tasks and Care Coordination Micro-Platform" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="product tools" data-experience-url="/tools/taskflow/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
+      <article class="project-card" data-project-id="taskflow" data-kind="product tools" data-destination-kind="demo" data-destination-url="/tools/taskflow/demo/" data-gallery="assets/taskflow-single-task-timer-redraw-hd.png|assets/taskflow-reconstruction.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>历史原型 · 高清重绘</span><span data-en>Historical prototype · HD reconstruction</span></span></div>
         <div class="project-thumb"><img src="assets/taskflow-single-task-timer-redraw-hd.png" alt="把当前工作、任务队列、持续时长和完成记录放在一起的 TaskFlow 高清重绘界面"></div>
         <h3><span data-zh>TaskFlow · 工作流与时长记录</span><span data-en>TaskFlow · Workflow &amp; Time Tracking</span></h3>
         <p><span data-zh>把任务队列、当前工作、持续时长和完成历史放进同一条流程，让时间记录服务于工作推进，而不是成为额外负担。</span><span data-en>Combining the task queue, current work, elapsed time, and completion history so time tracking supports the workflow instead of interrupting it.</span></p>
         <details><summary><span data-zh>为什么保留</span><span data-en>Why it matters</span></summary><p class="project-role"><span data-zh>这是一个边界清楚的独立小产品，不与后来的注意力方法实验混为一谈。</span><span data-en>A bounded standalone product, distinct from the later attention-method experiments.</span></p></details>
-        <button class="project-open" aria-label="Quick view: TaskFlow Workflow and Time Tracking"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: TaskFlow Workflow and Time Tracking" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="ai tools" data-experience-url="/tools/workflow-recovery/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/recovery-palette-demo-latest.png|assets/branch-compass-portfolio.png">
+      <article class="project-card" data-project-id="workflow-recovery" data-kind="ai tools" data-destination-kind="demo" data-destination-url="/tools/workflow-recovery/demo/" data-gallery="assets/recovery-palette-demo-latest.png|assets/branch-compass-portfolio.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>工作流工具</span><span data-en>Workflow tool</span></span><span class="project-status"><span data-zh>方法探索 · 可交互 Demo</span><span data-en>Design inquiry · interactive demo</span></span></div>
         <div class="project-thumb"><img src="assets/recovery-palette-demo-latest.png" alt="Recovery Palette 当前可交互 Demo 的主任务、临时分支与返回锚点界面"></div>
         <h3><span data-zh>工作流续接与中断恢复系统</span><span data-en>Workflow Continuity &amp; Interruption Recovery System</span></h3>
         <p><span data-zh>保留主任务、临时分支和准确的返回位置，帮助人在被打断后快速恢复工作流，减少重新理解上下文的时间。</span><span data-en>Preserving the main task, temporary branch, and exact return point so people can resume a workflow without rebuilding its context.</span></p>
         <details><summary><span data-zh>当前结论</span><span data-en>Current learning</span></summary><p class="project-role"><span data-zh>不同工具能缓解不同断裂点，但目前没有一个方法能胜任所有工作连续性问题。</span><span data-en>Different tools relieve different breaks in continuity; no single method currently handles the full problem.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Workflow Continuity and Interruption Recovery System"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Workflow Continuity and Interruption Recovery System" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
-      <article class="project-card" data-kind="tools ai" data-experience-url="/tools/structured-voice-input/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-gallery="assets/handy-voice-input-workflow-hd.png">
+      <article class="project-card" data-project-id="structured-voice-input" data-kind="tools ai" data-destination-kind="fallback" data-destination-url="/#atlas" data-gallery="assets/handy-voice-input-workflow-hd.png">
         <div class="project-meta"><span class="project-tier"><span data-zh>输入工作流</span><span data-en>Input workflow</span></span><span class="project-status"><span data-zh>日用改造 · 开源 Handy</span><span data-en>Daily adaptation · open-source Handy</span></span></div>
         <div class="project-thumb"><img src="assets/handy-voice-input-workflow-hd.png" alt="从快捷键录音、本地转录到结构化文字回到当前光标的 Handy 工作流"></div>
         <h3><span data-zh>结构化语音输入软件</span><span data-en>Structured Voice Input Software</span></h3>
         <p><span data-zh>按一次键开始说话，本地转录后按语义做保守整理，再把文字送回正在使用的应用；原文和整理版都保留。</span><span data-en>One key starts capture; local transcription is conservatively organized and returned to the active app, while both the raw and organized versions remain available.</span></p>
         <details><summary><span data-zh>角色与边界</span><span data-en>Role &amp; boundary</span></summary><p class="project-role"><span data-zh>我定义并验证了快捷键、模型选择、保守结构化、失败时回原文和回到当前光标的工作流，并制作 HandyBar 配置工具；底层桌面应用与本地转录框架来自开源 Handy。音频留在本机，启用结构化时文本会发送给所配置的语言模型。</span><span data-en>I defined and tested the shortcut, model choice, conservative organization, raw-text fallback, and return-to-cursor workflow, and built the HandyBar configuration utility. The desktop app and local transcription foundation come from open-source Handy. Audio stays on-device; when organization is enabled, transcript text is sent to the configured language model.</span></p></details>
-        <button class="project-open" aria-label="Quick view: Structured Voice Input Software"><span>↗</span></button>
+        <button class="project-open" aria-label="Quick view: Structured Voice Input Software" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span>↗</span></button>
       </article>
 
       <div class="atlas-group-heading" id="concept-projects">
         <h3><span data-zh>概念项目</span><span data-en>Concept Projects</span></h3>
         <span><span data-zh>面向未来情境的产品探索</span><span data-en>Product explorations for future contexts</span></span>
       </div>
-      <article class="project-card video-feature" data-kind="research tools" data-experience-url="/concepts/synthetic-society/" data-action-zh="查看项目 ↗" data-action-en="View project ↗" data-video-url="assets/synthetic-observatory-18s.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
+      <article class="project-card video-feature" data-project-id="synthetic-society" data-kind="research tools" data-destination-kind="fallback" data-destination-url="/#atlas" data-video-url="assets/synthetic-observatory-18s.mp4" data-video-poster="assets/observatory-concept.jpg" data-github-url="https://github.com/yangxiang5136/synthetic-society-observatory" data-gallery="assets/observatory-concept.jpg|assets/observatory-overview.jpg|assets/observatory-linked-state.jpg">
         <div class="project-meta"><span class="project-tier"><span data-zh>概念选辑</span><span data-en>Selected concept</span></span><span class="project-status"><span data-zh>合成角色 · 概念原型</span><span data-en>Synthetic personas · concept prototype</span></span></div>
         <div class="project-thumb"><img src="assets/observatory-concept.jpg" alt="合成城市中的人物、事件与关系路径概念画面"></div>
         <h3><span data-zh>Synthetic Society · 合成社会实验场</span><span data-en>Synthetic Society Lab</span></h3>
         <p><span data-zh>把事件放进一座合成城市，观察不同人物如何重新理解它，以及这些理解如何改变选择、关系与后续影响。</span><span data-en>Placing an event into a synthetic city to explore how different people reinterpret it and how those meanings reshape choices, relationships, and later consequences.</span></p>
         <details><summary><span data-zh>项目边界</span><span data-en>Project boundary</span></summary><p class="project-role"><span data-zh>概念、产品模型与信息可视化；所有人物、事件与结果均为合成内容。</span><span data-en>Concept, product model, and information visualization; all people, events, and outcomes are synthetic.</span></p></details>
-        <button class="project-open" aria-label="播放合成社会实验场概念动画"><span class="play-icon" aria-hidden="true"></span></button>
+        <button class="project-open" aria-label="播放合成社会实验场概念动画" aria-haspopup="dialog" aria-controls="project-modal" aria-expanded="false"><span class="play-icon" aria-hidden="true"></span></button>
       </article>
     </div>
   </div>
@@ -1017,19 +1017,33 @@ html[lang="en"] [data-zh]{display:none!important;}
     document.getElementById('modal-title').textContent=title;
     document.getElementById('modal-summary').textContent=localizedText(card.querySelector(':scope > p'));
     document.getElementById('modal-role').textContent=localizedText(card.querySelector('.project-role'));
-    var experienceUrl=card.getAttribute('data-experience-url');
-    var isExternal=/^https?:\/\//i.test(experienceUrl||'');
-    modalPrimary.hidden=!experienceUrl;
-    if(experienceUrl){
-      modalPrimary.setAttribute('href',experienceUrl);
-      modalPrimary.querySelector('[data-zh]').textContent=card.getAttribute('data-action-zh')||'了解更多 ↗';
-      modalPrimary.querySelector('[data-en]').textContent=card.getAttribute('data-action-en')||'Learn more ↗';
-      if(isExternal){modalPrimary.setAttribute('target','_blank');modalPrimary.setAttribute('rel','noopener noreferrer');}
+    var destinationUrl=card.getAttribute('data-destination-url');
+    var destinationKind=card.getAttribute('data-destination-kind');
+    if(destinationUrl&&destinationKind==='demo'){
+      var demoUrl=new URL(destinationUrl,window.location.href);
+      demoUrl.searchParams.set('lang',isEn()?'en':'zh');
+      destinationUrl=demoUrl.pathname+demoUrl.search+demoUrl.hash;
+    }
+    var opensNewTab=destinationKind==='live'||destinationKind==='demo';
+    var actionLabels={live:['查看网站 ↗','Visit website ↗'],demo:['体验 Demo ↗','Try the demo ↗'],fallback:['返回项目地图','Back to project map']};
+    var actionLabel=actionLabels[destinationKind]||['了解更多 ↗','Learn more ↗'];
+    modalSecondary.hidden=destinationKind==='fallback';
+    modalPrimary.hidden=!destinationUrl;
+    if(destinationUrl){
+      modalPrimary.setAttribute('href',destinationUrl);
+      modalPrimary.querySelector('[data-zh]').textContent=actionLabel[0];
+      modalPrimary.querySelector('[data-en]').textContent=actionLabel[1];
+      var accessibleAction=isEn()?actionLabel[1].replace(' ↗',''):actionLabel[0].replace(' ↗','');
+      var accessibleSuffix=opensNewTab?(isEn()?' (opens in a new tab)':'（在新标签页打开）'):'';
+      var accessibleSeparator=isEn()?': ':'：';
+      modalPrimary.setAttribute('aria-label',destinationKind==='fallback'?accessibleAction:accessibleAction+accessibleSeparator+title+accessibleSuffix);
+      if(opensNewTab){modalPrimary.setAttribute('target','_blank');modalPrimary.setAttribute('rel','noopener noreferrer');}
       else{modalPrimary.removeAttribute('target');modalPrimary.removeAttribute('rel');}
     }else{
       modalPrimary.removeAttribute('href');
       modalPrimary.removeAttribute('target');
       modalPrimary.removeAttribute('rel');
+      modalPrimary.removeAttribute('aria-label');
     }
     var githubUrl=card.getAttribute('data-github-url');
     modalGithub.hidden=!githubUrl;
@@ -1062,13 +1076,14 @@ html[lang="en"] [data-zh]{display:none!important;}
   }
   function openProjectModal(card,trigger){
     activeProjectCard=card;projectTrigger=trigger;activeGalleryIndex=0;fillProjectModal(card);
+    projectTrigger.setAttribute('aria-expanded','true');
     projectModal.classList.add('on');document.body.classList.add('modal-open');projectClose.focus();
     if(card.hasAttribute('data-video-url'))requestAnimationFrame(function(){modalVideo.play().catch(function(){});});
   }
   function closeProjectModal(){
     modalVideo.pause();modalVideo.currentTime=0;
     projectModal.classList.remove('on');document.body.classList.remove('modal-open');activeProjectCard=null;
-    if(projectTrigger)projectTrigger.focus();
+    if(projectTrigger){projectTrigger.setAttribute('aria-expanded','false');projectTrigger.focus();}
   }
   modalPrev.addEventListener('click',function(){activeGalleryIndex=(activeGalleryIndex-1+activeGallery.length)%activeGallery.length;renderModalImage();});
   modalNext.addEventListener('click',function(){activeGalleryIndex=(activeGalleryIndex+1)%activeGallery.length;renderModalImage();});
