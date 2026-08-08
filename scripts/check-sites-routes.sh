@@ -3,6 +3,7 @@ set -euo pipefail
 
 base_url="${1:-http://127.0.0.1:4177}"
 base_url="${base_url%/}"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 work_dir="$(mktemp -d "${TMPDIR:-/tmp}/portfolio-route-check.XXXXXX")"
 trap 'rm -rf "$work_dir"' EXIT
 
@@ -66,18 +67,32 @@ check_html_route(){
   printf 'ok  %s\n' "$route"
 }
 
+check_internal_landing(){
+  local route="$1" destination="$2" body="$work_dir/landing.html" code
+  code="$(curl --silent --show-error --output "$body" --write-out '%{http_code}' \
+    --header 'Accept: text/html' "$destination")" \
+    || fail "$destination could not be fetched while verifying $route"
+  test "$code" = "200" \
+    || fail "$route does not land in a single hop; $destination returned HTTP $code"
+  if grep -Fq 'id="project-root"' "$body"; then
+    fail "$route still lands on the retained shared project detail shell"
+  fi
+}
+
 check_redirect(){
   local route="$1" expected="$2" metrics code redirect_url
   metrics="$(curl --silent --show-error --output /dev/null \
     --write-out $'%{http_code}\t%{redirect_url}' --header 'Accept: text/html' \
     "$base_url$route")" || fail "$base_url$route could not be fetched"
   IFS=$'\t' read -r code redirect_url <<<"$metrics"
-  test "$code" = "308" || fail "$base_url$route returned HTTP $code, expected 308"
+  test "$code" = "307" \
+    || fail "$base_url$route returned HTTP $code, expected a temporary 307"
   test "$redirect_url" = "$expected" \
     || fail "$base_url$route redirects to $redirect_url, expected $expected"
-  test "$redirect_url" != "$base_url/project" \
-    || fail "$base_url$route still redirects to the broken shared project shell"
-  printf 'ok  %s -> %s\n' "$route" "$expected"
+  case "$redirect_url" in
+    "$base_url"/*) check_internal_landing "$base_url$route" "$redirect_url" ;;
+  esac
+  printf 'ok  %s -> %s (307)\n' "$route" "$expected"
 }
 
 assert_card(){
@@ -92,16 +107,30 @@ assert_card(){
   printf 'ok  card %s -> %s (%s)\n' "$id" "$destination" "$kind"
 }
 
+# Vercel and Railway are free to add their own canonical redirects, so the
+# reachability contract is: a final 200, on a host we still recognise, whose
+# body identifies the intended site.
 check_external_page(){
-  local url="$1" marker="$2" body="$work_dir/external.html" metrics code redirects effective
+  local url="$1" allowed_hosts="$2" marker="$3" body="$work_dir/external.html"
+  local metrics code redirects effective final_host host matched=0
   metrics="$(curl --fail-with-body --location --silent --show-error \
     --output "$body" --write-out $'%{http_code}\t%{num_redirects}\t%{url_effective}' "$url")" \
     || fail "$url could not be fetched"
   IFS=$'\t' read -r code redirects effective <<<"$metrics"
   test "$code" = "200" || fail "$url returned HTTP $code, expected 200"
-  test "$effective" = "$url" || fail "$url ended at $effective"
+  final_host="${effective#*://}"
+  final_host="${final_host%%/*}"
+  final_host="${final_host%%\?*}"
+  while IFS= read -r host; do
+    test -n "$host" || continue
+    if test "$host" = "$final_host"; then
+      matched=1
+    fi
+  done <<<"${allowed_hosts//,/$'\n'}"
+  test "$matched" = "1" \
+    || fail "$url ended on the unexpected host $final_host, expected one of $allowed_hosts"
   grep -Fqi "$marker" "$body" || fail "$url is missing page identity marker $marker"
-  printf 'ok  external %s (%s redirect(s))\n' "$url" "$redirects"
+  printf 'ok  external %s -> %s (%s redirect(s))\n' "$url" "$effective" "$redirects"
 }
 
 index_body="$work_dir/index.html"
@@ -180,9 +209,25 @@ fi
 grep -Fq 'github.com/xiangyangvt/blacksburg-secondhand' "$detail_script" \
   || fail "the retained project detail data is missing the canonical community repository"
 
-if test "${CHECK_EXTERNAL_LINKS:-0}" = "1"; then
-  check_external_page 'https://digital-me-dashboard.vercel.app/' 'Digital Me'
-  check_external_page 'https://blacksburg-secondhand-production.up.railway.app/' 'Blacksburg Secondhand'
+destination_module="$work_dir/portfolio-destination.js"
+curl --fail --silent --show-error "$base_url/assets/portfolio-destination.js" \
+  --output "$destination_module" \
+  || fail "$base_url/assets/portfolio-destination.js could not be fetched"
+node "$script_dir/check-demo-language.mjs" "$destination_module" "$index_body" \
+  || fail "the homepage demo cards do not carry the active portfolio language into their demo URL"
+
+if test "${SKIP_EXTERNAL_LINKS:-0}" = "1"; then
+  external_summary='live-site checks SKIPPED'
+  printf 'SKIPPED external live-site check for %s (SKIP_EXTERNAL_LINKS=1)\n' \
+    'https://digital-me-dashboard.vercel.app/' >&2
+  printf 'SKIPPED external live-site check for %s (SKIP_EXTERNAL_LINKS=1)\n' \
+    'https://blacksburg-secondhand-production.up.railway.app/' >&2
+else
+  external_summary='live sites verified'
+  check_external_page 'https://digital-me-dashboard.vercel.app/' \
+    'digital-me-dashboard.vercel.app' 'Digital Me'
+  check_external_page 'https://blacksburg-secondhand-production.up.railway.app/' \
+    'blacksburg-secondhand-production.up.railway.app' 'Blacksburg Secondhand'
 fi
 
-printf 'All portfolio destinations passed at %s\n' "$base_url"
+printf 'All portfolio destinations passed at %s (%s)\n' "$base_url" "$external_summary"

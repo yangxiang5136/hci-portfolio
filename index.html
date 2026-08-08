@@ -866,6 +866,7 @@ html[lang="en"] [data-zh]{display:none!important;}
 
 <div class="lightbox" id="lightbox"><img id="lb-img" alt=""><div class="cap" id="lb-cap"></div></div>
 
+<script src="assets/portfolio-destination.js"></script>
 <script>
 (function(){
   "use strict";
@@ -1017,13 +1018,8 @@ html[lang="en"] [data-zh]{display:none!important;}
     document.getElementById('modal-title').textContent=title;
     document.getElementById('modal-summary').textContent=localizedText(card.querySelector(':scope > p'));
     document.getElementById('modal-role').textContent=localizedText(card.querySelector('.project-role'));
-    var destinationUrl=card.getAttribute('data-destination-url');
     var destinationKind=card.getAttribute('data-destination-kind');
-    if(destinationUrl&&destinationKind==='demo'){
-      var demoUrl=new URL(destinationUrl,window.location.href);
-      demoUrl.searchParams.set('lang',isEn()?'en':'zh');
-      destinationUrl=demoUrl.pathname+demoUrl.search+demoUrl.hash;
-    }
+    var destinationUrl=resolvePortfolioDestination(card.getAttribute('data-destination-url'),destinationKind,isEn()?'en':'zh',window.location.href);
     var opensNewTab=destinationKind==='live'||destinationKind==='demo';
     var actionLabels={live:['查看网站 ↗','Visit website ↗'],demo:['体验 Demo ↗','Try the demo ↗'],fallback:['返回项目地图','Back to project map']};
     var actionLabel=actionLabels[destinationKind]||['了解更多 ↗','Learn more ↗'];

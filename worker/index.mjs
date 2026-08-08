@@ -30,7 +30,8 @@ const worker = {
           destination.searchParams.set("lang", requestedLanguage);
         }
       }
-      return Response.redirect(destination.toString(), 308);
+      // Temporary, so a future destination change is not pinned in browser caches.
+      return Response.redirect(destination.toString(), 307);
     }
 
     // Demo entry files reference their hashed assets relatively, so the slashless
