@@ -12,7 +12,7 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `worker/index.mjs` — redirects each route's slashless form to its canonical trailing-slash URL, routes project paths to `project.html`, demo paths to their own entry files, and keeps unmatched HTML routes as 404s
 - `scripts/build-sites-static.sh` — assembles the deployable `dist/` package
 - `scripts/serve-sites-preview.mjs` — runs the real Worker routing against the local package
-- `scripts/check-sites-routes.sh` — checks all project, demo, and critical asset URLs locally or after deployment, and asserts the homepage links neither `chatgpt.site` nor the unpublished portfolio PDF
+- `scripts/check-sites-routes.sh` — checks all project, demo, and critical asset URLs locally or after deployment; asserts the homepage links neither `chatgpt.site` nor the unpublished portfolio PDF, that the Digital Me card points at the live `https://digital-me-dashboard.vercel.app/` site instead of the internal `/projects/digital-me/` page, and that every other project route is linked from the homepage
 - `scripts/export-portfolio-pdf.sh` — renders `portfolio-pdf.html` to the local `assets/portfolio.pdf` working copy
 - `.openai/hosting.json` — identifies the Sites hosting project behind the public custom domain `xiangyang.work`
 
