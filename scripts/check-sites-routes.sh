@@ -138,6 +138,9 @@ index_body="$work_dir/index.html"
 curl --fail --silent --show-error "$base_url/" --output "$index_body" \
   || fail "$base_url/ could not be fetched"
 
+grep -Fq 'max-height:min(820px,92vh,calc(100% - 40px))' "$index_body" \
+  || fail "the project dialog is missing its overlay-relative viewport height guard"
+
 card_count="$(grep -c 'data-project-id=' "$index_body" || true)"
 test "$card_count" = "9" || fail "expected 9 typed project cards, found $card_count"
 test "$(grep -c 'data-destination-kind="live"' "$index_body" || true)" = "2" \
