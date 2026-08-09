@@ -17,4 +17,19 @@ Interaction & experience design portfolio. Self-contained static pages, bilingua
 - `scripts/export-portfolio-pdf.sh` — renders `portfolio-pdf.html` to the local `assets/portfolio.pdf` working copy
 - `.openai/hosting.json` — identifies the Sites hosting project behind the public custom domain `xiangyang.work`
 
+## China-access mirror
+
+`railway.json` deploys the same static build and Worker-compatible route behavior
+to Railway's Singapore region. The mirror is intentionally independent from the
+primary Sites deployment: validate its generated Railway domain from mainland
+China before adding `cn.xiangyang.work`, and leave `xiangyang.work` unchanged
+until the mirror has passed that check.
+
+Railway uses the same commands as local validation:
+
+```bash
+npm run build
+npm start
+```
+
 Design system: Branch Compass v0.7 tokens (light).

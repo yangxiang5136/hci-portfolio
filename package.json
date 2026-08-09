@@ -1,0 +1,12 @@
+{
+  "name": "xiangyang-hci-portfolio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "bash scripts/build-sites-static.sh",
+    "start": "node scripts/serve-sites-preview.mjs"
+  }
+}

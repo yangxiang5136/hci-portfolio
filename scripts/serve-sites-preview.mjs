@@ -7,7 +7,8 @@ import worker from "../worker/index.mjs";
 
 const projectDir=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const clientDir=path.join(projectDir,"dist","client");
-const port=Number(process.argv[2]||4177);
+const port=Number(process.env.PORT||process.argv[2]||4177);
+const host=process.env.HOST||"127.0.0.1";
 const contentTypes={
   ".css":"text/css; charset=utf-8",".html":"text/html; charset=utf-8",
   ".js":"text/javascript; charset=utf-8",".json":"application/json; charset=utf-8",
@@ -49,5 +50,5 @@ const server=createServer(async(req,res)=>{
   }catch(error){res.writeHead(500,{"content-type":"text/plain; charset=utf-8"});res.end(String(error&&error.stack||error))}
 });
 
-server.listen(port,"127.0.0.1",()=>process.stdout.write(`Sites preview: http://127.0.0.1:${port}/\n`));
+server.listen(port,host,()=>process.stdout.write(`Portfolio server: http://${host}:${port}/\n`));
 for(const signal of ["SIGINT","SIGTERM"]){process.on(signal,()=>server.close(()=>process.exit(0)))}
