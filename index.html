@@ -228,7 +228,9 @@ main>section.case{display:none;}
 .project-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
   background:rgba(17,24,39,.58);backdrop-filter:blur(8px);}
 .project-modal.on{display:flex;}
-.project-dialog{position:relative;width:min(860px,100%);max-height:min(820px,92vh);overflow:auto;border-radius:20px;
+/* The 1.25 body zoom above 760px renders 92vh taller than the real viewport, so the overlay-relative
+   calc() term is the cap that actually keeps the dialog on screen; scripts/check-sites-routes.sh guards it. */
+.project-dialog{position:relative;width:min(860px,100%);max-height:min(820px,92vh,calc(100% - 40px));overflow:auto;border-radius:20px;
   background:var(--surface);box-shadow:var(--shadow);padding:22px;}
 .project-close{position:absolute;right:18px;top:18px;width:34px;height:34px;border:1px solid var(--rule);border-radius:50%;
   background:var(--surface-subtle);font-size:20px;line-height:1;}
