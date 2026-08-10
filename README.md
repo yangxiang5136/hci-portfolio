@@ -33,8 +33,10 @@ npm start
 ```
 
 `npm test` builds the mirror and verifies the complete route matrix, HTTPS-aware
-redirects, byte-range video streaming, and browser cache validators. The mirror
-server binds to loopback for local previews and automatically binds to the
-platform interface when Railway supplies `PORT`.
+redirects, byte-range video streaming, and browser cache validators. It stays
+offline-deterministic by skipping the live third-party destinations. Run
+`npm run test:live` before deploying to additionally sweep those external sites
+for reachability. The mirror server binds to loopback for local previews and
+automatically binds to the platform interface when Railway supplies `PORT`.
 
 Design system: Branch Compass v0.7 tokens (light).

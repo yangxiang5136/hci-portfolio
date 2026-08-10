@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import { createServer } from "node:http";
-import { once } from "node:events";
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
 import worker from "../worker/index.mjs";
 
@@ -124,6 +124,10 @@ const env={ASSETS:{async fetch(request){
   }
 }}};
 
+// A client that resets the connection is routine, not a server fault, so it must
+// not be logged or answered with a second response.
+const disconnectCodes=new Set(["ECONNRESET","EPIPE","ERR_STREAM_DESTROYED","ERR_STREAM_PREMATURE_CLOSE"]);
+
 const server=createServer(async(req,res)=>{
   try{
     const forwardedProto=String(req.headers["x-forwarded-proto"]||"").split(",",1)[0].trim().toLowerCase();
@@ -131,23 +135,17 @@ const server=createServer(async(req,res)=>{
     const origin=`${protocol}://${req.headers.host||`127.0.0.1:${port}`}`;
     const request=new Request(new URL(req.url||"/",origin),{method:req.method,headers:req.headers});
     const response=await worker.fetch(request,env);
+    // The client can disconnect while the worker is still resolving the asset,
+    // so the body has to be released explicitly on that path.
+    if(res.destroyed){await response.body?.cancel().catch(()=>{});return}
     res.writeHead(response.status,Object.fromEntries(response.headers));
     if(req.method==="HEAD"||!response.body){res.end();return}
-    const reader=response.body.getReader();
-    const aborted=new AbortController();
-    const onClose=()=>{aborted.abort();reader.cancel().catch(()=>{})};
-    res.on("close",onClose);
-    try{
-      for(;;){
-        const {done,value}=await reader.read();
-        if(done)break;
-        if(!res.write(value))await once(res,"drain",{signal:aborted.signal});
-      }
-      res.end();
-    }catch(error){
-      if(!aborted.signal.aborted)throw error;
-    }finally{res.off("close",onClose)}
+    // pipeline applies backpressure and tears the file stream down on a
+    // premature close, whichever side ends first.
+    await pipeline(Readable.fromWeb(response.body),res);
   }catch(error){
+    if(disconnectCodes.has(error?.code))return;
+    process.stderr.write(`${req.method} ${req.url} failed: ${error&&error.stack||error}\n`);
     if(res.headersSent){res.destroy();return}
     res.writeHead(500,{"content-type":"text/plain; charset=utf-8"});
     res.end(String(error&&error.stack||error));

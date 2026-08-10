@@ -31,7 +31,7 @@ curl -fsS "$mirror_url/" >/dev/null || {
   exit 1
 }
 
-bash scripts/check-sites-routes.sh "$mirror_url"
+SKIP_EXTERNAL_LINKS="${SKIP_EXTERNAL_LINKS:-1}" bash scripts/check-sites-routes.sh "$mirror_url"
 
 video_path=/assets/synthetic-observatory-18s.mp4
 curl -fsSI "$mirror_url$video_path" >"$mirror_tmp/head.txt"
@@ -76,6 +76,27 @@ curl -fsS -o /dev/null "$mirror_url/" || {
   cat "$mirror_tmp/server.log" >&2
   exit 1
 }
+
+# Clients that vanish before the response starts must not leave a handler
+# waiting on drain or hold the file stream open.
+node -e '
+const net = require("node:net");
+const [host, port, target] = process.argv.slice(1);
+let pending = 30;
+const finish = () => { if (--pending === 0) process.exit(0) };
+for (let i = 0; i < 30; i += 1) {
+  const socket = net.connect(Number(port), host, () => {
+    socket.write(`GET ${target} HTTP/1.1\r\nHost: ${host}\r\nRange: bytes=0-4194303\r\n\r\n`);
+    setTimeout(() => { socket.resetAndDestroy(); finish() }, i % 6);
+  });
+  socket.on("error", finish);
+}
+' 127.0.0.1 "$mirror_port" "$video_path"
+
+recovered_status=$(curl -sS -o "$mirror_tmp/recovered.bin" -w '%{http_code}' -H 'Range: bytes=0-1023' "$mirror_url$video_path")
+[[ "$recovered_status" == 206 ]]
+[[ $(wc -c <"$mirror_tmp/recovered.bin" | tr -d ' ') == 1024 ]]
+! grep -q ' failed: ' "$mirror_tmp/server.log"
 
 hashed_asset=$(cd dist/client && find tools -type f -path '*/demo/assets/*' \
   | grep -E -- '-[A-Za-z0-9_-]{8}\.[^/]+$' \
