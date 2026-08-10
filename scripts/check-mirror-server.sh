@@ -97,7 +97,12 @@ for (let i = 0; i < 30; i += 1) {
 recovered_status=$(curl -sS -o "$mirror_tmp/recovered.bin" -w '%{http_code}' -H 'Range: bytes=0-1023' "$mirror_url$video_path")
 [[ "$recovered_status" == 206 ]]
 [[ $(wc -c <"$mirror_tmp/recovered.bin" | tr -d ' ') == 1024 ]]
-! grep -q ' failed: ' "$mirror_tmp/server.log"
+# Client resets are logged quietly; anything reaching the ' failed: ' handler is a
+# real server fault. `! grep` would be exempt from `set -e`, so assert explicitly.
+if grep -q ' failed: ' "$mirror_tmp/server.log"; then
+  cat "$mirror_tmp/server.log" >&2
+  exit 1
+fi
 
 hashed_asset=$(cd dist/client && find tools -type f -path '*/demo/assets/*' \
   | grep -E -- '-[A-Za-z0-9_-]{8}\.[^/]+$' \
