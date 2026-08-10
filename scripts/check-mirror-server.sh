@@ -17,7 +17,7 @@ cleanup() {
 trap cleanup EXIT
 
 cd "$repo_dir"
-PORT="$mirror_port" node scripts/serve-sites-preview.mjs >"$mirror_tmp/server.log" 2>&1 &
+HOST=127.0.0.1 PORT="$mirror_port" node scripts/serve-sites-preview.mjs >"$mirror_tmp/server.log" 2>&1 &
 mirror_pid=$!
 
 for _ in {1..50}; do
@@ -48,9 +48,42 @@ grep -qi '^content-range: bytes 0-1023/' "$mirror_tmp/range.txt"
 invalid_status=$(curl -sS -o /dev/null -w '%{http_code}' -H 'Range: bytes=999999999-' "$mirror_url$video_path")
 [[ "$invalid_status" == 416 ]]
 
+video_size=$(awk 'BEGIN{IGNORECASE=1} /^content-length:/{sub(/\r$/,""); print substr($0,index($0,":")+2)}' "$mirror_tmp/head.txt" | tr -d ' \r')
+
+# Unsupported or unparsable Range headers are ignored, not rejected with 416.
+for unsupported_range in 'bytes=0-99,200-299' 'bytes=abc' 'items=0-99'; do
+  unsupported_status=$(curl -sS -o "$mirror_tmp/full.bin" -w '%{http_code}' -H "Range: $unsupported_range" "$mirror_url$video_path")
+  [[ "$unsupported_status" == 200 ]]
+  [[ $(wc -c <"$mirror_tmp/full.bin" | tr -d ' ') == "$video_size" ]]
+done
+
 etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{sub(/\r$/,""); print substr($0,index($0,":")+2)}' "$mirror_tmp/head.txt")
 not_modified_status=$(curl -sS -o /dev/null -w '%{http_code}' -H "If-None-Match: $etag" "$mirror_url$video_path")
 [[ "$not_modified_status" == 304 ]]
+
+# A matching If-Range still slices; a stale one must return the whole file so a
+# client never splices fresh bytes onto a pre-deploy prefix.
+if_range_match_status=$(curl -sS -o /dev/null -w '%{http_code}' -H "If-Range: $etag" -H 'Range: bytes=0-1023' "$mirror_url$video_path")
+[[ "$if_range_match_status" == 206 ]]
+
+if_range_stale_status=$(curl -sS -o "$mirror_tmp/if-range.bin" -w '%{http_code}' -H 'If-Range: "stale-validator"' -H 'Range: bytes=0-1023' "$mirror_url$video_path")
+[[ "$if_range_stale_status" == 200 ]]
+[[ $(wc -c <"$mirror_tmp/if-range.bin" | tr -d ' ') == "$video_size" ]]
+
+# Aborting a range request mid-stream must not wedge the server.
+curl -sS -o /dev/null --max-time 1 --limit-rate 8k -H 'Range: bytes=0-4194303' "$mirror_url$video_path" || true
+curl -fsS -o /dev/null "$mirror_url/" || {
+  cat "$mirror_tmp/server.log" >&2
+  exit 1
+}
+
+hashed_asset=$(cd dist/client && find tools -type f -path '*/demo/assets/*' \
+  | grep -E -- '-[A-Za-z0-9_-]{8}\.[^/]+$' \
+  | LC_ALL=C sort \
+  | awk 'NR==1')
+[[ -n "$hashed_asset" ]]
+curl -fsSI "$mirror_url/$hashed_asset" >"$mirror_tmp/hashed.txt"
+grep -qi '^cache-control: public, max-age=31536000, immutable' "$mirror_tmp/hashed.txt"
 
 redirect_location=$(curl -sSI -H 'Host: cn.xiangyang.work' -H 'X-Forwarded-Proto: https' "$mirror_url/tools/taskflow" | awk 'BEGIN{IGNORECASE=1} /^location:/{sub(/\r$/,""); print substr($0,index($0,":")+2)}')
 [[ "$redirect_location" == 'https://cn.xiangyang.work/tools/taskflow/demo/?lang=zh' ]]
