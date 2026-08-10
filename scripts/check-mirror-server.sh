@@ -79,6 +79,7 @@ curl -fsS -o /dev/null "$mirror_url/" || {
 
 # Clients that vanish before the response starts must not leave a handler
 # waiting on drain or hold the file stream open.
+# shellcheck disable=SC2016 # the `${...}` below are JS template literals, not shell
 node -e '
 const net = require("node:net");
 const [host, port, target] = process.argv.slice(1);
