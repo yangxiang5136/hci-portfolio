@@ -32,4 +32,9 @@ npm run build
 npm start
 ```
 
+`npm test` builds the mirror and verifies the complete route matrix, HTTPS-aware
+redirects, byte-range video streaming, and browser cache validators. The mirror
+server binds to loopback for local previews and automatically binds to the
+platform interface when Railway supplies `PORT`.
+
 Design system: Branch Compass v0.7 tokens (light).
