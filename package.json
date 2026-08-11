@@ -1,0 +1,14 @@
+{
+  "name": "xiangyang-hci-portfolio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "bash scripts/build-sites-static.sh",
+    "start": "node scripts/serve-sites-preview.mjs",
+    "test": "npm run build && bash scripts/check-mirror-server.sh",
+    "test:live": "npm run build && SKIP_EXTERNAL_LINKS=0 bash scripts/check-mirror-server.sh"
+  }
+}
